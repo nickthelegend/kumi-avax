@@ -58,8 +58,70 @@
           "ren": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363"
         },
         "captain": "mika"
+      },
+      {
+        "slug": "sunrise",
+        "name": "Sunrise Scalpers",
+        "address": "0x16E639793291E35dB63fC411fFe97dA76F35eb2b",
+        "policy": {
+          "thresholdBps": 5001,
+          "votingPeriod": 86400,
+          "maxLeverage": 5,
+          "maxSlippageBps": 100,
+          "captainMaxLeverage": 2,
+          "captainMaxBps": 1000,
+          "captainTradesPerDay": 2
+        },
+        "members": {
+          "jun": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
+          "sora": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+          "mika": "0x857429F6d1304B8ef42De42a0696f52a5FBE3acF"
+        },
+        "captain": "jun"
+      },
+      {
+        "slug": "slowbtc",
+        "name": "Slow BTC Club",
+        "address": "0x4d598Fe9Dfb41Aa95F2F320f11A95d93ACb26c22",
+        "policy": {
+          "thresholdBps": 5001,
+          "votingPeriod": 86400,
+          "maxLeverage": 5,
+          "maxSlippageBps": 100,
+          "captainMaxLeverage": 2,
+          "captainMaxBps": 1000,
+          "captainTradesPerDay": 2
+        },
+        "members": {
+          "tae": "0x477D91ac189080ec0B40Af4F9AE4246d331Ebf5b",
+          "lia": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+          "bo": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125"
+        },
+        "captain": "tae"
+      },
+      {
+        "slug": "frogpond",
+        "name": "Frog Pond",
+        "address": "0x84949AEab9a9BfC2e05d5bB43583d00805598Bb7",
+        "policy": {
+          "thresholdBps": 5001,
+          "votingPeriod": 86400,
+          "maxLeverage": 5,
+          "maxSlippageBps": 100,
+          "captainMaxLeverage": 2,
+          "captainMaxBps": 1000,
+          "captainTradesPerDay": 2
+        },
+        "members": {
+          "lia": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+          "ren": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363",
+          "jun": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
+          "sora": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d"
+        },
+        "captain": "lia"
       }
-    ]
+    ],
+    "lobby": "0x86c916ab60f186a43ab6b31603d91641dc228e7a"
   },
   "txs": [
     {
@@ -303,6 +365,61 @@
       "gasUsed": 602093,
       "confirmMs": 3316,
       "at": "2026-11-12T10:00:48.421Z"
+    },
+    {
+      "label": "deploy_KumiLobby",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": null,
+      "hash": "0x9ffb5d5eef13a6076f326566fc504c0c840c8a19024b414d152c6f22567fc238",
+      "status": "success",
+      "block": 60943460,
+      "gasUsed": 2244848,
+      "confirmMs": 2478,
+      "at": "2026-11-12T11:15:59.457Z"
+    },
+    {
+      "label": "gas_jun",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
+      "hash": "0x48bec18304473021e3cc5f7c09c92b0677d223e0f650ec922bc80576d3f297cc",
+      "status": "success",
+      "block": 60943462,
+      "gasUsed": 21000,
+      "confirmMs": 3044,
+      "at": "2026-11-12T11:16:02.668Z"
+    },
+    {
+      "label": "gas_sora",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+      "hash": "0x98f46b4e7e3bff739d43c0369e8de417fbedc349ac8623d97441fe69a7dcc0c0",
+      "status": "success",
+      "block": 60943466,
+      "gasUsed": 21000,
+      "confirmMs": 2552,
+      "at": "2026-11-12T11:16:05.385Z"
+    },
+    {
+      "label": "gas_tae",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x477D91ac189080ec0B40Af4F9AE4246d331Ebf5b",
+      "hash": "0x643c89fce7bd6da77394a06b1cd5088e6c9ad4a921ea5f0a3c15a269a4de70b2",
+      "status": "success",
+      "block": 60943472,
+      "gasUsed": 21000,
+      "confirmMs": 5582,
+      "at": "2026-11-12T11:16:17.699Z"
+    },
+    {
+      "label": "gas_lia",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+      "hash": "0xf7b58c79c099e0f4cbf3ae2844e76ea386c84c0895f81d4f960cb3cc9435de3a",
+      "status": "success",
+      "block": 60943475,
+      "gasUsed": 21000,
+      "confirmMs": 2540,
+      "at": "2026-11-12T11:16:20.402Z"
     }
   ],
   "accounts": {
@@ -310,7 +427,11 @@
     "maker": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
     "mika": "0x857429F6d1304B8ef42De42a0696f52a5FBE3acF",
     "bo": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
-    "ren": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363"
+    "ren": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363",
+    "jun": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
+    "sora": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+    "tae": "0x477D91ac189080ec0B40Af4F9AE4246d331Ebf5b",
+    "lia": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5"
   },
   "makerTxs": [
     {
@@ -1093,6 +1214,292 @@
       "gasUsed": 228117,
       "confirmMs": 2511,
       "at": "2026-11-12T10:23:44.113Z"
+    },
+    {
+      "label": "maker_cancel_AVAX_12",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x72d1ed182a83bfce704c6bea945a521d1a71876a9cd630955a255efeeb8dde25",
+      "status": "success",
+      "block": 60943396,
+      "gasUsed": 416846,
+      "confirmMs": 2505,
+      "at": "2026-11-12T11:14:35.126Z"
+    },
+    {
+      "label": "maker_AVAX_bid_1",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xafdfeaddf2c51f7ea8c209856a01a1c7fb99a11a2ab7dc0d631197849fc660fe",
+      "status": "success",
+      "block": 60943397,
+      "gasUsed": 234921,
+      "confirmMs": 2899,
+      "at": "2026-11-12T11:14:38.344Z"
+    },
+    {
+      "label": "maker_AVAX_ask_1",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x6a6a72dffa8f6ce86b6d810b11c3e6e70fcf100b26a40635bad7750fb7ed44d2",
+      "status": "success",
+      "block": 60943399,
+      "gasUsed": 235190,
+      "confirmMs": 3021,
+      "at": "2026-11-12T11:14:41.685Z"
+    },
+    {
+      "label": "maker_AVAX_bid_2",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xd1bf205266301b4d85d4a7939a2f3ef8c660da28557ffacc7c3e91546479d8c2",
+      "status": "success",
+      "block": 60943403,
+      "gasUsed": 249086,
+      "confirmMs": 5821,
+      "at": "2026-11-12T11:14:47.820Z"
+    },
+    {
+      "label": "maker_AVAX_ask_2",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x3230e384106f61695c7eedd57dd7777d1026ca80cdabcd191b9dfecab04aedd4",
+      "status": "success",
+      "block": 60943406,
+      "gasUsed": 249198,
+      "confirmMs": 2501,
+      "at": "2026-11-12T11:14:50.652Z"
+    },
+    {
+      "label": "maker_AVAX_bid_3",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x780a3e9a2cea0c978d3625a77687436d66b42c63d5e1f3b9141467a1b5831523",
+      "status": "success",
+      "block": 60943408,
+      "gasUsed": 251556,
+      "confirmMs": 2519,
+      "at": "2026-11-12T11:14:53.513Z"
+    },
+    {
+      "label": "maker_AVAX_ask_3",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xe0bf1060e643888fd19ca41e740f86c294837901d7612df0ba1c3597b5bcdefb",
+      "status": "success",
+      "block": 60943409,
+      "gasUsed": 251669,
+      "confirmMs": 2507,
+      "at": "2026-11-12T11:14:56.344Z"
+    },
+    {
+      "label": "maker_AVAX_bid_4",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xa49f4ce6b8da5c0a023fd755c4dd27d73d58f94596dfbc37b428d30113b58021",
+      "status": "success",
+      "block": 60943411,
+      "gasUsed": 254026,
+      "confirmMs": 2687,
+      "at": "2026-11-12T11:14:59.343Z"
+    },
+    {
+      "label": "maker_AVAX_ask_4",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x19f7d902dfbe3ef65fa8dac76a1da9c40b2d87c669e94742c773d7ba586d7935",
+      "status": "success",
+      "block": 60943414,
+      "gasUsed": 254140,
+      "confirmMs": 3084,
+      "at": "2026-11-12T11:15:02.751Z"
+    },
+    {
+      "label": "maker_AVAX_bid_5",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xf901fe6df704e1a90de6f79ff6ebc6ec96f1abececc2ee2018d4767367d39526",
+      "status": "success",
+      "block": 60943416,
+      "gasUsed": 256496,
+      "confirmMs": 2598,
+      "at": "2026-11-12T11:15:05.733Z"
+    },
+    {
+      "label": "maker_AVAX_ask_5",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xc1c39822fff09711b688185fd4190bc5d40ef30d491a0e8c69f8c8c462996ab8",
+      "status": "success",
+      "block": 60943418,
+      "gasUsed": 256611,
+      "confirmMs": 2553,
+      "at": "2026-11-12T11:15:08.643Z"
+    },
+    {
+      "label": "maker_AVAX_bid_6",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xd23de1ed7daa004f821f82a544c0e70359c07ca9150fbde33a6c482ef14081dd",
+      "status": "success",
+      "block": 60943422,
+      "gasUsed": 258966,
+      "confirmMs": 2507,
+      "at": "2026-11-12T11:15:11.482Z"
+    },
+    {
+      "label": "maker_AVAX_ask_6",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x866725537d08adadb068b2cede17ad35772cf1b380231bbf03e3f46f46458fba",
+      "status": "success",
+      "block": 60943425,
+      "gasUsed": 259082,
+      "confirmMs": 2560,
+      "at": "2026-11-12T11:15:14.362Z"
+    },
+    {
+      "label": "maker_cancel_BTC_12",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x2a95cdde77205ae3723f13b7dbfbb58d259b7813ef2812dc1f75187230e9a15f",
+      "status": "success",
+      "block": 60943428,
+      "gasUsed": 416846,
+      "confirmMs": 3048,
+      "at": "2026-11-12T11:15:18.091Z"
+    },
+    {
+      "label": "maker_BTC_bid_1",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xe1f462e6ff956672dad0cfc8e0a908ab19ea2d7c38b74866d1d98daa3d34f982",
+      "status": "success",
+      "block": 60943431,
+      "gasUsed": 210407,
+      "confirmMs": 2158,
+      "at": "2026-11-12T11:15:20.576Z"
+    },
+    {
+      "label": "maker_BTC_ask_1",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x9175830211d67cfdeb5d7ec0d7180ddd660211a3d79462464933081cf2c79af9",
+      "status": "success",
+      "block": 60943433,
+      "gasUsed": 210676,
+      "confirmMs": 2562,
+      "at": "2026-11-12T11:15:23.453Z"
+    },
+    {
+      "label": "maker_BTC_bid_2",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x22ad3b71362e5e0ab9a2e880e9aea817c2fb50a22e6a512f4eb0a8d1ec416dba",
+      "status": "success",
+      "block": 60943437,
+      "gasUsed": 222572,
+      "confirmMs": 2954,
+      "at": "2026-11-12T11:15:26.733Z"
+    },
+    {
+      "label": "maker_BTC_ask_2",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x8d723e6ee5f241e0d57806b2721297d094c2ea2ce9f8cb9690e4365957a539bd",
+      "status": "success",
+      "block": 60943439,
+      "gasUsed": 222684,
+      "confirmMs": 2113,
+      "at": "2026-11-12T11:15:29.160Z"
+    },
+    {
+      "label": "maker_BTC_bid_3",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xd0378a6c3cf720f0af68ed3e5bb5691604a6740fbbaa8ff94922673c9d7d7fa4",
+      "status": "success",
+      "block": 60943441,
+      "gasUsed": 225042,
+      "confirmMs": 2084,
+      "at": "2026-11-12T11:15:31.559Z"
+    },
+    {
+      "label": "maker_BTC_ask_3",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x6e08ca2407dcfd3a1fe74f30d7a057951d5afbdcc3e321a48451863ac66508cf",
+      "status": "success",
+      "block": 60943444,
+      "gasUsed": 225155,
+      "confirmMs": 3358,
+      "at": "2026-11-12T11:15:35.233Z"
+    },
+    {
+      "label": "maker_BTC_bid_4",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xeaaea217602dce349cbce317ff3ceca53e8f24f1ddf97c6777a11cd8e7a5f8cd",
+      "status": "success",
+      "block": 60943448,
+      "gasUsed": 227512,
+      "confirmMs": 2900,
+      "at": "2026-11-12T11:15:38.445Z"
+    },
+    {
+      "label": "maker_BTC_ask_4",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x60e473e321ce65d18e43bc72f7482220f0bdd3d3f6c571d91de3554aa35ec801",
+      "status": "success",
+      "block": 60943450,
+      "gasUsed": 227626,
+      "confirmMs": 3046,
+      "at": "2026-11-12T11:15:41.805Z"
+    },
+    {
+      "label": "maker_BTC_bid_5",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xe8a0562b62f6c6d840f4da7bfd00f1aadf935c88ffa37efe9d47c49109b08b71",
+      "status": "success",
+      "block": 60943452,
+      "gasUsed": 229982,
+      "confirmMs": 2086,
+      "at": "2026-11-12T11:15:44.200Z"
+    },
+    {
+      "label": "maker_BTC_ask_5",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x4d2175b4516f87a641b170efa1d61abb1fdc723240cc5284cbfb15dcc43663be",
+      "status": "success",
+      "block": 60943454,
+      "gasUsed": 230097,
+      "confirmMs": 3047,
+      "at": "2026-11-12T11:15:47.555Z"
+    },
+    {
+      "label": "maker_BTC_bid_6",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x941618391a34cb5e010b21a81bff92ebdb7827ac82aeaa3ebde1c91035c6ef71",
+      "status": "success",
+      "block": 60943456,
+      "gasUsed": 232452,
+      "confirmMs": 2959,
+      "at": "2026-11-12T11:15:50.824Z"
+    },
+    {
+      "label": "maker_BTC_ask_6",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x3978fb8a7377f6f76657287353315b1489053e465a6c251844e1e8d4806ca379",
+      "status": "success",
+      "block": 60943458,
+      "gasUsed": 232568,
+      "confirmMs": 3039,
+      "at": "2026-11-12T11:15:54.185Z"
     }
   ],
   "superseded": [
@@ -1214,5 +1621,993 @@
       "functionName": "ragequit",
       "at": "2026-11-12T10:26:31.713Z"
     }
-  ]
+  ],
+  "seedV2": [
+    {
+      "label": "gas_jun",
+      "hash": "0x48bec18304473021e3cc5f7c09c92b0677d223e0f650ec922bc80576d3f297cc",
+      "block": 60943462
+    },
+    {
+      "label": "gas_sora",
+      "hash": "0x98f46b4e7e3bff739d43c0369e8de417fbedc349ac8623d97441fe69a7dcc0c0",
+      "block": 60943466
+    },
+    {
+      "label": "gas_tae",
+      "hash": "0x643c89fce7bd6da77394a06b1cd5088e6c9ad4a921ea5f0a3c15a269a4de70b2",
+      "block": 60943472
+    },
+    {
+      "label": "gas_lia",
+      "hash": "0xf7b58c79c099e0f4cbf3ae2844e76ea386c84c0895f81d4f960cb3cc9435de3a",
+      "block": 60943475
+    },
+    {
+      "label": "mint_mika",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0x8726b6e27015178dfce789b5cca2065a3b67b18f0d52c705057fd9b6beed403d",
+      "status": "success",
+      "block": 60943478,
+      "gasUsed": 36060,
+      "confirmMs": 2079,
+      "at": "2026-11-12T11:16:22.796Z"
+    },
+    {
+      "label": "mint_bo",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0x8f5d6b4ce2d62cfd37a58426fd241b4f16c600538d933ba99815a6a52d2bd4bf",
+      "status": "success",
+      "block": 60943481,
+      "gasUsed": 36060,
+      "confirmMs": 3338,
+      "at": "2026-11-12T11:16:26.439Z"
+    },
+    {
+      "label": "mint_ren",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0xe36f5d2ac511dc63c2f8eb16f651e6b349838b1a616340db8bc5e94da92dbdb4",
+      "status": "success",
+      "block": 60943485,
+      "gasUsed": 36060,
+      "confirmMs": 2091,
+      "at": "2026-11-12T11:16:28.840Z"
+    },
+    {
+      "label": "mint_jun",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0x179e2b500109f50c5778b3234d35f94923bc0849e341947c576d1c8943505fac",
+      "status": "success",
+      "block": 60943488,
+      "gasUsed": 53160,
+      "confirmMs": 3050,
+      "at": "2026-11-12T11:16:32.201Z"
+    },
+    {
+      "label": "mint_sora",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0x256c16eb4a33a2360359ac2fd1ba3bcce25f2b9f45c11f92cd197e506c989459",
+      "status": "success",
+      "block": 60943492,
+      "gasUsed": 53160,
+      "confirmMs": 2813,
+      "at": "2026-11-12T11:16:35.330Z"
+    },
+    {
+      "label": "mint_tae",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0x9d81639c8b0739ef942a13f4a15601380a80418d04c6b6cfb47e6eb1e9a7897f",
+      "status": "success",
+      "block": 60943495,
+      "gasUsed": 53160,
+      "confirmMs": 3049,
+      "at": "2026-11-12T11:16:38.694Z"
+    },
+    {
+      "label": "mint_lia",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0x5bbedfc0b97bcb551f8ef093786dbeb2d7e3c3056b85eaec49e1addcc94e6015",
+      "status": "success",
+      "block": 60943499,
+      "gasUsed": 53160,
+      "confirmMs": 5120,
+      "at": "2026-11-12T11:16:44.124Z"
+    },
+    {
+      "label": "approve_perps_mika",
+      "from": "0x857429F6d1304B8ef42De42a0696f52a5FBE3acF",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0x36eaf7f3f48f32e1ec6958f6c803e21bf4ee97a4c32ee641db40e283975b7c47",
+      "status": "success",
+      "block": 60943502,
+      "gasUsed": 46249,
+      "confirmMs": 3092,
+      "at": "2026-11-12T11:16:47.599Z"
+    },
+    {
+      "label": "approve_perps_bo",
+      "from": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0xbf77e17cfa5b68cf5399218440dd2265e4c93d72b686a0054911767a7c618740",
+      "status": "success",
+      "block": 60943503,
+      "gasUsed": 46249,
+      "confirmMs": 2086,
+      "at": "2026-11-12T11:16:50.008Z"
+    },
+    {
+      "label": "approve_perps_ren",
+      "from": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0xdce2443b3ef621b7703728dcab7a35da82d967e6a6ee75229afd35cbdc4f7457",
+      "status": "success",
+      "block": 60943504,
+      "gasUsed": 46249,
+      "confirmMs": 3369,
+      "at": "2026-11-12T11:16:53.695Z"
+    },
+    {
+      "label": "approve_perps_jun",
+      "from": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0xd9736ee8607fa594b017215faf7ea1b015452b3f4ae5d90644c807265274a3c0",
+      "status": "success",
+      "block": 60943506,
+      "gasUsed": 46249,
+      "confirmMs": 2091,
+      "at": "2026-11-12T11:16:56.176Z"
+    },
+    {
+      "label": "approve_perps_sora",
+      "from": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0x629e42bac84bdcb56e16a72274ebf819423a76afe36a926d00a4ab61c755ab56",
+      "status": "success",
+      "block": 60943508,
+      "gasUsed": 46249,
+      "confirmMs": 3015,
+      "at": "2026-11-12T11:16:59.503Z"
+    },
+    {
+      "label": "approve_perps_tae",
+      "from": "0x477D91ac189080ec0B40Af4F9AE4246d331Ebf5b",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0x286b239e2441ba04c77a65eeacdd1675f32ddb25748ab719d18670d1c079c3ef",
+      "status": "success",
+      "block": 60943509,
+      "gasUsed": 46249,
+      "confirmMs": 4569,
+      "at": "2026-11-12T11:17:04.379Z"
+    },
+    {
+      "label": "approve_perps_lia",
+      "from": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0x676a53276097bbd462b8e7f5835d4b97c5319e6c489571f946225d59308b7145",
+      "status": "success",
+      "block": 60943513,
+      "gasUsed": 46249,
+      "confirmMs": 3085,
+      "at": "2026-11-12T11:17:07.794Z"
+    },
+    {
+      "label": "create_crew_sunrise",
+      "from": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
+      "to": "0x7be7c269acf2e0d0b7074e9a0bdc7dfb730b778c",
+      "hash": "0x0dccbb2f0c5aff156a504cd73a6638eeb4cff71b7c6ba8dd4f29aba7ff7eabb6",
+      "status": "success",
+      "block": 60943514,
+      "gasUsed": 567965,
+      "confirmMs": 2077,
+      "at": "2026-11-12T11:17:10.196Z"
+    },
+    {
+      "label": "create_crew_slowbtc",
+      "from": "0x477D91ac189080ec0B40Af4F9AE4246d331Ebf5b",
+      "to": "0x7be7c269acf2e0d0b7074e9a0bdc7dfb730b778c",
+      "hash": "0x731a76216eddb0d8e672a8e6d21d53199de22307c55065b2e53712ff91d4d334",
+      "status": "success",
+      "block": 60943515,
+      "gasUsed": 567929,
+      "confirmMs": 2382,
+      "at": "2026-11-12T11:17:12.902Z"
+    },
+    {
+      "label": "create_crew_frogpond",
+      "from": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+      "to": "0x7be7c269acf2e0d0b7074e9a0bdc7dfb730b778c",
+      "hash": "0x010bf16578d824ebef0a58908ac0276d3bf53a34f196bd9a5b6401d92f799986",
+      "status": "success",
+      "block": 60943519,
+      "gasUsed": 608067,
+      "confirmMs": 3279,
+      "at": "2026-11-12T11:17:16.581Z"
+    },
+    {
+      "label": "approve_sunrise_jun",
+      "from": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0x1695a93bf99d9991e99de488cb6bc8857cbacfd376f3939f897360ae48e4ae1d",
+      "status": "success",
+      "block": 60943522,
+      "gasUsed": 46249,
+      "confirmMs": 3611,
+      "at": "2026-11-12T11:17:20.589Z"
+    },
+    {
+      "label": "deposit_sunrise_jun",
+      "from": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
+      "to": "0x16E639793291E35dB63fC411fFe97dA76F35eb2b",
+      "hash": "0xde6d24b1781d90067984428814212ba8a3e0836ca8ea7037e0c539795d3ccbfd",
+      "status": "success",
+      "block": 60943526,
+      "gasUsed": 286264,
+      "confirmMs": 5352,
+      "at": "2026-11-12T11:17:26.822Z"
+    },
+    {
+      "label": "approve_sunrise_sora",
+      "from": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0x67065616b08d164429b7070de193ad2b9fff8e81c9913756311c47aaf245ed67",
+      "status": "success",
+      "block": 60943530,
+      "gasUsed": 46249,
+      "confirmMs": 2534,
+      "at": "2026-11-12T11:17:29.697Z"
+    },
+    {
+      "label": "deposit_sunrise_sora",
+      "from": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+      "to": "0x16E639793291E35dB63fC411fFe97dA76F35eb2b",
+      "hash": "0x29191bdfe177abd777c0a7dc7ebd6c82d719359f9015acad04478d3d19c30e9e",
+      "status": "success",
+      "block": 60943533,
+      "gasUsed": 218006,
+      "confirmMs": 5483,
+      "at": "2026-11-12T11:17:35.506Z"
+    },
+    {
+      "label": "approve_sunrise_mika",
+      "from": "0x857429F6d1304B8ef42De42a0696f52a5FBE3acF",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0x528e5afc1dd76525d22eca331699530e274b3106e99f3d09b980399e3f5af948",
+      "status": "success",
+      "block": 60943539,
+      "gasUsed": 46249,
+      "confirmMs": 2632,
+      "at": "2026-11-12T11:17:38.477Z"
+    },
+    {
+      "label": "deposit_sunrise_mika",
+      "from": "0x857429F6d1304B8ef42De42a0696f52a5FBE3acF",
+      "to": "0x16E639793291E35dB63fC411fFe97dA76F35eb2b",
+      "hash": "0x6fb28e0b17343f89815d0a7db6f212816dccef98c3b4fee3d2fc6009a992dbd5",
+      "status": "success",
+      "block": 60943542,
+      "gasUsed": 217994,
+      "confirmMs": 3098,
+      "at": "2026-11-12T11:17:42.077Z"
+    },
+    {
+      "label": "say_sunrise_jun_1",
+      "from": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
+      "to": "0x16E639793291E35dB63fC411fFe97dA76F35eb2b",
+      "hash": "0x4134bbd9538a9b6af67a724dfc43493c9fe4508acfa3085e3faf43a3866441ca",
+      "status": "success",
+      "block": 60943544,
+      "gasUsed": 150411,
+      "confirmMs": 2258,
+      "at": "2026-11-12T11:17:44.666Z"
+    },
+    {
+      "label": "say_sunrise_sora_1",
+      "from": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+      "to": "0x16E639793291E35dB63fC411fFe97dA76F35eb2b",
+      "hash": "0xe71934adcf6314cbfa707d2d34604a77d609f74cde1b78bba0d7f808f7a80dfe",
+      "status": "success",
+      "block": 60943548,
+      "gasUsed": 150447,
+      "confirmMs": 5473,
+      "at": "2026-11-12T11:17:50.847Z"
+    },
+    {
+      "label": "pitch_sunrise_long_avax",
+      "from": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
+      "to": "0x16E639793291E35dB63fC411fFe97dA76F35eb2b",
+      "hash": "0x6c3503c8e717d032cc3e71763f5d002df27b2d944ab9ad7fdab08454a23cd17c",
+      "status": "success",
+      "block": 60943552,
+      "gasUsed": 378881,
+      "confirmMs": 2552,
+      "at": "2026-11-12T11:17:53.788Z"
+    },
+    {
+      "label": "vote_sunrise_long_avax_sora",
+      "from": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+      "to": "0x16E639793291E35dB63fC411fFe97dA76F35eb2b",
+      "hash": "0x99c74a810549391d22d2cd7aa352993084114137da22a46b3054d71eb1b99b6e",
+      "status": "success",
+      "block": 60943554,
+      "gasUsed": 1772972,
+      "confirmMs": 2097,
+      "at": "2026-11-12T11:17:56.718Z"
+    },
+    {
+      "label": "say_sunrise_mika_1",
+      "from": "0x857429F6d1304B8ef42De42a0696f52a5FBE3acF",
+      "to": "0x16E639793291E35dB63fC411fFe97dA76F35eb2b",
+      "hash": "0x5378c2aeec4901e47fdca3b55e813b0d08faaa85daaeb790fe27086db4c201ae",
+      "status": "success",
+      "block": 60943556,
+      "gasUsed": 150267,
+      "confirmMs": 2206,
+      "at": "2026-11-12T11:17:59.244Z"
+    },
+    {
+      "label": "approve_slowbtc_tae",
+      "from": "0x477D91ac189080ec0B40Af4F9AE4246d331Ebf5b",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0x2313aa91936ef5ff615ece8726c31cbdc37c09ccc545485f0e24b799165cf7f1",
+      "status": "success",
+      "block": 60943558,
+      "gasUsed": 46249,
+      "confirmMs": 3044,
+      "at": "2026-11-12T11:18:02.607Z"
+    },
+    {
+      "label": "deposit_slowbtc_tae",
+      "from": "0x477D91ac189080ec0B40Af4F9AE4246d331Ebf5b",
+      "to": "0x4d598Fe9Dfb41Aa95F2F320f11A95d93ACb26c22",
+      "hash": "0xa510ce0f9962bff96a9c1c79241fa9802a0d6123ba95dfa5ed69a19ff9a6a821",
+      "status": "success",
+      "block": 60943562,
+      "gasUsed": 286264,
+      "confirmMs": 2130,
+      "at": "2026-11-12T11:18:05.054Z"
+    },
+    {
+      "label": "approve_slowbtc_lia",
+      "from": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0x98e074c5cadae3996a821f5fb64ce625b03fd97a144b9694fb3b9809add093c1",
+      "status": "success",
+      "block": 60943564,
+      "gasUsed": 46249,
+      "confirmMs": 2938,
+      "at": "2026-11-12T11:18:08.300Z"
+    },
+    {
+      "label": "deposit_slowbtc_lia",
+      "from": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+      "to": "0x4d598Fe9Dfb41Aa95F2F320f11A95d93ACb26c22",
+      "hash": "0xd3efc47fb642c57c1d84c5f94efc0472ba4c26176fd25cfaa987976dfa6608ad",
+      "status": "success",
+      "block": 60943565,
+      "gasUsed": 217994,
+      "confirmMs": 2919,
+      "at": "2026-11-12T11:18:11.531Z"
+    },
+    {
+      "label": "approve_slowbtc_bo",
+      "from": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0x9189831a9414b64376ab32959027f3cfc900803adf20a3812dad9d70f4eed379",
+      "status": "success",
+      "block": 60943569,
+      "gasUsed": 46249,
+      "confirmMs": 2081,
+      "at": "2026-11-12T11:18:13.926Z"
+    },
+    {
+      "label": "deposit_slowbtc_bo",
+      "from": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+      "to": "0x4d598Fe9Dfb41Aa95F2F320f11A95d93ACb26c22",
+      "hash": "0x7af7f4b41ce0de17b40566164bb030ca371b81dc97aed0e7c59476c7331efaa7",
+      "status": "success",
+      "block": 60943570,
+      "gasUsed": 217994,
+      "confirmMs": 3042,
+      "at": "2026-11-12T11:18:17.281Z"
+    },
+    {
+      "label": "say_slowbtc_tae_1",
+      "from": "0x477D91ac189080ec0B40Af4F9AE4246d331Ebf5b",
+      "to": "0x4d598Fe9Dfb41Aa95F2F320f11A95d93ACb26c22",
+      "hash": "0x37cc6a37d2f7592c46655df3b09025d1e00b9a559db7b05f88f94432d55ee7c3",
+      "status": "success",
+      "block": 60943574,
+      "gasUsed": 150303,
+      "confirmMs": 2972,
+      "at": "2026-11-12T11:18:20.590Z"
+    },
+    {
+      "label": "say_slowbtc_lia_1",
+      "from": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+      "to": "0x4d598Fe9Dfb41Aa95F2F320f11A95d93ACb26c22",
+      "hash": "0x0a6638605f7d874e774c35103b01058a489031f4c0bdc4684296dc94f2c41b61",
+      "status": "success",
+      "block": 60943578,
+      "gasUsed": 150315,
+      "confirmMs": 2563,
+      "at": "2026-11-12T11:18:23.462Z"
+    },
+    {
+      "label": "pitch_slowbtc_long_btc",
+      "from": "0x477D91ac189080ec0B40Af4F9AE4246d331Ebf5b",
+      "to": "0x4d598Fe9Dfb41Aa95F2F320f11A95d93ACb26c22",
+      "hash": "0xb7a1033aaf8306347223217b76a8dc7c29eb75b0e484192b27fb8487d94cdba1",
+      "status": "success",
+      "block": 60943581,
+      "gasUsed": 1908882,
+      "confirmMs": 5799,
+      "at": "2026-11-12T11:18:29.586Z"
+    },
+    {
+      "label": "say_slowbtc_bo_1",
+      "from": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+      "to": "0x4d598Fe9Dfb41Aa95F2F320f11A95d93ACb26c22",
+      "hash": "0x261b14d72bf60a917fd760b3d16d07798d33bb648967e01e63e3e72fbbcb7036",
+      "status": "success",
+      "block": 60943587,
+      "gasUsed": 105558,
+      "confirmMs": 3057,
+      "at": "2026-11-12T11:18:33.533Z"
+    },
+    {
+      "label": "approve_frogpond_lia",
+      "from": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0x8d91c3d9f48d685f3dc3ab1e150c966efc936ccf19229141d19da3bc06a39a45",
+      "status": "success",
+      "block": 60943589,
+      "gasUsed": 46249,
+      "confirmMs": 1702,
+      "at": "2026-11-12T11:18:35.579Z"
+    },
+    {
+      "label": "deposit_frogpond_lia",
+      "from": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+      "to": "0x84949AEab9a9BfC2e05d5bB43583d00805598Bb7",
+      "hash": "0x024663cb934c710e0f1244e5ae3e34d19cfe04bbe81a45068d4bd60fb10b696d",
+      "status": "success",
+      "block": 60943600,
+      "gasUsed": 286276,
+      "confirmMs": 2535,
+      "at": "2026-11-12T11:18:47.660Z"
+    },
+    {
+      "label": "approve_frogpond_ren",
+      "from": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0xf027f281786022dff185e3ed0ec85136373bcc53efbb72236104486444e942b4",
+      "status": "success",
+      "block": 60943601,
+      "gasUsed": 46249,
+      "confirmMs": 3312,
+      "at": "2026-11-12T11:18:51.286Z"
+    },
+    {
+      "label": "deposit_frogpond_ren",
+      "from": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363",
+      "to": "0x84949AEab9a9BfC2e05d5bB43583d00805598Bb7",
+      "hash": "0x8f4461ff563ff9d49648a427749efcecd4b3c461453cddba71c5158e6e9b83df",
+      "status": "success",
+      "block": 60943604,
+      "gasUsed": 218006,
+      "confirmMs": 4625,
+      "at": "2026-11-12T11:18:56.225Z"
+    },
+    {
+      "label": "approve_frogpond_jun",
+      "from": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0xfb45258684f9ef1f3542e708c11d00c054d04c26b7b97f6311311aa20965b2c7",
+      "status": "success",
+      "block": 60943606,
+      "gasUsed": 46249,
+      "confirmMs": 2904,
+      "at": "2026-11-12T11:18:59.458Z"
+    },
+    {
+      "label": "deposit_frogpond_jun",
+      "from": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
+      "to": "0x84949AEab9a9BfC2e05d5bB43583d00805598Bb7",
+      "hash": "0x9f9df96f64dc4c7faec73feb03e3c45eb5a92cc2955030b9e785a202b2814c24",
+      "status": "success",
+      "block": 60943608,
+      "gasUsed": 218006,
+      "confirmMs": 2064,
+      "at": "2026-11-12T11:19:01.832Z"
+    },
+    {
+      "label": "approve_frogpond_sora",
+      "from": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0xeb5521e147e1cb03deedf120e6e22fba73cca8199013230ab6bdfcac8971bf1d",
+      "status": "success",
+      "block": 60943611,
+      "gasUsed": 46249,
+      "confirmMs": 3039,
+      "at": "2026-11-12T11:19:05.181Z"
+    },
+    {
+      "label": "deposit_frogpond_sora",
+      "from": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+      "to": "0x84949AEab9a9BfC2e05d5bB43583d00805598Bb7",
+      "hash": "0x7e4511c0a6238145d37db3e8a520e53a7b6e01f8c2e2ff52349295fa4d06866a",
+      "status": "success",
+      "block": 60943613,
+      "gasUsed": 217994,
+      "confirmMs": 2915,
+      "at": "2026-11-12T11:19:08.401Z"
+    },
+    {
+      "label": "say_frogpond_ren_1",
+      "from": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363",
+      "to": "0x84949AEab9a9BfC2e05d5bB43583d00805598Bb7",
+      "hash": "0xe7f2e6b47795fe53232057c1004635e7cefbafc329cf54ad689b424b11fee780",
+      "status": "success",
+      "block": 60943616,
+      "gasUsed": 150183,
+      "confirmMs": 2522,
+      "at": "2026-11-12T11:19:11.232Z"
+    },
+    {
+      "label": "pitch_frogpond_short_avax",
+      "from": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363",
+      "to": "0x84949AEab9a9BfC2e05d5bB43583d00805598Bb7",
+      "hash": "0xa3fc58bba668c5edc205c96bcc352e78afa80f4caa365329e4c7caee15db91f2",
+      "status": "success",
+      "block": 60943620,
+      "gasUsed": 378797,
+      "confirmMs": 2926,
+      "at": "2026-11-12T11:19:14.466Z"
+    },
+    {
+      "label": "vote_frogpond_short_avax_lia_no",
+      "from": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+      "to": "0x84949AEab9a9BfC2e05d5bB43583d00805598Bb7",
+      "hash": "0xdb66fcd4db7b98b8f16d06683887f2e92a702e0169d23bc3d7f68e99d80c6567",
+      "status": "success",
+      "block": 60943623,
+      "gasUsed": 168676,
+      "confirmMs": 5664,
+      "at": "2026-11-12T11:19:20.603Z"
+    },
+    {
+      "label": "say_frogpond_lia_1",
+      "from": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+      "to": "0x84949AEab9a9BfC2e05d5bB43583d00805598Bb7",
+      "hash": "0x8a580ccb9f3747b74d0ccdfd275bd8480f264582a2c87aa08d0d8c808665d4c0",
+      "status": "success",
+      "block": 60943629,
+      "gasUsed": 150243,
+      "confirmMs": 3671,
+      "at": "2026-11-12T11:19:24.611Z"
+    },
+    {
+      "label": "say_frogpond_jun_1",
+      "from": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
+      "to": "0x84949AEab9a9BfC2e05d5bB43583d00805598Bb7",
+      "hash": "0xc62800bea218afe2c4a0962381f78229fba4999621097c2c7aae61053fb523d1",
+      "status": "success",
+      "block": 60943633,
+      "gasUsed": 105438,
+      "confirmMs": 3026,
+      "at": "2026-11-12T11:19:27.953Z"
+    },
+    {
+      "label": "say_nightowls_mika_1",
+      "from": "0x857429F6d1304B8ef42De42a0696f52a5FBE3acF",
+      "to": "0x1c11A95bfBfaA989afC1222d614A8FbD24f75677",
+      "hash": "0xf304643c5a1f38306fc686c98c32e86026156cf9e56f93d01cda998c255ab32c",
+      "status": "success",
+      "block": 60943637,
+      "gasUsed": 150435,
+      "confirmMs": 3053,
+      "at": "2026-11-12T11:19:31.316Z"
+    },
+    {
+      "label": "say_nightowls_bo_1",
+      "from": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+      "to": "0x1c11A95bfBfaA989afC1222d614A8FbD24f75677",
+      "hash": "0xdcd0c45cb5a7702f4dd3ce83850288aa5447ded0134da6de7c7bb6ddb0e63663",
+      "status": "success",
+      "block": 60943640,
+      "gasUsed": 150315,
+      "confirmMs": 3783,
+      "at": "2026-11-12T11:19:35.421Z"
+    },
+    {
+      "label": "channel_avaxpit",
+      "from": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0xc67a05797d938aee905f265fc68c0adb4d382cd57bd260cd15d9009b0cb179ce",
+      "status": "success",
+      "block": 60943645,
+      "gasUsed": 329925,
+      "confirmMs": 2084,
+      "at": "2026-11-12T11:19:37.841Z"
+    },
+    {
+      "label": "channel_btcdesk",
+      "from": "0x477D91ac189080ec0B40Af4F9AE4246d331Ebf5b",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0xb3ab5d91318a49a459a0b63f06d2f220dacc7d3cbd868791ef75b293c883bb02",
+      "status": "success",
+      "block": 60943647,
+      "gasUsed": 310344,
+      "confirmMs": 2091,
+      "at": "2026-11-12T11:19:40.250Z"
+    },
+    {
+      "label": "channel_newbies",
+      "from": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x320ab18c0ca828b56e22e5f827bc6ebcf4e7fa7b07ce40103f6f1d681922b871",
+      "status": "success",
+      "block": 60943650,
+      "gasUsed": 355209,
+      "confirmMs": 2089,
+      "at": "2026-11-12T11:19:42.652Z"
+    },
+    {
+      "label": "join_avaxpit_mika",
+      "from": "0x857429F6d1304B8ef42De42a0696f52a5FBE3acF",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x478540e9afea4eb631783161e8327b27a7f79b521f260890db9754f015b829ba",
+      "status": "success",
+      "block": 60943653,
+      "gasUsed": 179177,
+      "confirmMs": 3050,
+      "at": "2026-11-12T11:19:46.013Z"
+    },
+    {
+      "label": "join_avaxpit_sora",
+      "from": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x56c72eeab2250ba6944b2f9bea4d812b9665c766ce746f3faca8a051294c5635",
+      "status": "success",
+      "block": 60943655,
+      "gasUsed": 179177,
+      "confirmMs": 2079,
+      "at": "2026-11-12T11:19:48.395Z"
+    },
+    {
+      "label": "join_avaxpit_ren",
+      "from": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x701214ac4d62663e304dfe5dd29f0b5c80add310cb9c3dd5bc7de9c4a578d9e7",
+      "status": "success",
+      "block": 60943657,
+      "gasUsed": 179177,
+      "confirmMs": 2108,
+      "at": "2026-11-12T11:19:50.810Z"
+    },
+    {
+      "label": "join_avaxpit_bo",
+      "from": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x733c81039a213c41239f0106cb97f0ea26a09dbef94e8e2a6ce41a9d07bb2941",
+      "status": "success",
+      "block": 60943660,
+      "gasUsed": 179177,
+      "confirmMs": 5115,
+      "at": "2026-11-12T11:19:56.229Z"
+    },
+    {
+      "label": "join_btcdesk_lia",
+      "from": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0xc870cfa87ee4d58fb14e7dcf2b4de3d8c25fcc1cdb0e0f60d5fda1ae011f5f78",
+      "status": "success",
+      "block": 60943661,
+      "gasUsed": 181989,
+      "confirmMs": 3035,
+      "at": "2026-11-12T11:19:59.607Z"
+    },
+    {
+      "label": "join_btcdesk_bo",
+      "from": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x1afd30d6e50d25713885564104532fcc0d22516be6d8876c4755f9d1ae22cac4",
+      "status": "success",
+      "block": 60943663,
+      "gasUsed": 181989,
+      "confirmMs": 3045,
+      "at": "2026-11-12T11:20:02.961Z"
+    },
+    {
+      "label": "join_btcdesk_mika",
+      "from": "0x857429F6d1304B8ef42De42a0696f52a5FBE3acF",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x879edb7a5a2d20862e3411f7fa8a08294fe97bc550c713f2d2789fd5494375ed",
+      "status": "success",
+      "block": 60943667,
+      "gasUsed": 181989,
+      "confirmMs": 3040,
+      "at": "2026-11-12T11:20:06.332Z"
+    },
+    {
+      "label": "join_newbies_jun",
+      "from": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x59d02a6d680d08e7b1a9d6a008ccf1f8b6f5e57af0e2dc3b5a1a908ed74789b1",
+      "status": "success",
+      "block": 60943668,
+      "gasUsed": 181989,
+      "confirmMs": 2087,
+      "at": "2026-11-12T11:20:08.732Z"
+    },
+    {
+      "label": "join_newbies_sora",
+      "from": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x44211143e5aab58ada26c382a480c29aa3343345a659a8ac55a18467b5bcf546",
+      "status": "success",
+      "block": 60943669,
+      "gasUsed": 181989,
+      "confirmMs": 2494,
+      "at": "2026-11-12T11:20:11.538Z"
+    },
+    {
+      "label": "join_newbies_ren",
+      "from": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x3e1246c847c06b5f23ce017c7613a6b4c115b7d610a25d21a739b601e86c0012",
+      "status": "success",
+      "block": 60943672,
+      "gasUsed": 181989,
+      "confirmMs": 3011,
+      "at": "2026-11-12T11:20:14.865Z"
+    },
+    {
+      "label": "join_newbies_tae",
+      "from": "0x477D91ac189080ec0B40Af4F9AE4246d331Ebf5b",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x0e86d09e81a04c6563142266a11bd1405e9a35e13d224ef49628b2eae8419d18",
+      "status": "success",
+      "block": 60943673,
+      "gasUsed": 181989,
+      "confirmMs": 3063,
+      "at": "2026-11-12T11:20:18.243Z"
+    },
+    {
+      "label": "lsay_avaxpit_jun_1",
+      "from": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0xad39073bfe2584dd98d44a705fb623af088cfd322e4f7a9e49fbb1fe147856eb",
+      "status": "success",
+      "block": 60943675,
+      "gasUsed": 149387,
+      "confirmMs": 2079,
+      "at": "2026-11-12T11:20:20.636Z"
+    },
+    {
+      "label": "lsay_avaxpit_mika_1",
+      "from": "0x857429F6d1304B8ef42De42a0696f52a5FBE3acF",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0xe9b24d03cf20b053392701bb08f02fb5d47ca2f035c4e23f17214628f4d82ba1",
+      "status": "success",
+      "block": 60943678,
+      "gasUsed": 149327,
+      "confirmMs": 2510,
+      "at": "2026-11-12T11:20:23.459Z"
+    },
+    {
+      "label": "lcall_avaxpit_long1",
+      "from": "0x857429F6d1304B8ef42De42a0696f52a5FBE3acF",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0xb9c636a9fca237afd7c11157f8e138d10ac169a12537ec5412b9816894f4dc47",
+      "status": "success",
+      "block": 60943681,
+      "gasUsed": 199438,
+      "confirmMs": 2112,
+      "at": "2026-11-12T11:20:26.045Z"
+    },
+    {
+      "label": "lsay_avaxpit_sora_1",
+      "from": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0xa3f8a8091900f160e29736bbd760fe72f5c35547d2a6d0316a487beb8b4d1f77",
+      "status": "success",
+      "block": 60943683,
+      "gasUsed": 104576,
+      "confirmMs": 2098,
+      "at": "2026-11-12T11:20:28.457Z"
+    },
+    {
+      "label": "margin_avaxpit_long1_sora",
+      "from": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x4dd04ec9f9afd613454436c81170a5b0f1e1782169532634f0803a636cd1bbc0",
+      "status": "success",
+      "block": 60943686,
+      "gasUsed": 68596,
+      "confirmMs": 2905,
+      "at": "2026-11-12T11:20:31.669Z"
+    },
+    {
+      "label": "order_avaxpit_long1_sora",
+      "from": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x0b1bfecb72bba552a80b8f8703503b8d2e68108ec9ae2e9a4425c186c815f552",
+      "status": "success",
+      "block": 60943690,
+      "gasUsed": 247841,
+      "confirmMs": 2939,
+      "at": "2026-11-12T11:20:35.251Z"
+    },
+    {
+      "label": "copy_avaxpit_long1_sora",
+      "from": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0xefc20a122865531ea213b2999975857bba9609a68ae068c1e7ba2ec4a77b8148",
+      "status": "success",
+      "block": 60943693,
+      "gasUsed": 182616,
+      "confirmMs": 2080,
+      "at": "2026-11-12T11:20:37.636Z"
+    },
+    {
+      "label": "margin_avaxpit_long1_ren",
+      "from": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x19533567daab74e03f24357e62e28a87d70ac932a5856593c250c91d20503ffb",
+      "status": "success",
+      "block": 60943696,
+      "gasUsed": 68608,
+      "confirmMs": 3051,
+      "at": "2026-11-12T11:20:41.003Z"
+    },
+    {
+      "label": "order_avaxpit_long1_ren",
+      "from": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xa2c6bed60d620b102eedf98904c0f4116d894d38c0a72e3965fa5ac03256e134",
+      "status": "success",
+      "block": 60943700,
+      "gasUsed": 247841,
+      "confirmMs": 2957,
+      "at": "2026-11-12T11:20:44.595Z"
+    },
+    {
+      "label": "copy_avaxpit_long1_ren",
+      "from": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x39fb47b6fcd4e95e45014d40ef10149533e6860308ea4290c1e2368ffdc2ef98",
+      "status": "success",
+      "block": 60943703,
+      "gasUsed": 165516,
+      "confirmMs": 3131,
+      "at": "2026-11-12T11:20:48.039Z"
+    },
+    {
+      "label": "lsay_avaxpit_ren_1",
+      "from": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0xb132f4ed4a9ab9fc76a86bae63ee0520b23f8dac4e3abffe5273e5fa889d81d7",
+      "status": "success",
+      "block": 60943706,
+      "gasUsed": 149399,
+      "confirmMs": 2080,
+      "at": "2026-11-12T11:20:50.429Z"
+    },
+    {
+      "label": "lsay_btcdesk_tae_1",
+      "from": "0x477D91ac189080ec0B40Af4F9AE4246d331Ebf5b",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0xf54d26806cc0e84a1d160a5333433c59e15e7d21690423a690bbfebc62596138",
+      "status": "success",
+      "block": 60943708,
+      "gasUsed": 149303,
+      "confirmMs": 2492,
+      "at": "2026-11-12T11:20:53.310Z"
+    },
+    {
+      "label": "lcall_btcdesk_long1",
+      "from": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x558fec8225ac155ab6397b059b83ff064232d43c4ae7706d055b9bb4e38c7ea5",
+      "status": "success",
+      "block": 60943710,
+      "gasUsed": 154606,
+      "confirmMs": 2550,
+      "at": "2026-11-12T11:20:56.335Z"
+    },
+    {
+      "label": "margin_btcdesk_long1_bo",
+      "from": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x4a157e656ee6992a2e7a4fbd70ea0fba4f20d30e8a8611465d1c6b1291246007",
+      "status": "success",
+      "block": 60943712,
+      "gasUsed": 68596,
+      "confirmMs": 3035,
+      "at": "2026-11-12T11:20:59.687Z"
+    },
+    {
+      "label": "order_btcdesk_long1_bo",
+      "from": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x59e9c01e500b9ebf5f1ef70e3b1079d5e9db73e865f4a49383400ee415ee3c0b",
+      "status": "success",
+      "block": 60943713,
+      "gasUsed": 245065,
+      "confirmMs": 2078,
+      "at": "2026-11-12T11:21:02.408Z"
+    },
+    {
+      "label": "copy_btcdesk_long1_bo",
+      "from": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0xbf10655bdf22bbd22f7be437f6674306a0e5f6a29fc2eecb8ae832da717087b1",
+      "status": "success",
+      "block": 60943717,
+      "gasUsed": 182628,
+      "confirmMs": 2909,
+      "at": "2026-11-12T11:21:08.444Z"
+    },
+    {
+      "label": "lsay_btcdesk_bo_1",
+      "from": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0xa349d02238e05bce144d1e5aee9dc837a3319dcc4a71dde753a4a20ee168a048",
+      "status": "success",
+      "block": 60943718,
+      "gasUsed": 149231,
+      "confirmMs": 2917,
+      "at": "2026-11-12T11:21:11.681Z"
+    },
+    {
+      "label": "lsay_newbies_lia_1",
+      "from": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x7100e126c460b592f87ba8eb41030c07602b5cfa029e3aeaba5f6b544347e75a",
+      "status": "success",
+      "block": 60943721,
+      "gasUsed": 171932,
+      "confirmMs": 5481,
+      "at": "2026-11-12T11:21:17.475Z"
+    },
+    {
+      "label": "lsay_newbies_tae_1",
+      "from": "0x477D91ac189080ec0B40Af4F9AE4246d331Ebf5b",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x5935a73455e8dec9784094ea9fd3bf5d6a16494afb311ca232f9574baee721db",
+      "status": "success",
+      "block": 60943725,
+      "gasUsed": 149339,
+      "confirmMs": 2495,
+      "at": "2026-11-12T11:21:20.322Z"
+    },
+    {
+      "label": "lsay_newbies_jun_1",
+      "from": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x378fcbdc659fa21c552fb1dfda16aae3b9db42410c371ea177e102d8927622b0",
+      "status": "success",
+      "block": 60943727,
+      "gasUsed": 149447,
+      "confirmMs": 2913,
+      "at": "2026-11-12T11:21:23.544Z"
+    }
+  ],
+  "lobbyChannels": {
+    "avaxpit": 0,
+    "btcdesk": 1,
+    "newbies": 2
+  },
+  "lobbyCalls": {
+    "lcall_avaxpit_long1": 7,
+    "lcall_btcdesk_long1": 5
+  }
 }

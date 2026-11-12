@@ -10,8 +10,8 @@ import type { Hex } from 'viem';
 
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
 const ENV = join(ROOT, '.env');
-/** deployer, maker bot, three crew members (also the web app's QA signers). */
-export const ROLES = ['KUMI_DEPLOYER_KEY', 'KUMI_MAKER_KEY', 'KUMI_MIKA_KEY', 'KUMI_BO_KEY', 'KUMI_REN_KEY'] as const;
+/** deployer, maker bot, three crew members (also the web app's QA signers), and four more Kumi test accounts (v2 seed). */
+export const ROLES = ['KUMI_DEPLOYER_KEY', 'KUMI_MAKER_KEY', 'KUMI_MIKA_KEY', 'KUMI_BO_KEY', 'KUMI_REN_KEY', 'KUMI_JUN_KEY', 'KUMI_SORA_KEY', 'KUMI_TAE_KEY', 'KUMI_LIA_KEY'] as const;
 export type Role = (typeof ROLES)[number];
 export const MEMBERS = ['KUMI_MIKA_KEY', 'KUMI_BO_KEY', 'KUMI_REN_KEY'] as const;
 
