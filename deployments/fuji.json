@@ -2970,9 +2970,10 @@
     "phone-qa-3": "0xeFcC22be9821E2DdB4cA844E8aA680aC58F84d67",
     "phone-qa-4": "0x1f9d5D2987D6C74FC5A8C1a0FF8597a2cDA6Aa03",
     "phone-qa-5": "0x9Fd91D853Eb35bCb7eD51029f36963e38CB841d4",
-    "ios-sim": "0x6C1efFE4F32c1c82BdAFb1eEBfC90949197E10f6"
+    "ios-sim": "0x6C1efFE4F32c1c82BdAFb1eEBfC90949197E10f6",
+    "phone-qa-6": "0xdB5028901e376D2c3683061628537ab15BEBA393"
   },
-  "phoneQaNote": "Wallets created inside the phone app by scripts/qa/phone.mjs. qa-1 and qa-2 stopped mid-run (script timeouts, then a margin fix); qa-3 is phoneDemo, qa-4 is phoneRuns[0]. Their keys lived only in the headless browser and are gone.",
+  "phoneQaNote": "Wallets created inside the phone app by scripts/qa/phone.mjs. qa-1 and qa-2 stopped mid-run (script timeouts, then a margin fix); qa-3 is phoneDemo, qa-4 is phoneRuns[0]. Their keys lived only in the headless browser and are gone. qa-6 is the first phonePrivate run, which stopped at the copy step (the second RPC had not seen its margin deposit yet; the app now retries that); qa-5 is the complete phonePrivate run.",
   "eerc": [
     {
       "label": "abandoned_deploy_RegistrationVerifier",

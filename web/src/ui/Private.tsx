@@ -31,7 +31,7 @@ export function PrivateCard({ hash, author }: { hash: Hex; author: Address }) {
         <div className="grow" style={{ minWidth: 0 }}>
           <span className="pcard-kind">{s?.memo?.kind === 'send' ? 'Private send' : 'Private tip'} · eERC</span>
           <b className="pcard-title">{mine ? 'You' : nameOf(author)} → {s ? (toMe ? 'you' : nameOf(s.to)) : '…'}</b>
-          <span className="pcard-sub">{ref !== null ? `for call #${ref}` : 'inside the crew'}</span>
+          <span className="pcard-sub">{!s ? '\u00a0' : ref !== null ? `for call #${ref}` : 'inside the crew'}</span>
         </div>
         {s && <Avatar id={s.to} />}
       </div>

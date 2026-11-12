@@ -36,7 +36,7 @@ export function PrivateCard({ m, me }: { m: ChatItem; me?: string | null }) {
           <View style={{ flex: 1, minWidth: 0 }}>
             <Text style={{ fontFamily: F.mono, fontSize: 10.5, letterSpacing: 1, color: 'rgba(255,255,255,0.75)' }}>{s?.memo?.kind === 'send' ? 'PRIVATE SEND' : 'PRIVATE TIP'} · eERC</Text>
             <Text numberOfLines={1} style={{ fontFamily: F.display, fontSize: 21, lineHeight: 26, color: '#fff' }}>{nameOf(m.who, me)} → {s ? nameOf(s.to, me) : '…'}</Text>
-            <Text style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.8)' }}>{ref !== null ? `for call #${ref}` : 'inside the crew'}</Text>
+            <Text style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.8)' }}>{!s ? ' ' : ref !== null ? `for call #${ref}` : 'inside the crew'}</Text>
           </View>
           {s && <Avatar address={s.to} size={34} ring="rgba(255,255,255,0.3)" />}
         </View>
