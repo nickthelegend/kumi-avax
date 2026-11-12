@@ -10,7 +10,8 @@
     "android": "expo start --android",
     "export:web": "expo export --platform web",
     "typecheck": "tsc --noEmit",
-    "test": "node --test test/*.test.ts"
+    "test": "node --test test/*.test.ts",
+    "export:vercel": "expo export --platform web && node scripts/vercel-fix.mjs"
   },
   "dependencies": {
     "@expo-google-fonts/baloo-2": "^0.4.2",
