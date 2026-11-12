@@ -19,3 +19,19 @@ avax = "https://api.avax.network/ext/bc/C/rpc"
 
 [lint]
 lint_on_build = false
+
+# Ava Labs' official EncryptedERC (converter mode), built exactly as upstream
+# does (solc 0.8.27, optimizer 200, no via-ir) from the pinned submodule
+# (lib/EncryptedERC at 8dc98cd). Kumi does not modify or wrap it.
+[profile.eerc]
+src = "lib/EncryptedERC/contracts"
+out = "out-eerc"
+cache_path = "cache-eerc"
+libs = ["lib"]
+test = "test-eerc"
+solc_version = "0.8.27"
+evm_version = "cancun"
+optimizer = true
+optimizer_runs = 200
+via_ir = false
+remappings = ["@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/", "forge-std/=lib/forge-std/src/"]

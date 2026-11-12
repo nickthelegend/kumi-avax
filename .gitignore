@@ -14,3 +14,7 @@ contracts/broadcast/
 playwright-report/
 test-results/
 dist-qa/
+contracts/out-eerc/
+contracts/cache-eerc/
+web/public/eerc/
+mobile/public/eerc/

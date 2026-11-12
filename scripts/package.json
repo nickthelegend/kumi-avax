@@ -7,10 +7,13 @@
     "keys": "node fuji/keys.ts",
     "fund": "node fuji/fund.ts",
     "deploy": "node fuji/deploy.ts",
-    "maker": "node fuji/maker.ts"
+    "maker": "node fuji/maker.ts",
+    "test:eerc": "node eerc/local-e2e.ts",
+    "eerc:fuji": "node eerc/fuji.ts"
   },
   "dependencies": {
     "@kumi-avax/sdk": "workspace:*",
+    "snarkjs": "0.7.5",
     "viem": "2.57.13"
   },
   "devDependencies": {
