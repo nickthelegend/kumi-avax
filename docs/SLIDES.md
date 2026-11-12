@@ -47,6 +47,12 @@
    the caller's phone shows "+1.00". Ava Labs' EncryptedERC, unmodified; moving in and out and all positions stay
    public. Screens: `ios-06-tip-sheet`, `ios-08-tip-card-amount-for-sender`.
 
+8c. **Start free, ask the chat, follow who's right (v2.2).**
+   - Create my wallet → KumiGasStation pays the first gas on Fuji (limits on-chain) → 1,000 tUSDC. No faucet.
+   - `/ask` in any chat: Kumi AI (Claude Haiku 5.5) reads the book, Chainlink, calls and records; shows its tools;
+     drafts a call you sign.
+   - Top callers from on-chain data only: Chainlink at the call vs now, copiers' PnL from replayed fills.
+
 9. **Mainnet: Primit, honestly.**
    Primit is an Orderly broker, and orders match off-chain. A contract can deposit and name a delegate, but it
    can't place orders. Our adapter passes 7 tests on an Avalanche mainnet fork. A vote-executed trade there needs
