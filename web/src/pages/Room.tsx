@@ -161,7 +161,8 @@ function CrewRoom({ crew, crews }: { crew: Address; crews: Awaited<ReturnType<ty
       </section>
       <aside className="pane fund" aria-label="Crew fund">
         <FundPane st={s} markets={markets} loadingMe={loadingMe} onChipIn={() => setSheet('chip')} onQuit={() => setSheet('quit')} />
-        {s.me && s.members.some(m => m.address.toLowerCase() === s.me!.address.toLowerCase()) && <PrivatePanel title="Settle up privately" where={{ kind: 'send', crew }} choices={s.members.map(m => m.address).filter(a => a.toLowerCase() !== s.me!.address.toLowerCase())} />}
+        {/* Always mounted (an open sheet must survive the 5 s crew refresh); the send button shows for members only. */}
+        <PrivatePanel title="Settle up privately" where={who && s.members.some(m => m.address.toLowerCase() === who.address.toLowerCase()) ? { kind: 'send', crew } : undefined} choices={s.members.map(m => m.address).filter(a => a.toLowerCase() !== who?.address.toLowerCase())} />
       </aside>
       <nav className="tabs" aria-label="Sections">
         {([['crews', 'Crews', 'crews'], ['chat', 'Chat', 'chat'], ['fund', 'Fund', 'chart']] as const).map(([t, l, ic]) => <button key={t} aria-pressed={tab === t} onClick={() => setTab(t)}><Ic name={ic} size={19} />{l}</button>)}
