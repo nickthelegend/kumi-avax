@@ -3966,5 +3966,29 @@
       "confirmMs": 2285,
       "at": "2026-11-12T13:42:15.646Z"
     }
+  ],
+  "hostedV22": [
+    {
+      "at": "2026-11-12T14:12:08.521Z",
+      "app": "https://kumi-avax-app.vercel.app",
+      "wallet": "0x3d159FD20F50B6Ee8208CA78214eDEb922556683",
+      "txs": [
+        {
+          "hash": "0xb875e155dcaee02ff9f89437a2191560a7680160ea5a7eb08253439ee13b3507",
+          "label": "Gas from Kumi",
+          "at": 1794492707482
+        },
+        {
+          "hash": "0x5a348943cbcbc61fab9a73301c4603921882d682ee78cb32360f9c528441b92a",
+          "label": "Test USDC from the faucet",
+          "at": 1794492713259
+        },
+        {
+          "hash": "0x3fa71c29c8197f6db24779892f51af82dea48628bf0a6b16e5ed5ab6b89d70b5",
+          "label": "Join the chat",
+          "at": 1794492722537
+        }
+      ]
+    }
   ]
 }
