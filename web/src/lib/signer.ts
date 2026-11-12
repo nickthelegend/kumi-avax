@@ -87,3 +87,9 @@ export async function write(address: Address, abi: Abi, functionName: string, ar
     throw Error(readable(e));
   }
 }
+
+/** personal_sign from the current signer (the browser wallet asks first). Used once per session to open the eERC key. */
+export async function signText(message: string): Promise<Hex> {
+  if (!client || !current) throw Error('Connect a wallet first.');
+  return client.signMessage({ account: (client.account ?? current.address) as any, message });
+}

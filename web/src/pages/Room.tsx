@@ -8,6 +8,8 @@ import { ChipInSheet, FundPane, QuitSheet, retPct } from '../ui/Fund';
 import { TradeCard } from '../ui/TradeCard';
 import { TokenLogo } from '../ui/logos';
 import { LobbyRoom, PublicChats } from './Lobby';
+import { PrivateCard, PrivatePanel } from '../ui/Private';
+import { privateTxOf } from '@kumi-avax/sdk/eerc';
 
 const HINTS: [string, string][] = [['/long AVAX 3x 20%', 'coral'], ['/short BTC 2x 10%', 'pink'], ['/close AVAX', 'butter'], ['/captain long AVAX 2x 5%', 'mint']];
 type Tab = 'crews' | 'chat' | 'fund';
@@ -159,6 +161,7 @@ function CrewRoom({ crew, crews }: { crew: Address; crews: Awaited<ReturnType<ty
       </section>
       <aside className="pane fund" aria-label="Crew fund">
         <FundPane st={s} markets={markets} loadingMe={loadingMe} onChipIn={() => setSheet('chip')} onQuit={() => setSheet('quit')} />
+        {s.me && s.members.some(m => m.address.toLowerCase() === s.me!.address.toLowerCase()) && <PrivatePanel title="Settle up privately" where={{ kind: 'send', crew }} choices={s.members.map(m => m.address).filter(a => a.toLowerCase() !== s.me!.address.toLowerCase())} />}
       </aside>
       <nav className="tabs" aria-label="Sections">
         {([['crews', 'Crews', 'crews'], ['chat', 'Chat', 'chat'], ['fund', 'Fund', 'chart']] as const).map(([t, l, ic]) => <button key={t} aria-pressed={tab === t} onClick={() => setTab(t)}><Ic name={ic} size={19} />{l}</button>)}
@@ -239,6 +242,7 @@ function Message({ f, prev, st, markets, props, onDone }: { f: Item; prev?: Item
   const ev = (tone: string, ic: string, content: React.ReactNode) => <div className={`event tone-${tone}`} data-feed={f.kind}><span className="ev-ic"><Ic name={ic} size={14} /></span>{content}{hash && <Tx hash={hash} />}</div>;
   switch (f.kind) {
     case FeedKind.Chat:
+      if (privateTxOf(f.text)) { body = <PrivateCard hash={privateTxOf(f.text)!} author={f.who} />; break; }
       body = <div className={`msg ${mine ? 'mine' : ''}`}><Avatar id={f.who} /><div style={{ minWidth: 0 }}><div className="msg-meta"><b>{name}</b><span>{time}</span>{hash && <Tx hash={hash} />}</div><div className="bubble">{f.text}</div></div></div>;
       break;
     case FeedKind.Pitch:

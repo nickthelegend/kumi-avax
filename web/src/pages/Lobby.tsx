@@ -6,6 +6,7 @@ import { LOBBY, callInChannel, copyCall, joinChannel, sayInChannel } from '../li
 import { nameOf, useWho } from '../lib/signer';
 import { Avatar, CrewAvatar, EmptyArt, Ic, Link, MiniEmpty, Notice, Obj, Tx, ago, crewTone, navigate } from '../ui/bits';
 import { TokenLogo } from '../ui/logos';
+import { PrivateCard, PrivatePanel, PrivateSheet } from '../ui/Private';
 
 /** The public chats in the room's left list (same rows as the crews). */
 export function PublicChats({ current }: { current?: number }) {
@@ -37,6 +38,7 @@ export function LobbyRoom({ channel, list }: { channel: number; list: React.Reac
   const [busy, setBusy] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [sheet, setSheet] = useState<null | 'call' | ChatItem>(null);
+  const [tip, setTip] = useState<ChatItem | null>(null);
   const live = useLive(async () => {
     const [items, chans] = await Promise.all([readChannelMessages(pub as any, LOBBY, channel, 120), readChannels(pub as any, LOBBY, who?.address)]);
     const c = chans[channel];
@@ -72,7 +74,7 @@ export function LobbyRoom({ channel, list }: { channel: number; list: React.Reac
       <div className="messages" aria-live="polite" ref={box} onScroll={e => { const b = e.currentTarget; stuck.current = b.scrollHeight - b.scrollTop - b.clientHeight < 80; }}>
         <p className="faint" style={{ textAlign: 'center', fontSize: 13, margin: 0 }}>{c.topic}</p>
         {items.length === 0 && <EmptyArt art={['kumi3-empty', 'kumi-feature-chat']} title="Quiet in here">Say hi, or post the first trade call.</EmptyArt>}
-        {items.map((m, i) => <LobbyMessage key={m.key} m={m} prev={items[i - 1]} me={who?.address} copies={copies.get(m.index) ?? []} joined={c.joined} onCopy={() => setSheet(m)} />)}
+        {items.map((m, i) => <LobbyMessage key={m.key} m={m} prev={items[i - 1]} me={who?.address} copies={copies.get(m.index) ?? []} joined={c.joined} onCopy={() => setSheet(m)} onTip={() => setTip(m)} />)}
       </div>
       <div className="composer">
         {err && <div style={{ marginBottom: 10 }}><Notice error>{err}</Notice></div>}
@@ -89,6 +91,7 @@ export function LobbyRoom({ channel, list }: { channel: number; list: React.Reac
       </div>
     </section>
     <aside className="pane fund" aria-label="About this chat">
+      <PrivatePanel />
       <section className="card">
         <div className="card-head"><h3>About</h3><span className="chip chip-mint chip-live"><span className="dot" />on-chain</span></div>
         <p className="muted" style={{ margin: '0 0 10px', fontSize: 14 }}>{c.topic}</p>
@@ -112,13 +115,15 @@ export function LobbyRoom({ channel, list }: { channel: number; list: React.Reac
       {([['crews', 'Chats', 'crews'], ['chat', 'Chat', 'chat'], ['fund', 'Info', 'chart']] as const).map(([t, l, ic]) => <button key={t} aria-pressed={tab === t} onClick={() => setTab(t)}><Ic name={ic} size={19} />{l}</button>)}
     </nav>
     {sheet === 'call' && <CallSheet channel={channel} market={c.market} onClose={() => setSheet(null)} onDone={() => live.reload()} />}
+    {tip && who && <PrivateSheet me={who.address} to={tip.who} where={{ kind: 'tip', channel, ref: tip.index }} title={`Tip ${nameOf(tip.who)} privately`} onClose={() => setTip(null)} onDone={() => live.reload()} />}
     {sheet && typeof sheet === 'object' && who && <CopySheet channel={channel} call={sheet} me={who.address} onClose={() => setSheet(null)} onDone={() => { live.reload(); pos.reload(); }} />}
   </div>;
 }
 
-function LobbyMessage({ m, prev, me, copies, joined, onCopy }: { m: ChatItem; prev?: ChatItem; me?: Address; copies: ChatItem[]; joined: boolean; onCopy: () => void }) {
+function LobbyMessage({ m, prev, me, copies, joined, onCopy, onTip }: { m: ChatItem; prev?: ChatItem; me?: Address; copies: ChatItem[]; joined: boolean; onCopy: () => void; onTip: () => void }) {
   const mine = !!me && m.who.toLowerCase() === me.toLowerCase();
   const mk = MARKETS[m.market ?? 0]!;
+  if (m.kind === 'private' && m.privateTx) return <PrivateCard hash={m.privateTx} author={m.who} />;
   if (m.kind === 'chat') {
     const showWho = !prev || prev.who !== m.who || prev.kind !== 'chat';
     return <div className={`msg ${mine ? 'mine' : ''}`}>
@@ -146,7 +151,7 @@ function LobbyMessage({ m, prev, me, copies, joined, onCopy }: { m: ChatItem; pr
         </div>
         {copies.length > 0 && <div className="voters">{copies.map(c => <span key={c.key} className="voter y"><Avatar id={c.who} />{nameOf(c.who)}</span>)}</div>}
         {mine ? <span className="chip chip-coral">Your call</span>
-          : copiedByMe ? <span className="chip chip-mint"><span className="dot" />You copied this</span>
+          : copiedByMe ? <div className="row-between"><span className="chip chip-mint"><span className="dot" />You copied this</span><button className="btn btn-plum btn-sm" onClick={onTip}><Ic name="lock" size={15} />Tip privately</button></div>
           : me && joined ? <button className="btn btn-primary btn-block" onClick={onCopy}><Ic name="bolt" size={16} />Copy with {usd(m.amount, 0)} tUSDC</button>
           : <p className="faint" style={{ margin: 0, fontSize: 13 }}>{me ? 'Join the chat to copy calls.' : 'Connect a wallet to copy calls.'}</p>}
       </div>
