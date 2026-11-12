@@ -106,7 +106,7 @@ export default function Onboarding() {
             <View style={st.row}><Image source={art.scene.wallet} accessibilityLabel="A happy coral wallet with coins dropping in" style={{ width: 58, height: 58 }} contentFit="contain" /><View style={{ flex: 1 }}><Text style={st.h2}>Wallet ready</Text><Text style={{ fontFamily: F.mono, fontSize: 12, color: C.ink2 }}>{app.address}</Text></View></View>
             {start && (
               <View testID="gas-free-start" style={{ gap: 10, padding: 12, borderRadius: 18, backgroundColor: C.panel2, borderWidth: 1, borderColor: C.line }}>
-                <StartRow s={start.gas} title="Gas from Kumi · 0.0002 AVAX" />
+                <StartRow s={start.gas} title="Gas from Kumi" />
                 <StartRow s={start.usdc} title="1,000 test USDC" />
                 {start.error && <Notice error>{start.error}</Notice>}
                 {start.error && (

@@ -186,3 +186,46 @@
 @media (prefers-reduced-motion: reduce) { .lvl.flash::after { animation: none; } }
 .last-row { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 2px 4px 6px; font-size: 12px; }
 .last-row b { font-family: var(--mono); font-size: 15px; }
+
+/* ---- v2.2: Kumi AI in the chat, caller badges, top callers (same tokens, shapes and type as the room) ---- */
+.ai-card { align-self: flex-start; width: min(100%, 520px); display: grid; gap: 9px; padding: 14px 16px; border-radius: 24px; background: var(--panel); box-shadow: var(--shadow); border: 1px solid var(--line); }
+.ai-head { display: flex; align-items: center; gap: 8px; }
+.ai-head b { font-family: var(--display); font-size: 15px; }
+.ai-head small { color: var(--ink-3); font-size: 12px; }
+.ai-mark { width: 24px; height: 24px; border-radius: 8px; flex: none; }
+.ai-mark i { inset: 6px; box-shadow: inset 0 0 0 3px var(--plum); }
+.ai-tag { height: 20px; padding: 0 7px; font-size: 10.5px; }
+.ai-tools { display: flex; flex-wrap: wrap; gap: 6px; }
+.ai-tools .chip { height: 24px; font-size: 11.5px; }
+.ai-answer { margin: 0; font-size: 15px; line-height: 1.45; white-space: pre-wrap; }
+.ai-wait { margin: 0; display: flex; align-items: center; gap: 8px; color: var(--ink-2); font-size: 14px; }
+.ai-foot { color: var(--ink-3); font-size: 11.5px; }
+.ai-ask { font-family: var(--mono); color: var(--butter); }
+.ai-draft { border-radius: 18px; overflow: hidden; border: 1px solid var(--line); }
+.ai-draft .trade-top { padding: 10px 12px; }
+.ai-draft .trade-title b { font-size: 20px; }
+.ai-draft-body { display: grid; gap: 8px; padding: 10px 12px; background: var(--panel-2); }
+.ai-draft-body p { margin: 0; color: var(--ink-2); font-size: 13.5px; }
+.ai-spark { width: 40px; height: 40px; flex: none; border: 0; border-radius: 50%; display: grid; place-items: center; background: var(--plum-soft); color: var(--plum); }
+.ai-spark:hover { box-shadow: inset 0 0 0 1.5px var(--plum-3); }
+.ai-note { color: var(--plum-3); font-weight: 700; margin: 0 0 8px; }
+.caller-badge { display: inline-flex; align-items: center; gap: 3px; height: 18px; padding: 0 6px; border-radius: 9px; background: var(--butter-soft); color: var(--butter-ink); font-size: 10.5px; font-weight: 800; letter-spacing: 0; vertical-align: middle; }
+.trade-kind .caller-badge { background: rgba(255, 255, 255, .92); margin-left: 4px; }
+.caller-badge img { width: 14px; height: 14px; }
+.seg-mini { display: inline-flex; padding: 3px; gap: 3px; border-radius: 999px; background: var(--panel-3); }
+.seg-mini button { height: 28px; padding: 0 10px; border: 0; border-radius: 999px; background: transparent; font-size: 12px; font-weight: 700; color: var(--ink-2); white-space: nowrap; }
+.seg-mini button[aria-pressed='true'] { background: var(--plum); color: #fff; }
+.tc-list { list-style: none; margin: 0; padding: 0; display: grid; }
+.tc-row { display: grid; grid-template-columns: 22px 34px 1fr auto; align-items: center; gap: 10px; padding: 9px 0; border-top: 1px solid var(--line); }
+.tc-row:first-child { border-top: 0; }
+.tc-rank { font-family: var(--mono); font-weight: 700; color: var(--ink-3); text-align: center; }
+.tc-rank.top { color: var(--butter-ink); }
+.tc-who { min-width: 0; display: grid; }
+.tc-who b { font-family: var(--display); font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tc-who small { color: var(--ink-2); font-size: 12px; }
+.tc-num { display: grid; justify-items: end; font-family: var(--mono); }
+.tc-num b { font-size: 15px; }
+.tc-num small { font-size: 11.5px; color: var(--ink-2); }
+.top-callers .up { color: var(--mint-ink); }
+.top-callers .down { color: var(--pink-ink); }
+.top-callers .card-head { flex-wrap: wrap; gap: 8px; }

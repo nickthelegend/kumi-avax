@@ -10,6 +10,7 @@ import { TokenLogo } from '../ui/logos';
 import { LobbyRoom, PublicChats } from './Lobby';
 import { PrivateCard, PrivatePanel } from '../ui/Private';
 import { privateTxOf } from '@kumi-avax/sdk/eerc';
+import { AiCard, AiPendingCard, AskLine, SparkButton, askOf, interleave, useAi } from '../ui/Ai';
 
 const HINTS: [string, string][] = [['/long AVAX 3x 20%', 'coral'], ['/short BTC 2x 10%', 'pink'], ['/close AVAX', 'butter'], ['/captain long AVAX 2x 5%', 'mint']];
 type Tab = 'crews' | 'chat' | 'fund';
@@ -65,19 +66,22 @@ function CrewRoom({ crew, crews }: { crew: Address; crews: Awaited<ReturnType<ty
   const [text, setText] = useState('');
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const ai = useAi(`c-${crew.toLowerCase()}`, who?.address);
   const box = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLInputElement>(null);
   const stuck = useRef(true);
-  const count = st.data?.feed.length ?? 0;
+  const count = (st.data?.feed.length ?? 0) + ai.list.length + (ai.asking ? 1 : 0);
   useEffect(() => { const b = box.current; if (b && stuck.current) b.scrollTop = b.scrollHeight; }, [count, props.data, tab]);
 
   const refresh = () => { st.reload(); props.reload(); mk.reload(); };
   const pitch = (t: string) => { setTab('chat'); setText(t); requestAnimationFrame(() => input.current?.focus()); };
-  const parsed = parseCommand(text, st.data?.policy.maxLeverage ?? 5);
+  const asked = askOf(text);
+  const parsed = asked === null ? parseCommand(text, st.data?.policy.maxLeverage ?? 5) : null;
 
   async function send() {
     const t = text.trim();
     if (!t || !st.data) return;
+    if (asked !== null) { setErr(null); stuck.current = true; setText(''); ai.ask(asked).catch(er => { setText(t); setErr((er as Error).message); }); return; }
     if (parsed && !parsed.ok) { setErr(parsed.error); return; }
     setBusy(true); setErr(null); stuck.current = true;
     const z = '0x0000000000000000000000000000000000000000';
@@ -140,7 +144,12 @@ function CrewRoom({ crew, crews }: { crew: Address; crews: Awaited<ReturnType<ty
         </div>
         <div className="messages" aria-live="polite" ref={box} onScroll={e => { const b = e.currentTarget; stuck.current = b.scrollHeight - b.scrollTop - b.clientHeight < 80; }}>
           {s.feed.length === 0 && <EmptyArt art={['kumi3-empty', 'kumi-feature-chat']} title="Quiet in here" action={member ? <button className="btn btn-primary" onClick={() => pitch('/long AVAX 3x 20%')}>Pitch the first trade</button> : undefined}>Chip in, then pitch a perp with <span className="mono">/long AVAX 3x 20%</span>.</EmptyArt>}
-          {s.feed.map((f, i) => <Message key={f.index} f={f} prev={s.feed[i - 1]} st={s} markets={markets} props={props.data ?? {}} onDone={refresh} />)}
+          {interleave(s.feed, f => f.ts, ai.list, ai.asking).map((r, i, all) => {
+            if ('ai' in r) return [<AskLine key={`q-${r.ai.id}`} q={r.ai.question} />, <AiCard key={r.ai.id} a={r.ai} isCrew onDraft={d => pitch(d.command ?? '')} />];
+            if ('pending' in r) return [<AskLine key="q-pending" q={r.pending} />, <AiPendingCard key="ai-pending" />];
+            const p = all[i - 1];
+            return <Message key={r.item.index} f={r.item} prev={p && 'item' in p ? p.item : undefined} st={s} markets={markets} props={props.data ?? {}} onDone={refresh} />;
+          })}
         </div>
         <div className="composer">
           {err && <div style={{ marginBottom: 10 }}><Notice error>{err}</Notice></div>}
@@ -151,8 +160,10 @@ function CrewRoom({ crew, crews }: { crew: Address; crews: Awaited<ReturnType<ty
               {parsed?.ok && <CommandPreview cmd={parsed.cmd} st={s} markets={markets} />}
               {parsed && !parsed.ok && <p className="cmd-err" role="status">{parsed.error}</p>}
               <div className="hints"><span className="lbl">Pitch:</span>{HINTS.map(([h, tone]) => <button key={h} className={`hint tone-${tone}`} onClick={() => pitch(h)}>{h}</button>)}</div>
+              {asked !== null && <p className="composer-note ai-note">Kumi AI · only you see the answer</p>}
               <form className="composer-box" onSubmit={e => { e.preventDefault(); void send(); }}>
                 <input ref={input} value={text} onChange={e => { setText(e.target.value); setErr(null); }} placeholder={(s.me?.shares ?? 0n) > 0n ? 'Message the crew, or /long AVAX 3x 20%' : 'Say hi, then chip in to get a vote'} aria-label="Message" maxLength={280} disabled={busy} />
+                {!text.trim() && <SparkButton onClick={() => { setText('/ask '); requestAnimationFrame(() => input.current?.focus()); }} />}
                 <button className="send" aria-label="Send" disabled={busy || !text.trim()}>{busy ? <span className="spin" /> : <Ic name="send" size={19} />}</button>
               </form>
             </>}

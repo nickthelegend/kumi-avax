@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Address } from 'viem';
-import { MARKETS, readChannelMessages, readChannels, preview, price as fmtPrice, size as fmtSize, usd, signedUsd, parseDecimal, perpsAbi, type Channel, type ChatItem } from '@kumi-avax/sdk';
+import { MARKETS, callerOf, readChannelMessages, readChannels, preview, price as fmtPrice, size as fmtSize, usd, signedUsd, parseDecimal, perpsAbi, type AiDraft, type CallerStat, type Channel, type ChatItem, type Leaderboard } from '@kumi-avax/sdk';
 import { PERPS, pub, useLive } from '../lib/chain';
 import { LOBBY, callInChannel, copyCall, joinChannel, sayInChannel } from '../lib/lobby';
 import { nameOf, useWho } from '../lib/signer';
 import { Avatar, CrewAvatar, EmptyArt, Ic, Link, MiniEmpty, Notice, Obj, Tx, ago, crewTone, navigate } from '../ui/bits';
 import { TokenLogo } from '../ui/logos';
 import { PrivateCard, PrivatePanel, PrivateSheet } from '../ui/Private';
+import { AiCard, AiPendingCard, AskLine, CallerBadge, SparkButton, askOf, interleave, useAi } from '../ui/Ai';
+import { TopCallers } from '../ui/TopCallers';
+import { readBoard } from '../lib/kumiApi';
 
 /** The public chats in the room's left list (same rows as the crews). */
 export function PublicChats({ current }: { current?: number }) {
@@ -37,7 +40,10 @@ export function LobbyRoom({ channel, list }: { channel: number; list: React.Reac
   const [text, setText] = useState('');
   const [busy, setBusy] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
-  const [sheet, setSheet] = useState<null | 'call' | ChatItem>(null);
+  const [sheet, setSheet] = useState<null | 'call' | ChatItem | { draft: AiDraft }>(null);
+  const ai = useAi(`l-${channel}`, who?.address);
+  const board = useLive(readBoard, [], 30_000);
+  const statOf = (a: string) => (board.data ? callerOf(board.data, a, channel) : null);
   const [tip, setTip] = useState<ChatItem | null>(null);
   const live = useLive(async () => {
     const [items, chans] = await Promise.all([readChannelMessages(pub as any, LOBBY, channel, 120), readChannels(pub as any, LOBBY, who?.address)]);
@@ -48,7 +54,7 @@ export function LobbyRoom({ channel, list }: { channel: number; list: React.Reac
   const pos = useLive(() => (who ? pub.readContract({ address: PERPS, abi: perpsAbi, functionName: 'positionsOf', args: [who.address] }) : Promise.resolve([])), [who?.address], 8000);
   const box = useRef<HTMLDivElement>(null);
   const stuck = useRef(true);
-  const n = live.data?.items.length ?? 0;
+  const n = (live.data?.items.length ?? 0) + ai.list.length + (ai.asking ? 1 : 0);
   useEffect(() => { const b = box.current; if (b && stuck.current) b.scrollTop = b.scrollHeight; }, [n, tab]);
 
   const run = async (label: string, fn: () => Promise<unknown>) => {
@@ -74,7 +80,12 @@ export function LobbyRoom({ channel, list }: { channel: number; list: React.Reac
       <div className="messages" aria-live="polite" ref={box} onScroll={e => { const b = e.currentTarget; stuck.current = b.scrollHeight - b.scrollTop - b.clientHeight < 80; }}>
         <p className="faint" style={{ textAlign: 'center', fontSize: 13, margin: 0 }}>{c.topic}</p>
         {items.length === 0 && <EmptyArt art={['kumi3-empty', 'kumi-feature-chat']} title="Quiet in here">Say hi, or post the first trade call.</EmptyArt>}
-        {items.map((m, i) => <LobbyMessage key={m.key} m={m} prev={items[i - 1]} me={who?.address} copies={copies.get(m.index) ?? []} joined={c.joined} onCopy={() => setSheet(m)} onTip={() => setTip(m)} />)}
+        {interleave(items, m => m.ts, ai.list, ai.asking).map((r, i, all) => {
+          if ('ai' in r) return [<AskLine key={`q-${r.ai.id}`} q={r.ai.question} />, <AiCard key={r.ai.id} a={r.ai} isCrew={false} onDraft={d => setSheet({ draft: d })} />];
+          if ('pending' in r) return [<AskLine key="q-pending" q={r.pending} />, <AiPendingCard key="ai-pending" />];
+          const m = r.item; const p = all[i - 1];
+          return <LobbyMessage key={m.key} m={m} prev={p && 'item' in p ? p.item : undefined} me={who?.address} stat={statOf(m.who)} copies={copies.get(m.index) ?? []} joined={c.joined} onCopy={() => setSheet(m)} onTip={() => setTip(m)} />;
+        })}
       </div>
       <div className="composer">
         {err && <div style={{ marginBottom: 10 }}><Notice error>{err}</Notice></div>}
@@ -82,8 +93,15 @@ export function LobbyRoom({ channel, list }: { channel: number; list: React.Reac
           : !c.joined ? <div className="guest-bar"><p><b>Public chat.</b> Joining is one Fuji transaction (KumiLobby.join).</p><button className="btn btn-mint" disabled={!!busy} onClick={() => run('Joining', () => joinChannel(channel))}>{busy ? <span className="spin" /> : <Ic name="plus" size={16} />}Join {c.name}</button></div>
           : <>
             <div className="hints"><span className="lbl">Call:</span><button className="hint tone-coral" onClick={() => setSheet('call')}>Long {mk.symbol} 3x · 50 tUSDC</button><button className="hint tone-pink" onClick={() => setSheet('call')}>Short {mk.symbol} 2x</button></div>
-            <form className="composer-box" onSubmit={e => { e.preventDefault(); const t = text.trim(); if (t) void run('Sending', async () => { await sayInChannel(channel, t); setText(''); }); }}>
+            {askOf(text) !== null && <p className="composer-note ai-note">Kumi AI · only you see the answer</p>}
+            <form className="composer-box" onSubmit={e => {
+              e.preventDefault(); const t = text.trim(); if (!t) return;
+              const q = askOf(t);
+              if (q !== null) { setErr(null); stuck.current = true; setText(''); ai.ask(q).catch(er => { setText(t); setErr((er as Error).message); }); return; }
+              void run('Sending', async () => { await sayInChannel(channel, t); setText(''); });
+            }}>
               <input value={text} onChange={e => { setText(e.target.value); setErr(null); }} placeholder={`Message ${c.name}`} aria-label="Message" maxLength={280} disabled={!!busy} />
+              {!text.trim() && <SparkButton onClick={() => { setText('/ask '); requestAnimationFrame(() => (document.querySelector('.composer-box input') as HTMLInputElement | null)?.focus()); }} />}
               <button className="send" aria-label="Send" disabled={!!busy || !text.trim()}>{busy ? <span className="spin" /> : <Ic name="send" size={19} />}</button>
             </form>
             {busy && <p className="composer-note">{busy}…</p>}
@@ -91,6 +109,7 @@ export function LobbyRoom({ channel, list }: { channel: number; list: React.Reac
       </div>
     </section>
     <aside className="pane fund" aria-label="About this chat">
+      <TopCallers board={board.data} error={board.error} channel={channel} channelName={c.name} />
       <PrivatePanel />
       <section className="card">
         <div className="card-head"><h3>About</h3><span className="chip chip-mint chip-live"><span className="dot" />on-chain</span></div>
@@ -115,12 +134,13 @@ export function LobbyRoom({ channel, list }: { channel: number; list: React.Reac
       {([['crews', 'Chats', 'crews'], ['chat', 'Chat', 'chat'], ['fund', 'Info', 'chart']] as const).map(([t, l, ic]) => <button key={t} aria-pressed={tab === t} onClick={() => setTab(t)}><Ic name={ic} size={19} />{l}</button>)}
     </nav>
     {sheet === 'call' && <CallSheet channel={channel} market={c.market} onClose={() => setSheet(null)} onDone={() => live.reload()} />}
+    {sheet && typeof sheet === 'object' && 'draft' in sheet && <CallSheet channel={channel} market={c.market} init={sheet.draft} onClose={() => setSheet(null)} onDone={() => live.reload()} />}
     {tip && who && <PrivateSheet me={who.address} to={tip.who} where={{ kind: 'tip', channel, ref: tip.index }} title={`Tip ${nameOf(tip.who)} privately`} onClose={() => setTip(null)} onDone={() => live.reload()} />}
-    {sheet && typeof sheet === 'object' && who && <CopySheet channel={channel} call={sheet} me={who.address} onClose={() => setSheet(null)} onDone={() => { live.reload(); pos.reload(); }} />}
+    {sheet && typeof sheet === 'object' && 'kind' in sheet && who && <CopySheet channel={channel} call={sheet} me={who.address} onClose={() => setSheet(null)} onDone={() => { live.reload(); pos.reload(); }} />}
   </div>;
 }
 
-function LobbyMessage({ m, prev, me, copies, joined, onCopy, onTip }: { m: ChatItem; prev?: ChatItem; me?: Address; copies: ChatItem[]; joined: boolean; onCopy: () => void; onTip: () => void }) {
+function LobbyMessage({ m, prev, me, stat, copies, joined, onCopy, onTip }: { m: ChatItem; prev?: ChatItem; me?: Address; stat?: CallerStat | null; copies: ChatItem[]; joined: boolean; onCopy: () => void; onTip: () => void }) {
   const mine = !!me && m.who.toLowerCase() === me.toLowerCase();
   const mk = MARKETS[m.market ?? 0]!;
   if (m.kind === 'private' && m.privateTx) return <PrivateCard hash={m.privateTx} author={m.who} />;
@@ -129,7 +149,7 @@ function LobbyMessage({ m, prev, me, copies, joined, onCopy, onTip }: { m: ChatI
     return <div className={`msg ${mine ? 'mine' : ''}`}>
       {showWho ? <Avatar id={m.who} /> : <span style={{ width: 34, flex: 'none' }} />}
       <div style={{ minWidth: 0 }}>
-        {showWho && <div className="msg-meta"><b>{mine ? 'You' : nameOf(m.who)}</b><span>{ago(m.ts)}</span></div>}
+        {showWho && <div className="msg-meta"><b>{mine ? 'You' : nameOf(m.who)}</b><CallerBadge s={stat} /><span>{ago(m.ts)}</span></div>}
         <div className="bubble">{m.text}</div>
       </div>
     </div>;
@@ -139,7 +159,7 @@ function LobbyMessage({ m, prev, me, copies, joined, onCopy, onTip }: { m: ChatI
     return <article className={`trade ${mine ? 'mine' : ''}`} data-call={m.index}>
       <div className={`trade-top ${m.isLong ? '' : 'sell'}`}>
         <span className="asset-logo"><TokenLogo sym={mk.symbol} size={42} /></span>
-        <div className="trade-title"><span className="trade-kind">{nameOf(m.who)} called · #{m.index}</span><b>{m.isLong ? 'Long' : 'Short'} {mk.symbol} {m.leverage}x</b><span>{usd(m.amount, 0)} tUSDC margin · {usd(m.amount * BigInt(m.leverage ?? 1), 0)} notional</span></div>
+        <div className="trade-title"><span className="trade-kind">{nameOf(m.who)} called · #{m.index} <CallerBadge s={stat} /></span><b>{m.isLong ? 'Long' : 'Short'} {mk.symbol} {m.leverage}x</b><span>{usd(m.amount, 0)} tUSDC margin · {usd(m.amount * BigInt(m.leverage ?? 1), 0)} notional</span></div>
         <span className="st st-voting" style={{ background: '#fff', color: 'var(--plum)', padding: '4px 10px', borderRadius: 99, fontWeight: 800, fontSize: 12 }}>{copies.length} copied</span>
       </div>
       <div className="trade-body">
@@ -166,12 +186,12 @@ function LobbyMessage({ m, prev, me, copies, joined, onCopy, onTip }: { m: ChatI
   return <div className={`event tone-${m.kind === 'leave' ? 'pink' : 'mint'}`}><span className="ev-ic"><Ic name={m.kind === 'leave' ? 'exit' : 'plus'} size={14} /></span><span><b>{nameOf(m.who)}</b> {m.kind === 'leave' ? 'left' : 'joined'}</span></div>;
 }
 
-function CallSheet({ channel, market, onClose, onDone }: { channel: number; market: number; onClose: () => void; onDone: () => void }) {
-  const [mkt, setMkt] = useState(market);
-  const [long, setLong] = useState(true);
-  const [lev, setLev] = useState(3);
-  const [margin, setMargin] = useState('50');
-  const [note, setNote] = useState('');
+function CallSheet({ channel, market, init, onClose, onDone }: { channel: number; market: number; init?: AiDraft; onClose: () => void; onDone: () => void }) {
+  const [mkt, setMkt] = useState(init ? (MARKETS.find(m => m.symbol === init.market)?.id ?? market) : market);
+  const [long, setLong] = useState(init ? init.side === 'long' : true);
+  const [lev, setLev] = useState(init?.leverage ?? 3);
+  const [margin, setMargin] = useState(String(init?.marginUsdc ?? 50));
+  const [note, setNote] = useState(init?.note ?? '');
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   return <div className="scrim" onClick={onClose}><div className="sheet" role="dialog" aria-label="Post a trade call" onClick={e => e.stopPropagation()}>
@@ -208,5 +228,5 @@ function CopySheet({ channel, call, me, onClose, onDone }: { channel: number; ca
   </div></div>;
 }
 
-export type { Channel };
+export type { Channel, Leaderboard };
 export const lobbyPreview = (m: ChatItem) => preview(m, nameOf);
