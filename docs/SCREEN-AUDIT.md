@@ -16,7 +16,7 @@ Every hosted screen in the after run: no sideways overflow and no console errors
 | Crew room `/room` | 8.5 | "each step is a Fuji transaction" filler in the checklist; every private-send card repeated a long explainer | Checklist says "0 of 5 done"; private cards say "Amount hidden on-chain." | 9 |
 | Public chat `/room?chat=l-0` | 9 | – | – | 9 |
 | Markets `/markets/AVAX`, `/markets/BTC` | 8.5 | The Chainlink price tag sat on top of a grid label (8.400 under 8.362); fill markers on the first candle were cut by the chart edge; legend said "0 fills" while loading | Grid labels the tag would cover are hidden; markers clamped inside the plot; the count waits for data | 9 |
-| Crew fund `/crew/<vault>` | 8 (375) | At 375 the pitch table squeezed the trade into four lines and cut the result chip; "1 trades voted" | # and By columns hide under 560 px and cells stay on one line; "1 trade" | 9 |
+| Crew fund `/crew/<vault>` | 8 (375) | At 375 the pitch table squeezed the trade into four lines and cut the result chip; "1 trades voted" | #, By and Fill hide under 560 px (Fill stays at 1440) and cells stay on one line; "1 trade" | 9 |
 | 404 | 6 | A bare card | Offline penguin art, the path, and Back to Kumi | 9 |
 
 ## Phone app (kumi-avax-app.vercel.app at 375, and the native build)

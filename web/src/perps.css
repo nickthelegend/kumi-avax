@@ -232,7 +232,7 @@
 /* ship round: the pitch table at phone width keeps trade, yes, fill and result on one line each */
 .pitch-table td, .pitch-table th { white-space: nowrap; }
 @media (max-width: 560px) {
-  .pitch-table th:nth-child(1), .pitch-table td:nth-child(1), .pitch-table th:nth-child(3), .pitch-table td:nth-child(3) { display: none; }
+  .pitch-table th:nth-child(1), .pitch-table td:nth-child(1), .pitch-table th:nth-child(3), .pitch-table td:nth-child(3), .pitch-table th:nth-child(5), .pitch-table td:nth-child(5) { display: none; }
   .pitch-table td, .pitch-table th { padding-left: 6px; padding-right: 6px; }
 }
 
