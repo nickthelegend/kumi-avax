@@ -102,7 +102,23 @@ await withBrowser(async browser => {
     await shot('6-ragequit');
     await page.click('.sheet .btn-ghost');
   }
+  if (from <= 7 && process.argv.includes('--bonus')) {
+    // Bonus: a ragequit while a position is open. mika now holds 53% of shares, so her pitch passes on its own.
+    await as('mika');
+    await say('/short BTC 2x 10%');
+    await waitTxs(1, '7-pitch-short-btc-2x-executes');
+    await shot('7-short-open');
+    await as('bo');
+    await page.click('.stake-actions .btn-pink');
+    await page.click('.sheet .seg button:has-text("50%")');
+    await page.waitForTimeout(800);
+    await shot('8-ragequit-sheet-open-position');
+    await page.click('.sheet .btn-pink');
+    await waitTxs(1, '8-ragequit-bo-50pct-mid-position');
+    await shot('8-ragequit-mid-position');
+    await page.click('.sheet .btn-ghost');
+  }
   if (errors.length) console.log('console errors:', errors.slice(0, 5));
 });
 // Put the maker back on the oracle.
-execFileSync('node', ['fuji/maker.ts', '--market', 'AVAX'], { cwd: join(ROOT, 'scripts'), stdio: 'inherit' });
+if (from <= 4) execFileSync('node', ['fuji/maker.ts', '--market', 'AVAX'], { cwd: join(ROOT, 'scripts'), stdio: 'inherit' });

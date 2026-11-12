@@ -19,7 +19,7 @@ export function bookPnl(pos: CrewState['positions'][number], mk?: MarketState) {
   return BigInt(pos.size) * (px - BigInt(pos.entry)) / PX_SIZE;
 }
 
-export function FundPane({ st, markets, onChipIn, onQuit }: { st: CrewState; markets: MarketState[]; onChipIn: () => void; onQuit: () => void }) {
+export function FundPane({ st, markets, loadingMe, onChipIn, onQuit }: { st: CrewState; markets: MarketState[]; loadingMe?: boolean; onChipIn: () => void; onQuit: () => void }) {
   const who = useWho();
   const ret = retPct(st);
   const upnl = st.positions.reduce((a, p) => a + p.unrealized - p.fundingOwed, 0n);
@@ -70,7 +70,8 @@ export function FundPane({ st, markets, onChipIn, onQuit }: { st: CrewState; mar
 
     <section className="card" aria-label="Your stake">
       <div className="card-head"><h3>Your stake</h3>{st.me?.isMember && <span className="chip chip-butter">Member</span>}</div>
-      {!who ? <MiniEmpty obj="jar">Connect a wallet to chip in, vote and pitch.</MiniEmpty>
+      {loadingMe ? <div className="skeleton" style={{ height: 120 }} aria-label="Reading your stake" />
+        : !who ? <MiniEmpty obj="jar">Connect a wallet to chip in, vote and pitch.</MiniEmpty>
         : !st.me?.isMember ? <MiniEmpty obj="jar">{st.name} is invite-only. A member can invite you with <span className="mono">/invite {who.address.slice(0, 6)}…</span>.</MiniEmpty>
         : <>
           <div className="tiles">

@@ -158,3 +158,4 @@
   .qa-who .qa-tag { display: none; }
 }
 @media (max-width: 1020px) { .thread-tabs { display: inline-flex; } }
+.txs .faint.mono { font-size: 11px; margin-left: auto; }

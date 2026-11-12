@@ -96,10 +96,14 @@ function CrewRoom({ crew, crews }: { crew: Address; crews: Awaited<ReturnType<ty
 
   if (st.error && !st.data) return <div className="page"><Notice error>Could not read crew {crew} on Fuji: {st.error}</Notice></div>;
   if (!st.data) return <div className="room" data-tab={tab}>{list}<section className="pane thread"><div className="skeleton" style={{ height: 220, margin: 24 }} /></section><aside className="pane fund"><div className="skeleton" style={{ height: 260 }} /></aside></div>;
-  const s = st.data;
+  // After a signer switch, the last read still describes the previous account until the next refresh lands:
+  // never show (or act on) someone else's stake.
+  const meFresh = !who || st.data.me?.address.toLowerCase() === who.address.toLowerCase();
+  const s = meFresh ? st.data : { ...st.data, me: null };
   const markets = mk.data ?? [];
   const ret = retPct(s);
   const member = !!s.me?.isMember;
+  const loadingMe = !meFresh;
 
   return (
     <div className="room" data-tab={tab}>
@@ -120,7 +124,8 @@ function CrewRoom({ crew, crews }: { crew: Address; crews: Awaited<ReturnType<ty
         </div>
         <div className="composer">
           {err && <div style={{ marginBottom: 10 }}><Notice error>{err}</Notice></div>}
-          {!who ? <div className="guest-bar"><p><b>Read-only.</b> Connect a wallet on Fuji to talk, pitch perps and vote.</p></div>
+          {loadingMe ? <div className="guest-bar"><p><b>Switching to {who?.label}…</b> reading their stake on Fuji.</p></div>
+            : !who ? <div className="guest-bar"><p><b>Read-only.</b> Connect a wallet on Fuji to talk, pitch perps and vote.</p></div>
             : !member ? <div className="guest-bar"><p><b>You're a guest here.</b> Only {s.name} members post. A member can invite you with <span className="mono">/invite</span>.</p><Link to={`/crew/${s.address}`} className="btn btn-mint">See the fund</Link></div>
             : <>
               {parsed?.ok && <CommandPreview cmd={parsed.cmd} st={s} markets={markets} />}
@@ -135,13 +140,13 @@ function CrewRoom({ crew, crews }: { crew: Address; crews: Awaited<ReturnType<ty
         </div>
       </section>
       <aside className="pane fund" aria-label="Crew fund">
-        <FundPane st={s} markets={markets} onChipIn={() => setSheet('chip')} onQuit={() => setSheet('quit')} />
+        <FundPane st={s} markets={markets} loadingMe={loadingMe} onChipIn={() => setSheet('chip')} onQuit={() => setSheet('quit')} />
       </aside>
       <nav className="tabs" aria-label="Sections">
         {([['crews', 'Crews', 'crews'], ['chat', 'Chat', 'chat'], ['fund', 'Fund', 'chart']] as const).map(([t, l, ic]) => <button key={t} aria-pressed={tab === t} onClick={() => setTab(t)}><Ic name={ic} size={19} />{l}</button>)}
       </nav>
-      {sheet === 'chip' && <ChipInSheet st={s} onClose={() => setSheet(null)} onDone={refresh} />}
-      {sheet === 'quit' && <QuitSheet st={s} markets={markets} onClose={() => setSheet(null)} onDone={refresh} />}
+      {sheet === 'chip' && meFresh && <ChipInSheet st={s} onClose={() => setSheet(null)} onDone={refresh} />}
+      {sheet === 'quit' && meFresh && <QuitSheet st={s} markets={markets} onClose={() => setSheet(null)} onDone={refresh} />}
     </div>
   );
 }
