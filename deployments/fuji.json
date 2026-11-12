@@ -133,6 +133,14 @@
         "transfer": "0xec3713a47f62d60f7f5f1f614cb30df9c6b5cfe7",
         "burn": "0x7caba83dbacd184aa9d2f09976b007e19e78223b"
       }
+    },
+    "gasStation": "0xf47d3dbcb7180f6c95680e120df34a50097af44d",
+    "gasStationConfig": {
+      "dripAvax": "0.0002",
+      "dailyCap": 20,
+      "perRequesterDaily": 3,
+      "relayer": "0x45Ad72e3C2083050d2D3B562eE2d7971fF4667C2",
+      "owner": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf"
     }
   },
   "txs": [
@@ -444,7 +452,8 @@
     "sora": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
     "tae": "0x477D91ac189080ec0B40Af4F9AE4246d331Ebf5b",
     "lia": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
-    "auditor": "0xB5fa31C707E9eC71edE4DE060386B0Be54AB99f3"
+    "auditor": "0xB5fa31C707E9eC71edE4DE060386B0Be54AB99f3",
+    "sponsor": "0x45Ad72e3C2083050d2D3B562eE2d7971fF4667C2"
   },
   "makerTxs": [
     {
@@ -3606,5 +3615,51 @@
         "hash": "0x23ee31330afee0c7a6075c86c89f0f7f3cbfbcec241183ffc8435eff2ea2599e"
       }
     ]
-  }
+  },
+  "gasStation": [
+    {
+      "label": "deploy_KumiGasStation",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": null,
+      "hash": "0x7a3d4f9827d684fc5b75cbe02ea55a55e13966e60a7d9ebb536a90c3cd321c7e",
+      "status": "success",
+      "block": 60948949,
+      "gasUsed": 750584,
+      "confirmMs": 3183,
+      "at": "2026-11-12T13:37:13.411Z"
+    },
+    {
+      "label": "fund_gas_station_mika",
+      "from": "0x857429F6d1304B8ef42De42a0696f52a5FBE3acF",
+      "to": "0xf47d3dbcb7180f6c95680e120df34a50097af44d",
+      "hash": "0xab17379fa9216a0792605fc024aa5428cba84485c09071bf932ede91c401f3cf",
+      "status": "success",
+      "block": 60948952,
+      "gasUsed": 21067,
+      "confirmMs": 2476,
+      "at": "2026-11-12T13:37:17.372Z"
+    },
+    {
+      "label": "fund_gas_station_bo",
+      "from": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+      "to": "0xf47d3dbcb7180f6c95680e120df34a50097af44d",
+      "hash": "0xe1955c50a34b71b95640e4e3deda08cbb266ada72b31903062bc2f96099d3da7",
+      "status": "success",
+      "block": 60948954,
+      "gasUsed": 21067,
+      "confirmMs": 3045,
+      "at": "2026-11-12T13:37:20.748Z"
+    },
+    {
+      "label": "gas_sponsor_relayer",
+      "from": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363",
+      "to": "0x45Ad72e3C2083050d2D3B562eE2d7971fF4667C2",
+      "hash": "0x798ba67a996b5963f0e057e3841b346f49d9a640628a85c2a73e9773e8f9cd4e",
+      "status": "success",
+      "block": 60948957,
+      "gasUsed": 21000,
+      "confirmMs": 2323,
+      "at": "2026-11-12T13:37:23.231Z"
+    }
+  ]
 }
