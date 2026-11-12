@@ -82,7 +82,7 @@ export default function ChatRoom() {
       case 'leave': return <EventPill m={m} me={address} tone="pink" icon="exit" text="left the chat" />;
       case 'vote-yes': return <EventPill m={m} me={address} tone="butter" icon="thumb" text={`voted yes on #${m.ref}`} />;
       case 'vote-no': return <EventPill m={m} me={address} tone="pink" icon="thumbDown" text={`voted no on #${m.ref}`} />;
-      case 'executed': return <EventPill m={m} me={address} tone="coral" icon="bolt" text={m.text || `Vote passed · #${m.ref} traded on the book`} />;
+      case 'executed': return <EventPill m={m} me={address} tone="coral" icon="bolt" text={m.text || `cast the deciding vote: #${m.ref} traded on the book`} />;
       case 'failed': return <EventPill m={m} me={address} tone="pink" icon="x" text={`#${m.ref} passed but did not fill`} />;
       case 'deposit': return <EventPill m={m} me={address} tone="butter" icon="coin" text={<>chipped in <Text style={{ fontFamily: F.monoBold }}>{fmtUsd(m.amount)}</Text> tUSDC</>} />;
       case 'ragequit': return <EventPill m={m} me={address} tone="pink" icon="exit" text={<>ragequit with <Text style={{ fontFamily: F.monoBold }}>{fmtUsd(m.amount)}</Text> tUSDC</>} />;

@@ -13,7 +13,7 @@ export function App() {
   let page;
   if (p === '/') page = <Landing />;
   else if (p.startsWith('/room')) page = <Room key={path} />;
-  else if (p.startsWith('/markets')) page = <Markets sym={p.split('/')[2]} />;
+  else if (p.startsWith('/markets')) page = <Markets key={p} sym={p.split('/')[2]} />;
   else if (p.startsWith('/crew')) page = <CrewPage address={p.split('/')[2]} />;
   else page = <div className="page"><div className="card"><h2>Not found</h2><p className="muted">No page at {p}.</p></div></div>;
   return <>

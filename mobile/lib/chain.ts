@@ -30,8 +30,12 @@ export function useLive<T>(fn: () => Promise<T>, deps: unknown[], ms = 5000) {
   const [state, set] = useState<{ data?: T; error?: string; at?: number }>({});
   const [tick, setTick] = useState(0);
   const alive = useRef(true);
+  const key = JSON.stringify(deps, (_, v) => (typeof v === 'bigint' ? v.toString() : v));
+  const lastKey = useRef(key);
   useEffect(() => {
     alive.current = true;
+    // New inputs (another market, another chat): never show the previous one's data under the new label.
+    if (lastKey.current !== key) { lastKey.current = key; set({}); }
     let timer: ReturnType<typeof setTimeout> | undefined;
     const run = async () => {
       try {
