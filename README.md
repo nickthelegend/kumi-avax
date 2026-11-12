@@ -110,6 +110,7 @@ account, because the public Fuji faucet needs a captcha. Everything below was si
 | IOC buy: **17.79 AVAX at $8.430** on the on-chain book | [0x1d351d7e…](https://testnet.snowtrace.io/tx/0x1d351d7ee13d874a04d958869bd338c838dfb4a62fd930e2ec86295077c6f8fb) |
 | `KumiLobby.copy`: the lobby read the position from KumiPerps and posted it | [0x7b80d5b2…](https://testnet.snowtrace.io/tx/0x7b80d5b2a0377e88788f0c0badfde041c3a00bb0ba254ce6b19be074aeab0ecd) |
 | A chat message | [0x439124cf…](https://testnet.snowtrace.io/tx/0x439124cf3c2826f94c37f025e4844fdfbe7329356ea129ae0b465d47a8813d31) |
+| Second run, another new wallet: the same flow, plus a **BTC limit buy at $72,200** that rests on the book as the phone's open order | [0x5201918c…](https://testnet.snowtrace.io/tx/0x5201918c9f065c86bf0588d5654b59ff42665da6496f5b401db862f21eb87932) |
 
 The same run, and any later run, is recorded in `deployments/fuji.json` (`phoneDemo`, `phoneRuns`). Screenshots of
 every phone screen: `orchestration/shots/avax-kumi/v2/phone-*.png`.

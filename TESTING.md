@@ -10,8 +10,8 @@
 | Conservation fuzz (256 runs) | `forge test --match-contract KumiPerpsConservationTest` | 1 | pass |
 | Crew vault | `forge test --match-contract KumiCrewTest` | 21 | pass |
 | **KumiLobby (v2)**: membership, calls, copies checked against real KumiPerps fills, attacks, fuzz | `forge test --match-contract KumiLobbyTest` | 15 | pass |
-| Real Chainlink feeds, Fuji fork | `FORK=1 forge test --match-contract FujiForkTest` | 3 | pass (v1 run) |
-| Primit (Orderly vault), Avalanche mainnet fork | `FORK=1 forge test --match-contract PrimitForkTest` | 7 | pass (v1 run) |
+| Real Chainlink feeds, Fuji fork | `FORK=1 forge test --match-contract FujiForkTest` | 3 | pass |
+| Primit (Orderly vault), Avalanche mainnet fork | `FORK=1 forge test --match-contract PrimitForkTest` | 7 | pass |
 | SDK: chat-command parser | `cd sdk && node --test test/*.test.ts` | 7 | pass |
 | **SDK (v2): order encoding**, incl. KumiPerps accepting a live-book order and refusing an off-band one in an eth_call on Fuji | same | 8 | pass |
 | **SDK (v2): candles**, incl. live Coinbase/Binance candles, Chainlink rounds on Fuji vs the exchange, Kumi fills from the on-chain ring | same | 7 | pass |
