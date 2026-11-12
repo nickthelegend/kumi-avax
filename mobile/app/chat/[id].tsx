@@ -192,7 +192,6 @@ export default function ChatRoom() {
                   </Pressable>
                 </View>
               </View>
-              <Text style={{ fontSize: 11, color: C.ink3, textAlign: 'center' }}>Every message is a Fuji transaction signed on this phone.{!isCrew ? ' ⚡ posts a trade call.' : ' 🔒 sends a crewmate tUSDC privately.'}</Text>
             </>
           ) : null}
           {d && d.joined && !isCrew && <Pressable onPress={() => act.run('Leaving', async () => { const tx = await leaveChannel(channel); record([tx]); live.reload(); })} accessibilityRole="button"><Text style={{ fontSize: 11.5, color: C.ink3, textAlign: 'center', textDecorationLine: 'underline' }}>Leave {d.name}</Text></Pressable>}
