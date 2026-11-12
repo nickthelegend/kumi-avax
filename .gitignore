@@ -1,0 +1,15 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+*.key
+secrets/
+.DS_Store
+.loom/
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+playwright-report/
+test-results/

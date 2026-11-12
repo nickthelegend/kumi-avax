@@ -1,0 +1,10 @@
+{
+  "name": "kumi-avax",
+  "private": true,
+  "packageManager": "pnpm@10.29.2",
+  "type": "module",
+  "scripts": {
+    "test:contracts": "cd contracts && forge test",
+    "build:web": "pnpm --filter @kumi-avax/web build"
+  }
+}
