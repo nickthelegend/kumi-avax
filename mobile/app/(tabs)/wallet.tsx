@@ -66,7 +66,7 @@ export default function Wallet() {
       </View>
 
       {acct.error && !a && <Notice error>Could not read this wallet from Fuji: {acct.error}</Notice>}
-      {IS_WEB && <Notice>Web preview: the key sits in this browser's storage. On the phone it lives in the iOS Keychain / Android Keystore.</Notice>}
+      {IS_WEB && <Notice>Web preview: the key is stored in this browser. The app keeps it in the phone's keychain.</Notice>}
       {noGas && <Notice error>No Fuji AVAX for gas yet.</Notice>}
       {noGas && <Btn testID="get-gas" title="Get gas from Kumi" tone="mint" icon="bolt" busy={act.busy !== null} onPress={() => act.run('Getting gas', async () => { const g = await getGas(); record([{ hash: g.hash, label: 'Gas from Kumi' }]); acct.reload(); })} />}
       {act.error && <Notice error>{act.error}</Notice>}
@@ -88,7 +88,7 @@ export default function Wallet() {
           <Btn testID="get-usdc" title="Get 1,000 test USDC" tone="butter" icon="coin" busy={act.busy !== null} onPress={() => act.run('Minting', async () => { const tx = await getTestUsdc(); record([tx]); acct.reload(); })} />
           <Btn title="Fuji AVAX faucet (gas)" tone="white" icon="external" onPress={() => Linking.openURL(FAUCET_URL)} />
         </View>
-        <Text style={{ fontSize: 11.5, color: C.ink3, marginTop: 8 }}>Get test USDC calls TestUSDC.faucet() on Fuji: 1,000 tUSDC once a day per wallet.</Text>
+        <Text style={{ fontSize: 11.5, color: C.ink3, marginTop: 8 }}>1,000 test USDC, once a day per wallet.</Text>
       </Card>
 
       <Card pad={14}>

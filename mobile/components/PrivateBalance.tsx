@@ -50,8 +50,8 @@ export function PrivateBalance({ me, publicUsdc, onTxs }: { me: Address; publicU
           {p.error && <Notice error>Could not read the private balance: {p.error}</Notice>}
           {last.length > 0 && !act.busy && <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>{last.map(t => <TxLink key={t.hash} hash={t.hash} label={t.label} />)}</View>}
           <Text style={{ fontSize: 11.5, color: C.ink3, lineHeight: 16 }}>
-            {d.registered ? '' : `Opening proves your eERC key ${PROVER_WHERE} and registers it (one Fuji tx). `}
-            Moving in and out is public, like any token transfer. Sends inside are not. Kumi's auditor key can read amounts.{' '}
+            {d.registered ? '' : 'Opening registers your key (one Fuji tx). '}
+            Moves in and out are public; sends inside are not.{' '}
             <Text onPress={() => Linking.openURL(addressUrl(EERC!))} style={{ color: C.coralInk, fontWeight: '700' }}>The eERC on Snowtrace</Text>
           </Text>
         </View>

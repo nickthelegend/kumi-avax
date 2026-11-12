@@ -63,7 +63,8 @@ export function Candles({ symbol, priceDp, trades, oracle, height = 230 }: { sym
             {ticks.map(t => (
               <G key={t}>
                 <Line x1={0} x2={plotW} y1={y(t)} y2={y(t)} stroke={C.line} strokeWidth={1} />
-                <SvgText x={plotW + 6} y={y(t) + 4} fontSize={10} fill={C.ink3} fontFamily={F.mono}>{fmt(t, priceDp)}</SvgText>
+                {/* the Chainlink tag sits on the same axis: hide a grid label it would cover */}
+                {(oracle === undefined || Math.abs(y(t) - y(oracle)) > 16) && <SvgText x={plotW + 6} y={y(t) + 4} fontSize={10} fill={C.ink3} fontFamily={F.mono}>{fmt(t, priceDp)}</SvgText>}
               </G>
             ))}
             {candles.map((c, i) => {
@@ -89,8 +90,9 @@ export function Candles({ symbol, priceDp, trades, oracle, height = 230 }: { sym
               </G>
             )}
             {marks.map((m, i) => {
-              const x = xOf(m.t);
-              if (x < 0) return null;
+              const x0 = xOf(m.t);
+              if (x0 < 0) return null;
+              const x = Math.min(plotW - 7, Math.max(7, x0));
               const yy = y(m.price);
               const d = m.takerBuy ? `M${x} ${yy - 7} l6 10 h-12z` : `M${x} ${yy + 7} l6 -10 h-12z`;
               return <Path key={i} d={d} fill={m.takerBuy ? C.mint : C.pink} stroke={C.plum} strokeWidth={1.4} />;
@@ -105,7 +107,7 @@ export function Candles({ symbol, priceDp, trades, oracle, height = 230 }: { sym
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12, marginTop: 8 }}>
         <Legend swatch={<View style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: C.mint, borderWidth: 1, borderColor: C.mintInk }} />} text={live.data ? `${live.data.source.name} ${live.data.source.pair} candles` : 'Exchange candles'} />
         <Legend swatch={<Svg width={16} height={4}><Line x1={0} x2={16} y1={2} y2={2} stroke={C.plum} strokeWidth={1.6} strokeDasharray="3 3" /></Svg>} text="Chainlink on Fuji" />
-        <Legend swatch={<View style={{ width: 0, height: 0, borderLeftWidth: 5, borderRightWidth: 5, borderBottomWidth: 8, borderLeftColor: 'transparent', borderRightColor: 'transparent', borderBottomColor: C.mint }} />} text={`${marks.length} Kumi fills on KumiPerps`} />
+        <Legend swatch={<View style={{ width: 0, height: 0, borderLeftWidth: 5, borderRightWidth: 5, borderBottomWidth: 8, borderLeftColor: 'transparent', borderRightColor: 'transparent', borderBottomColor: C.mint }} />} text={`${live.data ? `${marks.length} ` : ''}Kumi fills on KumiPerps`} />
       </View>
     </View>
   );

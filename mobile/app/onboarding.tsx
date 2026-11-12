@@ -66,7 +66,7 @@ export default function Onboarding() {
       </View>
       <View style={{ gap: 6 }}>
         <Text style={{ fontWeight: '800', fontSize: 32, lineHeight: 37, color: C.ink, letterSpacing: -0.7 }}>Your group chat is a fund.</Text>
-        <Text style={{ fontSize: 16, lineHeight: 23, color: C.ink2 }}>Chat with your crew, call a trade, and copy it with one tap. Orders fill on Kumi's on-chain order book on Avalanche, signed right here on your phone.</Text>
+        <Text style={{ fontSize: 16, lineHeight: 23, color: C.ink2 }}>Chat with your crew, call a trade, copy it with one tap. It fills on Avalanche.</Text>
       </View>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} snapToInterval={232} decelerationRate="fast" contentContainerStyle={{ gap: 12, paddingRight: 8 }} style={{ marginHorizontal: -16, paddingLeft: 16 }}>
@@ -83,7 +83,7 @@ export default function Onboarding() {
       {!app.address ? (
         <Card pad={16}>
           <View style={{ gap: 12 }}>
-            <View style={st.row}><Obj name="shield" size={54} /><Text style={{ flex: 1, fontSize: 14, color: C.ink2, lineHeight: 20 }}>Kumi makes a wallet on this phone. The key stays in the phone's keystore; Kumi has no server that holds it.</Text></View>
+            <View style={st.row}><Obj name="shield" size={54} /><Text style={{ flex: 1, fontSize: 14, color: C.ink2, lineHeight: 20 }}>Kumi makes a wallet on this phone. Only this phone holds the key.</Text></View>
             {act.error && <Notice error>{act.error}</Notice>}
             {!importing ? (
               <>

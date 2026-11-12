@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Share, View } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import * as Clipboard from 'expo-clipboard';
 import QRCode from 'react-native-qrcode-svg';
 import { Text } from '../components/T';
 import { Screen, SheetHeader } from '../components/Screen';
-import { Btn, Card, CrewAvatar, Notice, st } from '../components/ui';
+import { Btn, Card, CrewAvatar, Empty, Notice, st } from '../components/ui';
+import { C, F, art } from '../lib/theme';
 import { useApp } from '../lib/store';
-import { C, F } from '../lib/theme';
 
 /**
  * Invite QR (Nakama's flow). A public channel's QR opens it on another phone (kumi://join/l-<id>).
@@ -21,6 +21,12 @@ export default function Invite() {
   const isCrew = chat.startsWith('c-');
   const asRequest = isCrew && request === '1';
   const link = asRequest && address ? `kumi://invite/${chat.slice(2)}/${address}` : `kumi://join/${chat}`;
+  if (!chat) return (
+    <Screen>
+      <SheetHeader title="Invite" sub="Open a chat first" />
+      <Card pad={6}><Empty scene={art.scene.joinCrew} alt="A frog and a fox welcoming a bunny into a chat bubble" title="Pick a chat to share" body="Each chat has its own invite code. Open one and tap Invite." action={<Btn title="Go to chats" tone="plum" size="sm" onPress={() => router.replace('/')} />} /></Card>
+    </Screen>
+  );
   return (
     <Screen>
       <SheetHeader title={asRequest ? 'Your join code' : `Invite to ${name}`} sub={asRequest ? `Show this to a ${name} member` : isCrew ? 'Crews vote new members in' : 'Anyone with the code can join'} />

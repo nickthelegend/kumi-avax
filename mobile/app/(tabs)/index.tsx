@@ -66,7 +66,6 @@ export default function Chats() {
 
       <View>
         <Text style={{ fontWeight: '800', fontSize: 30, lineHeight: 36, color: C.ink, letterSpacing: -0.6 }}>Your chats</Text>
-        <Text style={{ fontSize: 14.5, color: C.ink2, marginTop: 2 }}>Every message, call and vote is a Fuji transaction signed on this phone.</Text>
       </View>
 
       {live.error && !live.data && <Card pad={6}><Empty scene={art.scene.offline} alt="A worried penguin holding an unplugged cable" title="Can't reach Fuji" body={`Could not read the chats: ${live.error}`} action={<Btn title="Try again" tone="plum" size="sm" onPress={live.reload} />} /></Card>}
@@ -76,7 +75,7 @@ export default function Chats() {
       {live.data && (
         <Card pad={6}>
           {mine.length === 0 ? (
-            <Empty scene={art.scene.joinCrew} alt="A frog and a fox welcoming a bunny into a chat bubble" title="No chats yet" body="Join a public channel below. Calls there can be copied with one tap, from this wallet, on the Fuji order book." />
+            <Empty scene={art.scene.joinCrew} alt="A frog and a fox welcoming a bunny into a chat bubble" title="No chats yet" body="Join a public chat below and copy calls with one tap." />
           ) : mine.map((r, i) => <ChatRow key={r.chat} r={r} me={address} first={i === 0} onPress={() => router.push(`/chat/${r.chat}`)} />)}
         </Card>
       )}
