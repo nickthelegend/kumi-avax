@@ -2950,5 +2950,12 @@
         }
       ]
     }
-  ]
+  ],
+  "phoneQaWallets": {
+    "phone-qa-1": "0x32616Bf908dCF09C383AF22fe85ae8a43B8509B3",
+    "phone-qa-2": "0xb2af224B6387d3FFD60Dd6254B3E84Aff58f8E6C",
+    "phone-qa-3": "0xeFcC22be9821E2DdB4cA844E8aA680aC58F84d67",
+    "phone-qa-4": "0x1f9d5D2987D6C74FC5A8C1a0FF8597a2cDA6Aa03"
+  },
+  "phoneQaNote": "Wallets created inside the phone app by scripts/qa/phone.mjs. qa-1 and qa-2 stopped mid-run (script timeouts, then a margin fix); qa-3 is phoneDemo, qa-4 is phoneRuns[0]. Their keys lived only in the headless browser and are gone."
 }

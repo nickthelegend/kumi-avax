@@ -104,7 +104,7 @@ export function Candles({ symbol, priceDp, trades, oracle, height = 230 }: { sym
       </View>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12, marginTop: 8 }}>
         <Legend swatch={<View style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: C.mint, borderWidth: 1, borderColor: C.mintInk }} />} text={live.data ? `${live.data.source.name} ${live.data.source.pair} candles` : 'Exchange candles'} />
-        <Legend swatch={<View style={{ width: 14, height: 0, borderTopWidth: 1.5, borderStyle: 'dashed', borderColor: C.plum }} />} text="Chainlink on Fuji" />
+        <Legend swatch={<Svg width={16} height={4}><Line x1={0} x2={16} y1={2} y2={2} stroke={C.plum} strokeWidth={1.6} strokeDasharray="3 3" /></Svg>} text="Chainlink on Fuji" />
         <Legend swatch={<View style={{ width: 0, height: 0, borderLeftWidth: 5, borderRightWidth: 5, borderBottomWidth: 8, borderLeftColor: 'transparent', borderRightColor: 'transparent', borderBottomColor: C.mint }} />} text={`${marks.length} Kumi fills on KumiPerps`} />
       </View>
     </View>

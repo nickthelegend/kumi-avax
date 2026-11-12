@@ -21,7 +21,7 @@ await withBrowser(async browser => {
   await page.locator('[data-testid="create-wallet"]').click();
   await page.locator('[data-testid="finish-onboarding"]').click();
   await page.getByText('Your chats').first().waitFor({ timeout: 60_000 });
-  for (const [name, spec] of pairs.map(p => p.split('='))) {
+  for (const [name, spec] of pairs.map(p => { const i = p.indexOf('='); return [p.slice(0, i), p.slice(i + 1)]; })) {
     const [route, click] = spec.split('#');
     await page.goto(base + route, { waitUntil: 'networkidle' });
     await page.waitForTimeout(4000);

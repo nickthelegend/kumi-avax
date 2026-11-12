@@ -9,7 +9,7 @@ import { withBrowser, qaPage } from './harness.mjs';
 const [base = 'http://127.0.0.1:5341', ...pairs] = process.argv.slice(2);
 const OUT = process.env.SHOTS ?? '/Volumes/Extreme SSD/Projects/grokbot/orchestration/shots/avax-kumi';
 mkdirSync(OUT, { recursive: true });
-const routes = pairs.length ? pairs.map(p => p.split('=')) : [['landing', '/'], ['room', '/room'], ['room-fund', '/room#fund'], ['markets-avax', '/markets/AVAX'], ['markets-btc', '/markets/BTC'], ['crew', '/crew']];
+const routes = pairs.length ? pairs.map(p => { const i = p.indexOf('='); return [p.slice(0, i), p.slice(i + 1)]; }) : [['landing', '/'], ['room', '/room'], ['room-fund', '/room#fund'], ['markets-avax', '/markets/AVAX'], ['markets-btc', '/markets/BTC'], ['crew', '/crew']];
 let failed = false;
 await withBrowser(async browser => {
   for (const [name, route] of routes) {

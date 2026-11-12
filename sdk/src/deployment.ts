@@ -18,7 +18,11 @@ export const DEPLOYMENT = {
     "0x232a67f57752b06e1d847aa37d8abf10de3d70d8",
     "0xcb1268aa3fe4fe543e234e53daa2c3e17de23c5d",
     "0x477d91ac189080ec0b40af4f9ae4246d331ebf5b",
-    "0xfa64a68213d008d36e63d284d0f560beb3f9d2a5"
+    "0xfa64a68213d008d36e63d284d0f560beb3f9d2a5",
+    "0x32616bf908dcf09c383af22fe85ae8a43b8509b3",
+    "0xb2af224b6387d3ffd60dd6254b3e84aff58f8e6c",
+    "0xefcc22be9821e2ddb4ca844e8aa680ac58f84d67",
+    "0x1f9d5d2987d6c74fc5a8c1a0ff8597a2cda6aa03"
   ],
   "crews": [
     {
@@ -48,6 +52,10 @@ export const DEPLOYMENT = {
     "0xcb1268aa3fe4fe543e234e53daa2c3e17de23c5d": "sora",
     "0x477d91ac189080ec0b40af4f9ae4246d331ebf5b": "tae",
     "0xfa64a68213d008d36e63d284d0f560beb3f9d2a5": "lia",
+    "0x32616bf908dcf09c383af22fe85ae8a43b8509b3": "phone-qa-1",
+    "0xb2af224b6387d3ffd60dd6254b3e84aff58f8e6c": "phone-qa-2",
+    "0xefcc22be9821e2ddb4ca844e8aa680ac58f84d67": "phone-qa-3",
+    "0x1f9d5d2987d6c74fc5a8c1a0ff8597a2cda6aa03": "phone-qa-4",
     "0x1c11a95bfbfaa989afc1222d614a8fbd24f75677": "Night Owls vault",
     "0x16e639793291e35db63fc411ffe97da76f35eb2b": "Sunrise Scalpers vault",
     "0x4d598fe9dfb41aa95f2f320f11a95d93acb26c22": "Slow BTC Club vault",
