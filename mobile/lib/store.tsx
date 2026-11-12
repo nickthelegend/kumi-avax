@@ -2,9 +2,9 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState, ty
 import { Platform } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import * as Notifications from 'expo-notifications';
-import { readChannelMessages, readChannels, readCrewList, readCrewMessages, preview, type ChatItem } from '@kumi-avax/sdk';
+import { readChannelMessages, readChannels, readCrewList, readCrewMessages, preview, type AiAnswer, type ChatItem } from '@kumi-avax/sdk';
 import { FACTORY, LOBBY, nameOf, pub } from './chain';
-import { IS_WEB, createWallet, importWallet, loadWallet } from './wallet';
+import { IS_WEB, SLOT, createWallet, importWallet, loadWallet } from './wallet';
 
 /**
  * App state: the wallet address, onboarding, and what this device has read in each chat (for unread badges).
@@ -25,6 +25,9 @@ type Ctx = {
   record: (txs: { hash: string; label: string }[]) => void;
   unread: number;
   setUnread: (n: number) => void;
+  /** Kumi AI answers in each chat, on this device only (the asker's own view; nothing goes on chain). */
+  ai: Record<string, AiAnswer[]>;
+  addAi: (a: AiAnswer) => void;
 };
 export type Activity = { hash: string; label: string; at: number };
 const Store = createContext<Ctx | null>(null);
@@ -34,7 +37,7 @@ export const useApp = () => {
   return v;
 };
 
-const K = { onboarded: 'kumi.onboarded', seen: 'kumi.seen.v1', notified: 'kumi.notified.v1', activity: 'kumi.activity.v1' };
+const K = { onboarded: `kumi.onboarded${SLOT}`, seen: `kumi.seen.v1${SLOT}`, notified: `kumi.notified.v1${SLOT}`, activity: `kumi.activity.v1${SLOT}` };
 async function getItem(k: string) {
   if (IS_WEB) { try { return globalThis.localStorage?.getItem(k) ?? null; } catch { return null; } }
   return SecureStore.getItemAsync(k);
@@ -71,6 +74,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const notified = useRef<Seen>({});
   const [activity, setActivity] = useState<Activity[]>([]);
   const [unread, setUnread] = useState(0);
+  const [ai, setAi] = useState<Record<string, AiAnswer[]>>({});
+  const addAi = useCallback((a: AiAnswer) => setAi(m => ({ ...m, [a.chat]: [...(m[a.chat] ?? []), a].slice(-20) })), []);
 
   useEffect(() => {
     (async () => {
@@ -128,7 +133,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value: Ctx = {
-    ready, address, onboarded, seen, markSeen, activity, record, unread, setUnread,
+    ready, address, onboarded, seen, markSeen, activity, record, unread, setUnread, ai, addAi,
     createWallet: async () => { const a = await createWallet(); setAddress(a); return a; },
     importWallet: async (k: string) => { const a = await importWallet(k); setAddress(a); return a; },
     finishOnboarding: async () => { await setItem(K.onboarded, '1'); setOnboarded(true); },

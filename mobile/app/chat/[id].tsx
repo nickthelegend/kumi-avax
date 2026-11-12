@@ -3,12 +3,15 @@ import { FlatList, KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView,
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { Address } from 'viem';
-import { MARKETS, describe, parseCommand, parseDecimal, readChannelMessages, readChannels, readCrewMessages, sizeFor, price as fmtPrice, size as fmtSize, usd as fmtUsd, signedUsd, type ChatItem } from '@kumi-avax/sdk';
+import { MARKETS, askOf, callerOf, describe, parseCommand, parseDecimal, type AiDraft, readChannelMessages, readChannels, readCrewMessages, sizeFor, price as fmtPrice, size as fmtSize, usd as fmtUsd, signedUsd, type ChatItem } from '@kumi-avax/sdk';
 import { Text, TextInput } from '../../components/T';
 import { Backdrop } from '../../components/Screen';
 import { Sheet, inp } from '../../components/Sheet';
 import { JoinLine, PrivateCard, PrivateSendSheet } from '../../components/Private';
 import { Bubble, CallCard, CopyPill, EventPill, PitchCard } from '../../components/Message';
+import { AiCard, AiPending, AskBubble } from '../../components/Ai';
+import { askAi } from '../../lib/kumiApi';
+import { useBoard } from '../../lib/board';
 import { Btn, Chip, CrewAvatar, Empty, Ic, Notice, Skeleton, TokenLogo, TxLink, st, tap, useBusy } from '../../components/ui';
 import { LOBBY, crewAbi, nameOf, pub, useLive, PERPS, perpsAbi } from '../../lib/chain';
 import { callInChannel, copyCall, joinChannel, leaveChannel, pitchInCrew, sayInChannel, sayInCrew, voteInCrew } from '../../lib/actions';
@@ -25,12 +28,15 @@ export default function ChatRoom() {
   const isCrew = chat.startsWith('c-');
   const channel = isCrew ? -1 : Number(chat.slice(2));
   const crew = (isCrew ? chat.slice(2) : '0x') as Address;
-  const { address, markSeen, record } = useApp();
+  const { address, markSeen, record, ai, addAi } = useApp();
+  const board = useBoard();
+  const [asking, setAsking] = useState<{ q: string; at: number } | null>(null);
+  const inputRef = useRef<any>(null);
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const act = useBusy();
   const [text, setText] = useState(typeof draft === 'string' ? draft : '');
-  const [sheet, setSheet] = useState<null | 'call' | 'private' | { copy: ChatItem } | { tip: ChatItem }>(null);
+  const [sheet, setSheet] = useState<null | 'call' | 'private' | { copy: ChatItem } | { tip: ChatItem } | { draft: AiDraft }>(null);
   const [lastTxs, setLastTxs] = useState<{ hash: string; label: string }[]>([]);
 
   const live = useLive(async () => {
@@ -59,24 +65,40 @@ export default function ChatRoom() {
     for (const it of items) if (it.kind === 'copy') m.set(it.ref, [...(m.get(it.ref) ?? []), it]);
     return m;
   }, [items]);
-  const parsed = isCrew ? parseCommand(text, d?.maxLev ?? 5) : null;
+  const asked = askOf(text);
+  const parsed = isCrew && asked === null ? parseCommand(text, d?.maxLev ?? 5) : null;
+  const statOf = (who: string) => (board.data ? callerOf(board.data, who, isCrew ? undefined : channel) ?? callerOf(board.data, who) : null);
   // Runs of joins and leaves fold into one quiet line, so messages and trade calls lead the feed.
-  type Row = ChatItem | { kind: 'joins'; key: string; items: ChatItem[]; who: string; ts: number };
+  type Row = ChatItem | { kind: 'joins'; key: string; items: ChatItem[]; who: string; ts: number } | { kind: 'ask'; key: string; q: string; who: string; ts: number } | { kind: 'ai'; key: string; a: (typeof ai)[string][number]; who: string; ts: number } | { kind: 'ai-pending'; key: string; who: string; ts: number };
+  const mineAi = ai[chat] ?? [];
   const list = useMemo(() => {
     const rows: Row[] = [];
+    // Kumi AI turns live on this phone; they sit in the thread by time between the on-chain messages.
+    const local: Row[] = [];
+    for (const a of mineAi) { local.push({ kind: 'ask', key: `ask:${a.id}`, q: a.question, who: '', ts: a.at / 1000 - 0.001 }, { kind: 'ai', key: a.id, a, who: '', ts: a.at / 1000 }); }
+    if (asking) local.push({ kind: 'ask', key: 'ask:pending', q: asking.q, who: '', ts: asking.at / 1000 }, { kind: 'ai-pending', key: 'ai:pending', who: '', ts: asking.at / 1000 + 0.001 });
+    let li = 0;
     for (const it of items) {
+      while (li < local.length && local[li]!.ts < it.ts) rows.push(local[li++]!);
       const last = rows[rows.length - 1];
       if (it.kind === 'join' || it.kind === 'leave') {
         if (last && last.kind === 'joins') { last.items.push(it); continue; }
         rows.push({ kind: 'joins', key: `joins:${it.key}`, items: [it], who: '', ts: it.ts });
       } else rows.push(it);
     }
+    while (li < local.length) rows.push(local[li++]!);
     return rows.reverse();
-  }, [items]);
+  }, [items, mineAi, asking]);
 
-  const sendText = () => act.run('Sending', async () => {
+  const sendText = () => act.run(asked !== null ? 'Asking' : 'Sending', async () => {
     const t = text.trim();
     if (!t) return;
+    if (asked !== null) {
+      if (!asked) throw Error('Ask something after /ask, like /ask who is the best caller here?');
+      setText(''); setAsking({ q: asked, at: Date.now() });
+      try { addAi(await askAi(chat, asked)); } catch (e) { setText(t); throw e; } finally { setAsking(null); }
+      return;
+    }
     let tx;
     if (isCrew && parsed) {
       if (!parsed.ok) throw Error(parsed.error);
@@ -87,13 +109,16 @@ export default function ChatRoom() {
 
   const renderItem = ({ item: row, index }: { item: Row; index: number }) => {
     if (row.kind === 'joins') return <JoinLine items={row.items} me={address} />;
+    if (row.kind === 'ask') return <AskBubble q={row.q} />;
+    if (row.kind === 'ai-pending') return <AiPending />;
+    if (row.kind === 'ai') return <AiCard a={row.a} isCrew={isCrew} onDraft={dr => (isCrew ? setText(dr.command ?? '') : setSheet({ draft: dr }))} />;
     const m = row;
     const prev = list[index + 1];
     const showWho = !prev || prev.who !== m.who || prev.kind !== 'chat' || m.ts - prev.ts > 600;
     switch (m.kind) {
-      case 'chat': return <Bubble m={m} me={address} showWho={showWho} />;
+      case 'chat': return <Bubble m={m} me={address} showWho={showWho} stat={showWho ? statOf(m.who) : null} />;
       case 'private': return <PrivateCard m={m} me={address} />;
-      case 'call': return <CallCard m={m} me={address} copies={copiesOf.get(m.index) ?? []} canCopy={!!d?.joined} busy={act.busy !== null && sheet !== null} onCopy={() => setSheet({ copy: m })} onTip={() => setSheet({ tip: m })} />;
+      case 'call': return <CallCard m={m} me={address} stat={statOf(m.who)} copies={copiesOf.get(m.index) ?? []} canCopy={!!d?.joined} busy={act.busy !== null && sheet !== null} onCopy={() => setSheet({ copy: m })} onTip={() => setSheet({ tip: m })} />;
       case 'copy': return <CopyPill m={m} me={address} />;
       case 'pitch': return <PitchCard crew={crew} m={m} me={address} isMember={!!d?.joined} busy={act.busy !== null} onVote={(pid, yes) => act.run('Voting', async () => { const tx = await voteInCrew(crew, pid, yes); record([tx]); setLastTxs([tx]); live.reload(); })} />;
       case 'join': return <EventPill m={m} me={address} tone="mint" icon="plus" text="joined the chat" />;
@@ -154,7 +179,7 @@ export default function ChatRoom() {
         <View style={{ paddingHorizontal: 12, paddingTop: 8, paddingBottom: insets.bottom + 10, backgroundColor: 'rgba(255,249,238,0.97)', borderTopWidth: 1, borderColor: C.line, gap: 8 }}>
           {act.error && <Notice error>{act.error}</Notice>}
           {lastTxs.length > 0 && !act.busy && <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}><Text style={{ fontSize: 12, color: C.mintInk, fontWeight: '700' }}>Sent on Fuji</Text>{lastTxs.map(t => <TxLink key={t.hash} hash={t.hash} label={t.label} />)}</View>}
-          {act.busy && <Text style={{ fontSize: 12.5, color: C.ink2, fontWeight: '600' }}>{act.busy}… signing on this phone</Text>}
+          {act.busy && act.busy !== 'Asking' && <Text style={{ fontSize: 12.5, color: C.ink2, fontWeight: '600' }}>{act.busy}… signing on this phone</Text>}
           {d && !d.joined ? (
             isCrew ? (
               <View style={{ gap: 8 }}>
@@ -172,6 +197,7 @@ export default function ChatRoom() {
                   {HINTS.map(([h, tone]) => <Pressable key={h} onPress={() => { tap(); setText(h); }} style={{ height: 32, paddingHorizontal: 12, borderRadius: 999, justifyContent: 'center', backgroundColor: tone === 'coral' ? C.coralSoft : tone === 'pink' ? C.pinkSoft : tone === 'butter' ? C.butterSoft : C.mintSoft }}><Text style={{ fontWeight: '700', fontSize: 12.5, color: tone === 'coral' ? C.coralInk : tone === 'pink' ? C.pinkInk : C.butterInk }}>{h}</Text></Pressable>)}
                 </ScrollView>
               )}
+              {asked !== null && <Text testID="ask-hint" style={{ fontSize: 12.5, color: C.plum3, fontWeight: '700' }}>Kumi AI · only you see the answer</Text>}
               {parsed && <Text style={{ fontSize: 12.5, color: parsed.ok ? C.coralInk : C.pinkInk, fontWeight: '600' }}>{parsed.ok ? `Pitch: ${describe(parsed.cmd)}. Your shares vote yes; it trades when yes passes 50%.` : parsed.error}</Text>}
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
                 {isCrew && (
@@ -185,8 +211,13 @@ export default function ChatRoom() {
                   </Pressable>
                 )}
                 <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', paddingLeft: 16, paddingRight: 5, height: 54, borderRadius: 27, backgroundColor: '#fff', borderWidth: 3, borderColor: '#fff', borderBottomWidth: 6, borderBottomColor: C.edge }}>
-                  <TextInput testID="composer" value={text} onChangeText={setText} placeholder={isCrew ? 'Message the crew, or /long AVAX 3x 20%' : `Message ${d.name}`} placeholderTextColor={C.ink3} maxLength={280} returnKeyType="send" onSubmitEditing={sendText}
+                  <TextInput ref={inputRef} testID="composer" value={text} onChangeText={setText} placeholder={isCrew ? 'Message the crew, or /long AVAX 3x 20%' : `Message ${d.name}`} placeholderTextColor={C.ink3} maxLength={280} returnKeyType="send" onSubmitEditing={sendText}
                     style={{ flex: 1, fontSize: 15.5, color: C.ink, height: 44, outlineStyle: 'none' } as any} />
+                  {!text.trim() && (
+                    <Pressable testID="ask-ai" accessibilityRole="button" accessibilityLabel="Ask Kumi AI" onPress={() => { tap(); setText('/ask '); requestAnimationFrame(() => inputRef.current?.focus()); }} hitSlop={6} style={{ width: 38, height: 38, borderRadius: 19, alignItems: 'center', justifyContent: 'center', backgroundColor: C.plumSoft, marginRight: 4 }}>
+                      <Ic name="spark" size={18} color={C.plum} />
+                    </Pressable>
+                  )}
                   <Pressable testID="send" accessibilityRole="button" accessibilityLabel="Send" disabled={!text.trim() || act.busy !== null} onPress={sendText} style={{ width: 42, height: 42, borderRadius: 21, alignItems: 'center', justifyContent: 'center', backgroundColor: text.trim() ? C.coral : C.coralSoft }}>
                     <Ic name="send" size={18} color="#fff" />
                   </Pressable>
@@ -199,6 +230,7 @@ export default function ChatRoom() {
       </KeyboardAvoidingView>
 
       {sheet === 'call' && <CallSheet channel={channel} defaultMarket={d?.market ?? 0} onClose={() => setSheet(null)} onDone={txs => { record(txs); setLastTxs(txs); live.reload(); }} />}
+      {sheet && typeof sheet === 'object' && 'draft' in sheet && <CallSheet channel={channel} defaultMarket={d?.market ?? 0} init={sheet.draft} onClose={() => setSheet(null)} onDone={txs => { record(txs); setLastTxs(txs); live.reload(); }} />}
       {sheet === 'private' && address && <PrivateSendSheet me={address} choices={(d?.memberList ?? []).filter(a => a.toLowerCase() !== address.toLowerCase())} where={{ kind: 'send', crew }} title="Send privately" onClose={() => setSheet(null)} onDone={txs => { record(txs); setLastTxs(txs); live.reload(); }} />}
       {sheet && typeof sheet === 'object' && 'tip' in sheet && address && <PrivateSendSheet me={address} to={sheet.tip.who} where={{ kind: 'tip', channel, ref: sheet.tip.index }} title={`Tip ${nameOf(sheet.tip.who)} privately`} onClose={() => setSheet(null)} onDone={txs => { record(txs); setLastTxs(txs); live.reload(); }} />}
       {sheet && typeof sheet === 'object' && 'copy' in sheet && <CopySheet channel={channel} call={sheet.copy} onClose={() => setSheet(null)} onDone={txs => { record(txs); setLastTxs(txs.slice(-2)); live.reload(); }} />}
@@ -219,12 +251,12 @@ function Seg<T extends string | number>({ value, options, onChange }: { value: T
 }
 
 /** Post a trade call to a lobby channel: market, side, leverage, suggested margin, a note. */
-function CallSheet({ channel, defaultMarket, onClose, onDone }: { channel: number; defaultMarket: number; onClose: () => void; onDone: (txs: { hash: string; label: string }[]) => void }) {
-  const [market, setMarket] = useState(defaultMarket);
-  const [long, setLong] = useState(true);
-  const [lev, setLev] = useState(3);
-  const [margin, setMargin] = useState('50');
-  const [note, setNote] = useState('');
+function CallSheet({ channel, defaultMarket, init, onClose, onDone }: { channel: number; defaultMarket: number; init?: AiDraft; onClose: () => void; onDone: (txs: { hash: string; label: string }[]) => void }) {
+  const [market, setMarket] = useState(init ? (MARKETS.find(m => m.symbol === init.market)?.id ?? defaultMarket) : defaultMarket);
+  const [long, setLong] = useState(init ? init.side === 'long' : true);
+  const [lev, setLev] = useState(init?.leverage ?? 3);
+  const [margin, setMargin] = useState(String(init?.marginUsdc ?? 50));
+  const [note, setNote] = useState(init?.note ?? '');
   const act = useBusy();
   const mk = MARKETS[market]!;
   return (

@@ -10,6 +10,7 @@ import { Screen } from '../../components/Screen';
 import { Avatar, Btn, Card, Chip, CrewAvatar, Notice, Obj, Skeleton, TokenLogo, TxLink, ago, st, tap, useBusy } from '../../components/ui';
 import { FACTORY, FAUCET_URL, pub, readAccount, useLive } from '../../lib/chain';
 import { getTestUsdc } from '../../lib/actions';
+import { getGas } from '../../lib/kumiApi';
 import { useApp } from '../../lib/store';
 import { IS_WEB } from '../../lib/wallet';
 import { PrivateBalance } from '../../components/PrivateBalance';
@@ -66,7 +67,8 @@ export default function Wallet() {
 
       {acct.error && !a && <Notice error>Could not read this wallet from Fuji: {acct.error}</Notice>}
       {IS_WEB && <Notice>Web preview: the key sits in this browser's storage. On the phone it lives in the iOS Keychain / Android Keystore.</Notice>}
-      {noGas && <Notice error>No Fuji AVAX yet, so this wallet can't pay gas. Get some from the Fuji faucet (free test AVAX), then come back. Gas was about 160 wei while we built, so 0.001 AVAX lasts thousands of messages.</Notice>}
+      {noGas && <Notice error>No Fuji AVAX for gas yet.</Notice>}
+      {noGas && <Btn testID="get-gas" title="Get gas from Kumi" tone="mint" icon="bolt" busy={act.busy !== null} onPress={() => act.run('Getting gas', async () => { const g = await getGas(); record([{ hash: g.hash, label: 'Gas from Kumi' }]); acct.reload(); })} />}
       {act.error && <Notice error>{act.error}</Notice>}
 
       <PrivateBalance me={address} publicUsdc={a?.usdc} onTxs={t => { record(t); acct.reload(); }} />

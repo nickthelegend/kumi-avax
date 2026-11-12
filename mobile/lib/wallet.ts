@@ -10,7 +10,10 @@ import type { Hex } from 'viem';
  * The web preview (Expo web, used for screenshots) has no keystore: there the key sits in this browser's
  * localStorage, and the app says so on the wallet screen.
  */
-const KEY = 'kumi.wallet.v1';
+/** QA only: Metro started with EXPO_PUBLIC_KUMI_SLOT=<name> keeps a separate wallet and app state on this device, so a
+ *  first run (onboarding, the gas-free start) can be shown without touching the phone's real wallet. Unset in builds. */
+export const SLOT = process.env.EXPO_PUBLIC_KUMI_SLOT ? `.${process.env.EXPO_PUBLIC_KUMI_SLOT.replace(/[^a-z0-9]/gi, '')}` : '';
+const KEY = `kumi.wallet.v1${SLOT}`;
 const OPTS = { keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK_THIS_DEVICE_ONLY };
 export const IS_WEB = Platform.OS === 'web';
 let cached: PrivateKeyAccount | null = null;

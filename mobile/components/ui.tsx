@@ -155,6 +155,17 @@ export function Brand({ size = 30, label = true }: { size?: number; label?: bool
   );
 }
 
+/** A caller's on-chain reputation next to their name: rank and win rate from the leaderboard (crown for the top 3). */
+export function CallerBadge({ rank, winRate, light }: { rank: number; winRate: number | null; light?: boolean }) {
+  if (winRate === null) return null;
+  return (
+    <View testID="caller-badge" accessibilityLabel={`Caller rank ${rank}, ${Math.round(winRate * 100)}% wins`} style={{ flexDirection: 'row', alignItems: 'center', gap: 3, paddingLeft: rank <= 3 && winRate >= 0.5 ? 2 : 6, paddingRight: 6, height: 18, borderRadius: 9, backgroundColor: light ? 'rgba(255,255,255,0.92)' : C.butterSoft }}>
+      {rank <= 3 && winRate >= 0.5 && <Image source={art.obj.crown} style={{ width: 15, height: 15 }} contentFit="contain" />}
+      <Text style={{ fontSize: 10.5, fontWeight: '800', color: C.butterInk }}>#{rank} · {Math.round(winRate * 100)}%</Text>
+    </View>
+  );
+}
+
 /** "Kumi test account" tag next to the names of Kumi's own seeded accounts. */
 export function TestTag({ address }: { address: string }) {
   if (!isTestAccount(address)) return null;
@@ -195,6 +206,8 @@ const PATHS: Record<string, string> = {
   lock: 'M6 11h12v9H6zM8.5 11V8a3.5 3.5 0 0 1 7 0v3M12 15v2',
   eye: 'M2.5 12s3.5-6.5 9.5-6.5 9.5 6.5 9.5 6.5-3.5 6.5-9.5 6.5S2.5 12 2.5 12zM12 14.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z',
   link: 'M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1',
+  trophy: 'M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4.5M16 6h3a3 3 0 0 1-3 4.5M12 13v4M8.5 20h7M10 17h4',
+  spark: 'M11 3l1.9 5.6L18.5 10.5l-5.6 1.9L11 18l-1.9-5.6L3.5 10.5l5.6-1.9zM18.5 3.5v3M17 5h3',
 };
 export function Ic({ name, size = 18, color = C.ink }: { name: string; size?: number; color?: string }) {
   return <Svg width={size} height={size} viewBox="0 0 24 24" fill="none"><Path d={PATHS[name] ?? PATHS.x!} stroke={color} strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" /></Svg>;

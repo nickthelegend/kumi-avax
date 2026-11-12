@@ -7,7 +7,7 @@ import { Text } from './T';
 import { Ic, tap } from './ui';
 import { C } from '../lib/theme';
 
-const ICON: Record<string, string> = { index: 'chat', market: 'chart', wallet: 'wallet' };
+const ICON: Record<string, string> = { index: 'chat', market: 'chart', top: 'trophy', wallet: 'wallet' };
 /** Space screens leave at the bottom for the floating tab bar. */
 export const TAB_SPACE = 104;
 

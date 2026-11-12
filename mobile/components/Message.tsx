@@ -2,16 +2,16 @@ import { View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInDown, ReduceMotion } from 'react-native-reanimated';
 import type { Address } from 'viem';
-import { MARKETS, price as fmtPrice, size as fmtSize, usd as fmtUsd, signedUsd, type ChatItem } from '@kumi-avax/sdk';
+import { MARKETS, price as fmtPrice, size as fmtSize, usd as fmtUsd, signedUsd, type CallerStat, type ChatItem } from '@kumi-avax/sdk';
 import { Text } from './T';
-import { Avatar, Btn, Chip, Ic, TestTag, TokenLogo, TxLink, ago } from './ui';
+import { Avatar, Btn, CallerBadge, Chip, Ic, TestTag, TokenLogo, TxLink, ago } from './ui';
 import { Image } from 'expo-image';
 import { C, F, TONE, art, type Tone } from '../lib/theme';
 import { crewAbi, nameOf, pub, useLive } from '../lib/chain';
 
 const enter = FadeInDown.duration(260).reduceMotion(ReduceMotion.System);
 
-export function Bubble({ m, me, showWho }: { m: ChatItem; me?: string | null; showWho: boolean }) {
+export function Bubble({ m, me, showWho, stat }: { m: ChatItem; me?: string | null; showWho: boolean; stat?: CallerStat | null }) {
   const mine = !!me && m.who.toLowerCase() === me.toLowerCase();
   const isCmd = m.text.startsWith('/');
   return (
@@ -22,6 +22,7 @@ export function Bubble({ m, me, showWho }: { m: ChatItem; me?: string | null; sh
           <View style={{ flexDirection: 'row', gap: 6, alignItems: 'center', marginBottom: 3, marginHorizontal: 4, justifyContent: mine ? 'flex-end' : 'flex-start' }}>
             <Text style={{ fontWeight: '700', fontSize: 13, color: C.ink }}>{nameOf(m.who, me)}</Text>
             {!mine && <TestTag address={m.who} />}
+            {stat && <CallerBadge rank={stat.rank} winRate={stat.winRate} />}
             <Text style={{ fontSize: 11.5, color: C.ink3 }}>{ago(m.ts)}</Text>
           </View>
         )}
@@ -47,7 +48,7 @@ export function EventPill({ m, me, tone, icon, text }: { m: ChatItem; me?: strin
 }
 
 /** A lobby trade call, drawn like the web's trade card: coral top for longs, plum for shorts. */
-export function CallCard({ m, me, copies, canCopy, onCopy, onTip, busy }: { m: ChatItem; me?: string | null; copies: ChatItem[]; canCopy: boolean; onCopy: () => void; onTip?: () => void; busy?: boolean }) {
+export function CallCard({ m, me, copies, canCopy, onCopy, onTip, busy, stat }: { m: ChatItem; me?: string | null; copies: ChatItem[]; canCopy: boolean; onCopy: () => void; onTip?: () => void; busy?: boolean; stat?: CallerStat | null }) {
   const mk = MARKETS[m.market ?? 0]!;
   const mine = !!me && m.who.toLowerCase() === me.toLowerCase();
   const copiedByMe = !!me && copies.some(c => c.who.toLowerCase() === me.toLowerCase());
@@ -58,7 +59,10 @@ export function CallCard({ m, me, copies, canCopy, onCopy, onTip, busy }: { m: C
           style={{ flexDirection: 'row', alignItems: 'center', gap: 12, padding: 14 }}>
           <TokenLogo sym={mk.symbol} size={40} />
           <View style={{ flex: 1 }}>
-            <Text style={{ fontFamily: F.mono, fontSize: 10.5, letterSpacing: 1, color: 'rgba(255,255,255,0.85)' }}>{nameOf(m.who, me).toUpperCase()} CALLED · #{m.index}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+              <Text style={{ fontFamily: F.mono, fontSize: 10.5, letterSpacing: 1, color: 'rgba(255,255,255,0.85)' }}>{nameOf(m.who, me).toUpperCase()} CALLED · #{m.index}</Text>
+              {stat && <CallerBadge rank={stat.rank} winRate={stat.winRate} light />}
+            </View>
             <Text style={{ fontFamily: F.display, fontSize: 25, lineHeight: 30, color: '#fff' }}>{m.isLong ? 'LONG' : 'SHORT'} {mk.symbol} {m.leverage}X</Text>
             <Text style={{ fontSize: 13, color: 'rgba(255,255,255,0.92)' }}>{fmtUsd(m.amount, 0)} tUSDC margin · {fmtUsd(m.amount * BigInt(m.leverage ?? 1), 0)} notional</Text>
           </View>
