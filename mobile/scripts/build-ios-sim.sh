@@ -28,7 +28,7 @@ cd "$MOBILE"
 APP="$MOBILE/ios/build/Build/Products/Release-iphonesimulator/Kumi.app"
 mkdir -p "$OUT"
 rm -f "$OUT/Kumi-iOS-Simulator.zip"
-(cd "${APP:h}" && ditto -c -k --sequesterRsrc --keepParent Kumi.app "$OUT/Kumi-iOS-Simulator.zip")
+(cd "${APP:h}" && ditto -c -k --norsrc --keepParent Kumi.app "$OUT/Kumi-iOS-Simulator.zip")
 SHA=$(shasum -a 256 "$OUT/Kumi-iOS-Simulator.zip" | cut -d' ' -f1)
 BYTES=$(stat -f %z "$OUT/Kumi-iOS-Simulator.zip")
 VERSION=$(node -p "require('$MOBILE/app.json').expo.version")
