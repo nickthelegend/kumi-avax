@@ -68,6 +68,16 @@ contract KumiCrewTest is CrewBase {
         crew.vote(id, true);
     }
 
+    function test_decidingVote_withTooLittleGas_revertsInsteadOfSilentlyFailing() public {
+        uint256 id = _pitchLong(alice, AVAX, 3, 2000);
+        vm.prank(bob);
+        vm.expectRevert(abi.encodeWithSelector(KumiCrew.NeedMoreGas.selector, 2_500_000));
+        crew.vote{gas: 1_000_000}(id, true);
+        assertFalse(crew.getProposal(id).executed);
+        _vote(bob, id, true);
+        assertTrue(crew.getProposal(id).executed);
+    }
+
     function test_noVotesBlock_andExecuteNeedsThreshold() public {
         uint256 id = _pitchLong(bob, AVAX, 2, 1000); // 300 yes
         _vote(carol, id, false);

@@ -23,6 +23,7 @@ contract KumiCrew {
     uint256 public constant SHARE_SCALE = 1e12; // 1 tUSDC (1e6) buys 1e18 shares at the start
     uint256 public constant MAX_TEXT = 280;
     uint256 public constant MAX_MEMBERS = 24;
+    uint256 public constant EXEC_GAS = 2_500_000;
 
     enum Kind { Open, Close, SetCaptain, AddMember }
     enum FeedKind { Chat, Pitch, VoteYes, VoteNo, Executed, ExecFailed, Deposit, Ragequit, CaptainTrade, MemberAdded, Expired }
@@ -115,6 +116,7 @@ contract KumiCrew {
     error ExitCostExceedsShare();
     error OnlySelf();
     error TooManyMembers();
+    error NeedMoreGas(uint256 minimum);
 
     modifier nonReentrant() {
         if (locked != 1) revert Reentrancy();
@@ -336,6 +338,9 @@ contract KumiCrew {
         if (support) {
             (uint256 yes,, uint256 needed) = tally(id);
             if (yes >= needed && yes > 0) {
+                // A deciding vote must carry enough gas to execute. Without this floor, eth_estimateGas would
+                // settle on the cheaper path where the inner call runs out of gas and is caught.
+                if (gasleft() < EXEC_GAS) revert NeedMoreGas(EXEC_GAS);
                 try this.executeFromVote(id) {}
                 catch (bytes memory reason) {
                     emit ExecutionFailed(id, reason);

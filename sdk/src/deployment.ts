@@ -2,12 +2,12 @@
 export const DEPLOYMENT = {
   "usdc": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
   "perps": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
-  "factory": "0xf0d3a5f11d47c605e7b962a837b31fc9d7342b82",
-  "crewImplementation": "0xb593cf5ff78c49b09295797b336f1665029cb725",
+  "factory": "0x7be7c269acf2e0d0b7074e9a0bdc7dfb730b778c",
+  "crewImplementation": "0x39d12adf89cb16756a4d5e775efbc0e97f68a2ef",
   "crews": [
     {
       "name": "Night Owls",
-      "address": "0x9Ee1B1Eaaed68B16d3725489db587A1A61cF91d5"
+      "address": "0x1c11A95bfBfaA989afC1222d614A8FbD24f75677"
     }
   ],
   "names": {
@@ -22,8 +22,8 @@ export const DEPLOYMENT = {
     "deploy_KumiPerps": "0x69140d86347ea5e44e9916a1ffbef9b87b3013e9f62a46c043ebe9c44fae0c17",
     "list_AVAX-USD": "0xd6be4f137a7d0252127fb440e1ba6a6ac9c35a1d94ab7775da93d008e96bafd5",
     "list_BTC-USD": "0x8c87a9dc0180642bb7074804697e14ed9f740376883ae5430ec2f830611223ca",
-    "deploy_KumiCrew_implementation": "0x2c95cae3c25e7bd89b32c6f6e5d23edf8943b5430b9f1a69031bcb8d6837e16b",
-    "deploy_KumiCrewFactory": "0xcf0e4d261629716e52b0406bea727bb85514f100f649d1055cc0556ad30e7091",
-    "create_crew_night_owls": "0xa02bac6e7cb15586763b3c7f984ed5acf36062b980b1816d10c1775f58af1534"
+    "deploy_KumiCrew_implementation": "0xaf19b7602ffae6db231e84bce357048f05c2deab346f3864f441190486ed3b74",
+    "deploy_KumiCrewFactory": "0x5177a48405f2a8519d505a2cb632fb779b80d7ae7cd1d27e6a31ce23c6f11a13",
+    "create_crew_night_owls": "0x82cf5d3c08bf69f366c89d7c0ff14510364c9f7de70760de6a78871f18f628f1"
   }
 } as const;
