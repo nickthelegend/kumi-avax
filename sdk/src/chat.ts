@@ -12,7 +12,7 @@ import { price as fmtPrice, size as fmtSize, usd as fmtUsd } from './format.ts';
 
 export const LobbyKind = { Chat: 0, Call: 1, Copy: 2, Join: 3, Leave: 4 } as const;
 
-export type ChatKind = 'chat' | 'call' | 'copy' | 'join' | 'leave' | 'pitch' | 'vote-yes' | 'vote-no' | 'executed' | 'failed' | 'deposit' | 'ragequit' | 'captain' | 'member' | 'expired';
+export type ChatKind = 'private' | 'chat' | 'call' | 'copy' | 'join' | 'leave' | 'pitch' | 'vote-yes' | 'vote-no' | 'executed' | 'failed' | 'deposit' | 'ragequit' | 'captain' | 'member' | 'expired';
 
 export type ChatItem = {
   key: string;
@@ -35,7 +35,17 @@ export type ChatItem = {
   size?: bigint;
   /** lobby copy: the copier's order tx */
   orderTx?: `0x${string}`;
+  /** private: the eERC private send this message points to (`kumi:private:<tx>`); its amount is not on the chain */
+  privateTx?: `0x${string}`;
 };
+
+const PRIVATE_RE = /^kumi:private:(0x[0-9a-fA-F]{64})$/;
+/** A chat message that points to an eERC private send becomes a 'private' item (checked against the chain by the app). */
+function privateOf<T extends ChatItem>(m: T): T {
+  if (m.kind !== 'chat') return m;
+  const hit = PRIVATE_RE.exec(m.text.trim());
+  return hit ? { ...m, kind: 'private', privateTx: hit[1]!.toLowerCase() as `0x${string}` } : m;
+}
 
 export type Channel = {
   id: number; name: string; topic: string; creator: Address; market: number; createdAt: number;
@@ -72,7 +82,7 @@ export async function readChannelMessages(client: PublicClient, lobby: Address, 
     key: `lobby:${id}:${from + i}`, source: 'lobby', index: from + i, kind: LOBBY_KIND[m.kind] ?? 'chat', who: m.who, ts: Number(m.ts),
     block: m.blockNumber, text: m.text, ref: Number(m.ref), amount: m.margin, market: m.market, isLong: m.isLong, leverage: m.leverage,
     price: m.price, size: m.size, orderTx: m.orderTx === `0x${'0'.repeat(64)}` ? undefined : m.orderTx,
-  }));
+  } as ChatItem)).map(privateOf);
 }
 
 /** The last `max` entries of a crew's on-chain feed, oldest first. */
@@ -84,7 +94,7 @@ export async function readCrewMessages(client: PublicClient, crew: Address, max 
   return rows.map((f, i) => ({
     key: `crew:${crew}:${from + i}`, source: 'crew', index: from + i, kind: CREW_KIND[f.kind] ?? 'chat', who: f.who, ts: Number(f.ts),
     block: f.blockNumber, text: f.text, ref: Number(f.ref), amount: f.amount,
-  }));
+  } as ChatItem)).map(privateOf);
 }
 
 export type CrewSummary = { address: Address; name: string; members: Address[]; feedLength: number; nav: bigint; isMember: boolean };
@@ -109,6 +119,7 @@ export function preview(m: ChatItem, nameOf: (a: string) => string): string {
   const mk = m.market !== undefined ? MARKETS[m.market] : undefined;
   switch (m.kind) {
     case 'chat': return `${who}: ${m.text}`;
+    case 'private': return `${who} sent privately · amount hidden`;
     case 'call': return `${who} called ${m.isLong ? 'Long' : 'Short'} ${mk?.symbol ?? '?'} ${m.leverage}x, ${fmtUsd(m.amount, 0)} tUSDC`;
     case 'copy': return `${who} copied: ${m.isLong ? 'long' : 'short'} ${fmtSize(m.size ?? 0n, mk?.sizeDp ?? 2)} ${mk?.symbol ?? ''} at $${fmtPrice(m.price ?? 0n, mk?.priceDp ?? 2)}`;
     case 'join': return `${who} joined`;
