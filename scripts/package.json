@@ -1,0 +1,21 @@
+{
+  "name": "@kumi-avax/scripts",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "abi": "node gen-abi.mjs",
+    "keys": "node fuji/keys.ts",
+    "fund": "node fuji/fund.ts",
+    "deploy": "node fuji/deploy.ts",
+    "maker": "node fuji/maker.ts"
+  },
+  "dependencies": {
+    "@kumi-avax/sdk": "workspace:*",
+    "viem": "2.57.13"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "playwright-core": "1.56.1",
+    "typescript": "~5.9.3"
+  }
+}

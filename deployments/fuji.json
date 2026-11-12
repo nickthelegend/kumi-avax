@@ -1,0 +1,603 @@
+{
+  "network": {
+    "name": "Avalanche Fuji C-Chain",
+    "chainId": 43113,
+    "rpc": "https://api.avax-test.network/ext/bc/C/rpc",
+    "explorer": "https://testnet.snowtrace.io"
+  },
+  "contracts": {
+    "usdc": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+    "perps": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+    "markets": [
+      {
+        "id": 0,
+        "pair": "AVAX-USD",
+        "chainlinkFeed": "0x5498BB86BC934c8D34FDA08E81D444153d0D06aD",
+        "heartbeatS": 600,
+        "maxAgeS": 1800,
+        "tick": "100000",
+        "lot": "10000000000000000",
+        "imBps": 1000,
+        "mmBps": 500,
+        "bandBps": 500,
+        "liqFeeBps": 100
+      },
+      {
+        "id": 1,
+        "pair": "BTC-USD",
+        "chainlinkFeed": "0x31CF013A08c6Ac228C94551d535d5BAfE19c602a",
+        "heartbeatS": 86400,
+        "maxAgeS": 93600,
+        "tick": "100000000",
+        "lot": "10000000000000",
+        "imBps": 1000,
+        "mmBps": 500,
+        "bandBps": 500,
+        "liqFeeBps": 100
+      }
+    ],
+    "crewImplementation": "0xb593cf5ff78c49b09295797b336f1665029cb725",
+    "factory": "0xf0d3a5f11d47c605e7b962a837b31fc9d7342b82",
+    "seeded": true,
+    "crews": [
+      {
+        "name": "Night Owls",
+        "address": "0x9Ee1B1Eaaed68B16d3725489db587A1A61cF91d5",
+        "policy": {
+          "thresholdBps": 5001,
+          "votingPeriod": 86400,
+          "maxLeverage": 5,
+          "maxSlippageBps": 100,
+          "captainMaxLeverage": 2,
+          "captainMaxBps": 1000,
+          "captainTradesPerDay": 2
+        },
+        "members": {
+          "mika": "0x857429F6d1304B8ef42De42a0696f52a5FBE3acF",
+          "bo": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+          "ren": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363"
+        },
+        "captain": "mika"
+      }
+    ]
+  },
+  "txs": [
+    {
+      "label": "fund_deployer",
+      "from": "0x86076053d71E1c95b3c08e68BA39049024D69E67",
+      "to": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "hash": "0x710049b64a383902a742a35a0d073898300e80d112c65cc74e10135b55b2a557",
+      "status": "success",
+      "block": 60939906,
+      "gasUsed": 21000,
+      "confirmMs": 2592,
+      "at": "2026-11-12T09:41:30.614Z"
+    },
+    {
+      "label": "gas_maker",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "hash": "0xb17e558bf4814d3b43ae34e0c2d2a5698b63869f80b303a7a57b6402e4d67e65",
+      "status": "success",
+      "block": 60939912,
+      "gasUsed": 21000,
+      "confirmMs": 5870,
+      "at": "2026-11-12T09:41:36.639Z"
+    },
+    {
+      "label": "gas_mika",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": "0x857429F6d1304B8ef42De42a0696f52a5FBE3acF",
+      "hash": "0x34e581d3cde9b4384a716185f70bfdb25a8749215aebcf78373d1bf903267745",
+      "status": "success",
+      "block": 60939916,
+      "gasUsed": 21000,
+      "confirmMs": 3574,
+      "at": "2026-11-12T09:41:40.376Z"
+    },
+    {
+      "label": "gas_bo",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+      "hash": "0xbdd7a7506ab647af85e67cbf6342bc2dae81a713d7e5f7a380e81b852b522c0d",
+      "status": "success",
+      "block": 60939919,
+      "gasUsed": 21000,
+      "confirmMs": 3860,
+      "at": "2026-11-12T09:41:44.400Z"
+    },
+    {
+      "label": "gas_ren",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363",
+      "hash": "0x1eec886dcac266498073a01c57506142fa7d7539d3f698a91ecf3da4294704e4",
+      "status": "success",
+      "block": 60939943,
+      "gasUsed": 21000,
+      "confirmMs": 2621,
+      "at": "2026-11-12T09:42:18.454Z"
+    },
+    {
+      "label": "deploy_TestUSDC",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": null,
+      "hash": "0x2c641336d5e16c0a44bbbc2b532c62d8a6599f043cf14835e3a09718a14a54bc",
+      "status": "success",
+      "block": 60939958,
+      "gasUsed": 453103,
+      "confirmMs": 3088,
+      "at": "2026-11-12T09:42:38.682Z"
+    },
+    {
+      "label": "deploy_KumiPerps",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": null,
+      "hash": "0x69140d86347ea5e44e9916a1ffbef9b87b3013e9f62a46c043ebe9c44fae0c17",
+      "status": "success",
+      "block": 60939962,
+      "gasUsed": 4963437,
+      "confirmMs": 3928,
+      "at": "2026-11-12T09:42:42.612Z"
+    },
+    {
+      "label": "list_AVAX-USD",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xd6be4f137a7d0252127fb440e1ba6a6ac9c35a1d94ab7775da93d008e96bafd5",
+      "status": "success",
+      "block": 60939966,
+      "gasUsed": 148919,
+      "confirmMs": 4675,
+      "at": "2026-11-12T09:42:47.449Z"
+    },
+    {
+      "label": "list_BTC-USD",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x8c87a9dc0180642bb7074804697e14ed9f740376883ae5430ec2f830611223ca",
+      "status": "success",
+      "block": 60939971,
+      "gasUsed": 131864,
+      "confirmMs": 3565,
+      "at": "2026-11-12T09:42:51.178Z"
+    },
+    {
+      "label": "deploy_KumiCrew_implementation",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": null,
+      "hash": "0x2c95cae3c25e7bd89b32c6f6e5d23edf8943b5430b9f1a69031bcb8d6837e16b",
+      "status": "success",
+      "block": 60939974,
+      "gasUsed": 4911274,
+      "confirmMs": 2933,
+      "at": "2026-11-12T09:42:54.111Z"
+    },
+    {
+      "label": "deploy_KumiCrewFactory",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": null,
+      "hash": "0xcf0e4d261629716e52b0406bea727bb85514f100f649d1055cc0556ad30e7091",
+      "status": "success",
+      "block": 60939977,
+      "gasUsed": 509439,
+      "confirmMs": 3575,
+      "at": "2026-11-12T09:42:57.687Z"
+    },
+    {
+      "label": "mint_maker_inventory",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0x70a5b78b1e749f850899c5a1badb6cd7eaea888e1330ba8eaa9b6daf9304f674",
+      "status": "success",
+      "block": 60939978,
+      "gasUsed": 70272,
+      "confirmMs": 2613,
+      "at": "2026-11-12T09:43:00.465Z"
+    },
+    {
+      "label": "fund_insurance_mint",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0xd82d83cfbeacaf6ab262567e40b428e8a4574239bf1d1e16f5a86946b1bb35d1",
+      "status": "success",
+      "block": 60939980,
+      "gasUsed": 53172,
+      "confirmMs": 5089,
+      "at": "2026-11-12T09:43:05.715Z"
+    },
+    {
+      "label": "approve_insurance",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0x014e61a356bcec48979295dc77eba30f7bcbce8b94dc73891fff495b1e37dc39",
+      "status": "success",
+      "block": 60939985,
+      "gasUsed": 45913,
+      "confirmMs": 2633,
+      "at": "2026-11-12T09:43:08.519Z"
+    },
+    {
+      "label": "fund_insurance",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x1e429a9158fe9767b1792a5f3d288af5bedf96bea9493a7ad187102ad308f264",
+      "status": "success",
+      "block": 60939987,
+      "gasUsed": 88449,
+      "confirmMs": 2613,
+      "at": "2026-11-12T09:43:11.299Z"
+    },
+    {
+      "label": "faucet_mika",
+      "from": "0x857429F6d1304B8ef42De42a0696f52a5FBE3acF",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0x017be503d348121361aa5470bcee94d0399f61d2d1b6c84a8bca16ea583dbab7",
+      "status": "success",
+      "block": 60939988,
+      "gasUsed": 72975,
+      "confirmMs": 3559,
+      "at": "2026-11-12T09:43:15.022Z"
+    },
+    {
+      "label": "faucet_bo",
+      "from": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0xee3cc5ba284483395aeadcf853c7c877cd569cae0e5c8230998b7f7a7a3ea60b",
+      "status": "success",
+      "block": 60939991,
+      "gasUsed": 72975,
+      "confirmMs": 5629,
+      "at": "2026-11-12T09:43:20.810Z"
+    },
+    {
+      "label": "faucet_ren",
+      "from": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0xa96704eed7fae118997e7b6f2d496ecdd3754f84e6c0e7eab629fe63099798a0",
+      "status": "success",
+      "block": 60939995,
+      "gasUsed": 72975,
+      "confirmMs": 2704,
+      "at": "2026-11-12T09:43:23.672Z"
+    },
+    {
+      "label": "create_crew_night_owls",
+      "from": "0x857429F6d1304B8ef42De42a0696f52a5FBE3acF",
+      "to": "0xf0d3a5f11d47c605e7b962a837b31fc9d7342b82",
+      "hash": "0xa02bac6e7cb15586763b3c7f984ed5acf36062b980b1816d10c1775f58af1534",
+      "status": "success",
+      "block": 60939996,
+      "gasUsed": 602071,
+      "confirmMs": 2608,
+      "at": "2026-11-12T09:43:26.445Z"
+    }
+  ],
+  "accounts": {
+    "deployer": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+    "maker": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+    "mika": "0x857429F6d1304B8ef42De42a0696f52a5FBE3acF",
+    "bo": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+    "ren": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363"
+  },
+  "makerTxs": [
+    {
+      "label": "maker_approve",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0x60a9038aae5bf34a959308232d1614022cdbe2cd93934a4c1bcfc4c3a5e5b7a4",
+      "status": "success",
+      "block": 60940017,
+      "gasUsed": 46249,
+      "confirmMs": 2627,
+      "at": "2026-11-12T09:43:50.199Z"
+    },
+    {
+      "label": "maker_deposit",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x05c7ebfb1a8eeb0cd683d5d286d31a2df20812469f67e1987db20c413645e5cf",
+      "status": "success",
+      "block": 60940020,
+      "gasUsed": 68608,
+      "confirmMs": 3560,
+      "at": "2026-11-12T09:43:53.919Z"
+    },
+    {
+      "label": "maker_AVAX_bid_1",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x21d991d566d99705fc3a69d397113358a91ff137a5d9b2b48f3df07d5f5a9503",
+      "status": "success",
+      "block": 60940025,
+      "gasUsed": 238156,
+      "confirmMs": 5105,
+      "at": "2026-11-12T09:43:59.515Z"
+    },
+    {
+      "label": "maker_AVAX_ask_1",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xab0605c28bf7c78313f3409867fd33ae5039f65dd9cca875e0711e05c332aea0",
+      "status": "reverted",
+      "block": 60940028,
+      "gasUsed": 204886,
+      "confirmMs": 2607,
+      "at": "2026-11-12T09:44:02.290Z"
+    },
+    {
+      "label": "maker_cancel_AVAX_1",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xe1d347882dadf221f21047fa0407c57bb9f58dd9eaf1818116b5cd746d8690e1",
+      "status": "success",
+      "block": 60940045,
+      "gasUsed": 73994,
+      "confirmMs": 3306,
+      "at": "2026-11-12T09:44:26.798Z"
+    },
+    {
+      "label": "maker_AVAX_bid_1",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x0a5235635ffb7c25a0640a883b91459f41b576754a9a8c154430e78dc3820a07",
+      "status": "success",
+      "block": 60940048,
+      "gasUsed": 238156,
+      "confirmMs": 3504,
+      "at": "2026-11-12T09:44:31.110Z"
+    },
+    {
+      "label": "maker_AVAX_ask_1",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xbdfad4580f40b798d11eccf9976d494f6a89a995ec6f5974dcef1fb03d9ef2a2",
+      "status": "success",
+      "block": 60940052,
+      "gasUsed": 204225,
+      "confirmMs": 3321,
+      "at": "2026-11-12T09:44:35.243Z"
+    },
+    {
+      "label": "maker_AVAX_bid_2",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x5530f39b8f2d8bd8765ece64a2325e2b9963b3dbed99e3e1a37dc37485fa6ab5",
+      "status": "success",
+      "block": 60940055,
+      "gasUsed": 235221,
+      "confirmMs": 2437,
+      "at": "2026-11-12T09:44:38.487Z"
+    },
+    {
+      "label": "maker_AVAX_ask_2",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x0e61ab9e8e624aed7dc58b6d35de33c10fe055c80a01d4828016581cd74928dd",
+      "status": "success",
+      "block": 60940059,
+      "gasUsed": 218233,
+      "confirmMs": 3422,
+      "at": "2026-11-12T09:44:42.722Z"
+    },
+    {
+      "label": "maker_AVAX_bid_3",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xc7f79a73d81ffec9a0fb9f60d45e76f3de7e8878d582c6caa864c3bc208daaeb",
+      "status": "success",
+      "block": 60940062,
+      "gasUsed": 220591,
+      "confirmMs": 3704,
+      "at": "2026-11-12T09:44:47.228Z"
+    },
+    {
+      "label": "maker_AVAX_ask_3",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x5b111b279c37dd977d16a46a8ee0f80425e094112c1d8f01b6d4e7026f1d501d",
+      "status": "success",
+      "block": 60940066,
+      "gasUsed": 220704,
+      "confirmMs": 3406,
+      "at": "2026-11-12T09:44:51.441Z"
+    },
+    {
+      "label": "maker_AVAX_bid_4",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x06e73e7c9aa457b85051fca166a61bab0814518bec935fe647cf369c657d581d",
+      "status": "success",
+      "block": 60940070,
+      "gasUsed": 223061,
+      "confirmMs": 4201,
+      "at": "2026-11-12T09:44:56.458Z"
+    },
+    {
+      "label": "maker_AVAX_ask_4",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x90f2b711eb70761b273a2f1eda78760082871683382e6525bb2cd3060b29413a",
+      "status": "success",
+      "block": 60940074,
+      "gasUsed": 223175,
+      "confirmMs": 4899,
+      "at": "2026-11-12T09:45:02.169Z"
+    },
+    {
+      "label": "maker_AVAX_bid_5",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xc4399161832bf514ee03c204b0190f23994a8bf1052c2e1a2d04d80342de4eac",
+      "status": "success",
+      "block": 60940080,
+      "gasUsed": 225531,
+      "confirmMs": 2867,
+      "at": "2026-11-12T09:45:05.841Z"
+    },
+    {
+      "label": "maker_AVAX_ask_5",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x9ba120173527db18d481b54eabf0c5f5fea8bcdd346bf20f5fff3d7ed3d1b5de",
+      "status": "success",
+      "block": 60940083,
+      "gasUsed": 225646,
+      "confirmMs": 4492,
+      "at": "2026-11-12T09:45:11.158Z"
+    },
+    {
+      "label": "maker_AVAX_bid_6",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x0135c063d4460a122d09c6f1e14efc35bf5e2e1de62c658ff957d5543f03aac1",
+      "status": "success",
+      "block": 60940086,
+      "gasUsed": 228001,
+      "confirmMs": 2446,
+      "at": "2026-11-12T09:45:14.421Z"
+    },
+    {
+      "label": "maker_AVAX_ask_6",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x21d85b3150621235bb04ecf27e023bbc50128da585d391af5d1a7baefb61d498",
+      "status": "success",
+      "block": 60940089,
+      "gasUsed": 228117,
+      "confirmMs": 2448,
+      "at": "2026-11-12T09:45:17.684Z"
+    },
+    {
+      "label": "maker_BTC_bid_1",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xef9e82202f2332edea67a7824168d029a37319fd8281d041ef74b95bf9608871",
+      "status": "success",
+      "block": 60940091,
+      "gasUsed": 220976,
+      "confirmMs": 4522,
+      "at": "2026-11-12T09:45:23.346Z"
+    },
+    {
+      "label": "maker_BTC_ask_1",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xa1fa0a7f3fdfce7a2498425b57945fbe5f80f941c33a804677f761221e8f004e",
+      "status": "success",
+      "block": 60940095,
+      "gasUsed": 204145,
+      "confirmMs": 2437,
+      "at": "2026-11-12T09:45:26.587Z"
+    },
+    {
+      "label": "maker_BTC_bid_2",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x4388408cf36e5a4dc60345991393c9294590115327f15890bfc38fe5cba4da84",
+      "status": "success",
+      "block": 60940099,
+      "gasUsed": 235141,
+      "confirmMs": 4093,
+      "at": "2026-11-12T09:45:31.490Z"
+    },
+    {
+      "label": "maker_BTC_ask_2",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xdac43d6908bb861b5336abe0a1822cf7458632b5ed7386fdd8c20c05482c4864",
+      "status": "success",
+      "block": 60940104,
+      "gasUsed": 218153,
+      "confirmMs": 3278,
+      "at": "2026-11-12T09:45:35.572Z"
+    },
+    {
+      "label": "maker_BTC_bid_3",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x0b4c78ab18d18adc8076a5047eb89886d9dee2ae4df53d4b5bf6308db5e25bae",
+      "status": "success",
+      "block": 60940108,
+      "gasUsed": 220511,
+      "confirmMs": 5354,
+      "at": "2026-11-12T09:45:41.728Z"
+    },
+    {
+      "label": "maker_BTC_ask_3",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x2af8bf73779bd142865d27ee4e4f0481d3b789a24f80ba1eaff87b7bb4926a4d",
+      "status": "success",
+      "block": 60940114,
+      "gasUsed": 220624,
+      "confirmMs": 4935,
+      "at": "2026-11-12T09:45:47.479Z"
+    },
+    {
+      "label": "maker_BTC_bid_4",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x4d17048b12ece0ed420ee9eebf85060cf3d992cbc8a09edbd7e2b7dd287c16e6",
+      "status": "success",
+      "block": 60940119,
+      "gasUsed": 222981,
+      "confirmMs": 2461,
+      "at": "2026-11-12T09:45:50.753Z"
+    },
+    {
+      "label": "maker_BTC_ask_4",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xb2d59f91436a76083e1a6941cf8ab47c03631da3c27ad8265b46e561a18cea03",
+      "status": "success",
+      "block": 60940122,
+      "gasUsed": 223095,
+      "confirmMs": 2436,
+      "at": "2026-11-12T09:45:53.992Z"
+    },
+    {
+      "label": "maker_BTC_bid_5",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x6ce833e9b425ec9a95d0ee290daa62f022333db6bd1ca1a538e6722592adad74",
+      "status": "success",
+      "block": 60940125,
+      "gasUsed": 225451,
+      "confirmMs": 4755,
+      "at": "2026-11-12T09:45:59.556Z"
+    },
+    {
+      "label": "maker_BTC_ask_5",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x7d4f2ed4dcb94d5815fdd76fbe6706b12102de3e52067a48a4d92e38b4d27a5c",
+      "status": "success",
+      "block": 60940129,
+      "gasUsed": 225566,
+      "confirmMs": 2436,
+      "at": "2026-11-12T09:46:02.801Z"
+    },
+    {
+      "label": "maker_BTC_bid_6",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x3d920f323b3600c04fff0bb3635dff3ab3e561e3349ab09311dd5b0092fa1776",
+      "status": "success",
+      "block": 60940133,
+      "gasUsed": 227921,
+      "confirmMs": 3394,
+      "at": "2026-11-12T09:46:07.017Z"
+    },
+    {
+      "label": "maker_BTC_ask_6",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x58dc0282df3d127d21bd6b0e60157f0a9ce7b1a238c8ddd38bcc381d751ed228",
+      "status": "success",
+      "block": 60940137,
+      "gasUsed": 228037,
+      "confirmMs": 3288,
+      "at": "2026-11-12T09:46:11.121Z"
+    }
+  ]
+}
