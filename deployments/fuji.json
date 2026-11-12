@@ -3990,5 +3990,26 @@
         }
       ]
     }
-  ]
+  ],
+  "v22Runs": {
+    "note": "Kumi v2.2 (gas-free start, Kumi AI, caller board). Every drip is a KumiGasStation.Dripped event on Fuji.",
+    "apiTestDrip": {
+      "wallet": "0x7a138B98fB5d243540878c14BA5C2a8FE3bef0bb",
+      "drip": "0x4e52c67b2538cfca7819b8c0b55c43a8688e72f19669209be6cff8bab1e84352",
+      "by": "api/test/gas.test.ts (handleGas against live Fuji)"
+    },
+    "iosGasFreeStart": {
+      "wallet": "0x16f900368BA4c25B31F850e9dEcD0B6Dff387e33",
+      "drip": "0x41b018b49971b96450ee574c0a3d0960c7cb258190ec56b0b27d17ed3166fbf2",
+      "testUsdc": "0xfdfbd462bb2cebf457737f90a80a71a6b82c2e34a5515d768efb31ce7a70b733",
+      "by": "native app in Expo Go on the iOS Simulator (QA wallet slot), through kumi-avax-api.vercel.app"
+    },
+    "iosAiDraftedCall": {
+      "wallet": "0x6c1effe4f32c1c82bdafb1eebfc90949197e10f6",
+      "channel": 0,
+      "index": 39,
+      "hash": "0x06996f58ae578449e1daedd549be8f3ec11b19c4504641a2ebb3a27b4d3b0802",
+      "by": "Kumi AI drafted Short AVAX 2x, 25 tUSDC; the ios-sim wallet reviewed it in the call sheet and signed KumiLobby.call"
+    }
+  }
 }
