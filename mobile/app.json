@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "Kumi",
+    "slug": "kumi-avax",
+    "version": "0.2.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "kumi",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#FFF4E6",
+    "splash": { "image": "./assets/icon.png", "resizeMode": "contain", "backgroundColor": "#FFF4E6" },
+    "ios": { "bundleIdentifier": "xyz.kumi.avax", "supportsTablet": false },
+    "android": {
+      "package": "xyz.kumi.avax",
+      "adaptiveIcon": { "foregroundImage": "./assets/icon.png", "backgroundColor": "#FFE3A3" },
+      "permissions": ["CAMERA", "POST_NOTIFICATIONS"]
+    },
+    "web": { "bundler": "metro", "output": "single", "name": "Kumi", "backgroundColor": "#FFF4E6", "themeColor": "#3B1F4A" },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-font",
+      "expo-image",
+      ["expo-camera", { "cameraPermission": "Kumi scans chat invite QR codes." }],
+      ["expo-notifications", { "color": "#FF6F59" }],
+      ["expo-image-picker", { "photosPermission": "Kumi reads an invite QR from a photo you pick." }]
+    ],
+    "experiments": { "typedRoutes": false }
+  }
+}
