@@ -30,6 +30,14 @@ that side on KumiPerps, and writes the venue's size and entry into the chat. The
 book, real candles (Coinbase public candles, Chainlink's Fuji mark, Kumi's own fills as markers) and a ticket that
 signs `placeOrder`. The web app shows the same chats, because there is no chat server: it is all on Fuji.
 
+**Private tips and settle-ups (v2.1, eERC).** Paying a caller a cut for a good call, or paying a crewmate back,
+normally tells the whole chain how much a caller earns and how big their followers trade. Kumi moves those payments
+into Ava Labs' official EncryptedERC (unmodified, converter mode over tUSDC). A copier taps **Tip privately** on a
+call they copied; a crew member taps 🔒 to settle up. The proof is made on the phone (a hidden WebView runs snarkjs
+on iOS and Android, since Hermes has no WebAssembly) or in the browser, and the chat gets a card anyone can verify on
+Snowtrace. Only the sender, the receiver and Kumi's auditor key can read the amount. Moving money in and out of the
+private balance is public, and positions on the order book stay public; the README says exactly what is hidden.
+
 Guard rails:
 - A crew-wide leverage cap.
 - A slippage limit against Chainlink.
@@ -57,6 +65,8 @@ candles, the maker bot and the Primit work are new.
   - TestUSDC
   - KumiLobby public chats with venue-checked copies
   - on-chain chat feed
+- **Ava Labs eERC (EncryptedERC + Registrar, production Groth16 verifiers)** on Fuji: private tips and crew
+  settle-ups, proofs made on the phone and in the browser, Kumi auditor key set on-chain
 - **Chainlink price feeds on Fuji**: AVAX/USD, BTC/USD
 - **Avalanche C-Chain mainnet** (simulation only): Orderly vault adapter for Primit, tested on a mainnet fork
 - Solidity 0.8.28 and Foundry (unit, fuzz, and Fuji and mainnet fork tests)
@@ -77,6 +87,10 @@ candles, the maker bot and the Primit work are new.
 - **All txs:** `deployments/fuji.json`
 - **KumiLobby:** https://testnet.snowtrace.io/address/0x86c916ab60f186a43ab6b31603d91641dc228e7a
 - **A copy signed in the phone app (17.79 AVAX on the book):** https://testnet.snowtrace.io/tx/0x1d351d7ee13d874a04d958869bd338c838dfb4a62fd930e2ec86295077c6f8fb
+- **EncryptedERC (eERC):** https://testnet.snowtrace.io/address/0xf8d4eeb6a0a5aff971c16f2baf9f0aee0fdb4c23
+- **eERC Registrar:** https://testnet.snowtrace.io/address/0x4de185b2d8ee6a73d78e90c3e024f230799b561c
+- **A private tip with its proof made on the iPhone simulator (amount hidden):** https://testnet.snowtrace.io/tx/0xe5deb19f810a15dda490c538a4b3d90abd8159220b6dfd2d63a73e39c514ae73
+- **A private tip for mika's AVAX call #7:** https://testnet.snowtrace.io/tx/0x81b6aacd61f188ed6561c50fe5eda4ba2d7fe02f11aec449a8583e611bdfb831
 - **Phone app (Expo web build):** https://kumi-avax-app.vercel.app
 - **Web app:** https://kumi-avax-web.vercel.app
 - **Phone on a device:** `cd mobile && npm install && npx expo start`, scan with Expo Go (SDK 58)
@@ -92,9 +106,10 @@ README's "The live demo" section.
 
 ## AI tools used
 
-- **Claude Code** (Anthropic) wrote the contracts, tests, scripts, web app, phone app and docs, and drove the live
-  demos (web and phone).
+- **Claude Code** (Anthropic) wrote the contracts, tests, scripts, web app, phone app, the eERC integration and docs,
+  and drove the live demos (web, phone web build and the iOS Simulator).
 - The **Primit research** was done by a Claude Code subagent from public pages and read-only RPC calls.
-- **ChatGPT images** made the clay art and 3D objects reused from Kumi's NEAR build. No new art was generated for
-  this build. The phone app uses the same art.
+- **ChatGPT images** made the clay art and 3D objects reused from Kumi's NEAR build, and the v2.1 set for this
+  build: the app icon, splash, nine new crew mascots, onboarding scenes, empty states and chat stickers
+  (`art-incoming/ART.md`).
 - Codex was not used.

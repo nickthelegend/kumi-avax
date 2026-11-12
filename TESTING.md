@@ -16,10 +16,12 @@
 | **SDK (v2): order encoding**, incl. KumiPerps accepting a live-book order and refusing an off-band one in an eth_call on Fuji | same | 8 | pass |
 | **SDK (v2): candles**, incl. live Coinbase/Binance candles, Chainlink rounds on Fuji vs the exchange, Kumi fills from the on-chain ring | same | 7 | pass |
 | **SDK (v2): chat client**, read live from Fuji: channels, a call and its copies (each copy's order tx is a real KumiPerps tx from the copier), crews and feeds | same | 4 | pass |
+| **SDK (v2.1): eERC**, live Fuji: converter at 2 dp with the Kumi auditor set, what the public can and cannot read, every private-tip card in the AVAX pit is a real eERC transfer from the poster to the caller, the Night Owls settle-up; PCT round trip and wrong-key refusal | `cd sdk && node --test test/eerc.test.ts` | 5 | pass |
 | **Mobile (v2): invite links** (QR / paste) | `cd mobile && npm test` | 4 | pass |
-| **Total** | | **106** | **106 pass** |
+| **eERC end-to-end on Anvil (v2.1)**: Ava Labs' EncryptedERC with production verifiers, Kumi's TestUSDC and real Groth16 proofs; stolen, cross-chain, forged, replayed and tampered proofs, redirected sends and over-spending are refused | `cd contracts && FOUNDRY_PROFILE=eerc forge build && cd ../scripts && pnpm test:eerc` | 40 checks | pass |
+| **Total** | | **151** | **151 pass** |
 
-`forge test` runs 66 tests and skips the two fork suites (they need `FORK=1` and public RPCs). The SDK suite is 26
+`forge test` runs 66 tests and skips the two fork suites (they need `FORK=1` and public RPCs). The SDK suite is 31
 tests; the order, candle and chat tests that touch a chain read **live Fuji** and the public exchange APIs, with no
 mocked RPC. The phone app imports the same SDK code (`@kumi-avax/sdk` is bundled by Metro), so these cover the phone's
 order encoding, candle builder and chat client.
@@ -106,6 +108,35 @@ wallet made in the app, the tUSDC faucet, joining a public chat, copying a call 
   - The delegate signer is registered, and the delegate must be an EOA.
   - Only the owner controls the account.
   - This is simulation only. Nothing is broadcast.
+
+**eERC end-to-end** (`scripts/eerc/local-e2e.ts`, Anvil, no mocks, real proofs from the shipped zkeys)
+- **Setup:** TestUSDC and the eERC (converter, 2 decimals, production verifiers) deploy; the same wallet
+  signature always reopens the same eERC key.
+- **Registration attacks:** another account can't submit your registration proof (`InvalidSender`); a proof made for
+  Fuji is refused on another chain (`InvalidChainId`); a proof with a swapped public key is refused; registering twice
+  is refused. Nothing can be shielded before an auditor is set, and only the owner sets the auditor.
+- **Shield:** an unregistered account can't move tUSDC in; the public sees the pool hold 50 tUSDC while only the
+  owner's key decrypts 50.00 (another key can't open it); an odd amount keeps whole cents and returns the dust.
+- **A private tip with a Kumi memo:** you can't send to someone who has no private balance; after the tip each side
+  reads its new balance with its own key; no public tUSDC moved; the amount appears nowhere in the calldata; the
+  memo links the tip to lobby channel 0, call #7; the receiver, the sender (from the memo copy) and the auditor each
+  decrypt 2.50; a stranger, with or without a key, gets nothing; a card posted by someone other than the sender, or a
+  transaction on another contract, is rejected; the chat text round-trips to the hash and nothing else.
+- **Attacks on private sends:** replaying a transfer proof is refused; another account can't submit it; a proof made
+  for kai can't be redirected to someone else; a tampered public signal or curve point is refused; no proof exists for
+  sending more than the encrypted balance.
+- **Move out:** another account can't submit your withdraw proof; a raised amount is refused; no proof exists for
+  more than the balance; replaying a withdraw is refused; the public tUSDC comes back exactly, and an emptied balance
+  decrypts to 0.
+
+**eERC on Fuji, through the apps** (txs in `deployments/fuji.json`)
+- `scripts/qa/phone-private.mjs` (Expo web build, 375 px, a new in-app wallet): faucet, open (registration proof
+  in the page, 4.8 s), move 20.00 in, join and copy a call, tip 1.50 privately (transfer proof + 2 txs, 10.4 s), the
+  card shows the amount to the sender, move 5.00 out (withdraw proof, 5.3 s). 12 txs, no console errors.
+- `scripts/qa/web-private.mjs` (web, QA signer): bo decrypts his settle-up card and sends mika 2.00 (10.4 s); ren tips
+  mika 0.75 for the call he copied (9.4 s). No console errors.
+- **iOS Simulator, native app in Expo Go** (driven by hand through the simulator, `iosPrivate`): registration,
+  withdraw and transfer proofs all made on the device by the WebView prover; the tip card shows "You → mika, 1.00".
 
 ## A note on mocks
 

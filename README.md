@@ -10,6 +10,12 @@ chats and public chats you can join, trade calls you copy with one tap (your own
 on the phone), a live order book, real price candles and a trade ticket. The web app shows the same chats, because
 every message is on Fuji: a message sent from the phone is on the web a few seconds later.
 
+**New in v2.1: private tips and settle-ups, on Ava Labs' eERC.** A copier can tip the caller for a good call, and
+crewmates can pay each other back, without the amount ever appearing on Fuji. It runs on Ava Labs' official
+EncryptedERC (unmodified), with the zk proofs made on the phone itself (iOS, Android and web) and in the browser.
+The chat shows a card that anyone can check on Snowtrace; only the sender, the receiver and Kumi's auditor key can
+read the number. [What is hidden and what is not](#private-tips-and-settle-ups-eerc-v21).
+
 | Live | Link |
 |---|---|
 | Phone app (Expo web build, open at phone width) | https://kumi-avax-app.vercel.app |
@@ -23,6 +29,13 @@ every message is on Fuji: a message sent from the phone is on the web a few seco
 > `web/public/art`. Everything else is new for Avalanche: the Solidity order book perps venue (`KumiPerps`), the
 > crew vault that trades perps by vote (`KumiCrew`), on-chain chat, the markets page, the maker bot, the Primit
 > research and adapter, and this web app's perps screens.
+>
+> **Art v2.1** (app icon, splash, nine new crew mascots, onboarding scenes, empty states and chat stickers) was
+> generated with ChatGPT in the Kumi clay style; see `art-incoming/ART.md`. The lilac koala was off-palette and is
+> not used.
+>
+> **The eERC crypto core in `sdk/src/eerc.ts`** (ElGamal, Poseidon ciphertexts, proof inputs) is the same code
+> written for Juno on Avalanche (`grokbot/avax/juno-avax`), against the same pinned Ava Labs circuits.
 >
 > **The phone app reuses Nakama's mobile skeleton** (`grokbot/projects/nakama/packages/mobile`, Nick's earlier Sui
 > crew wallet): Expo Router navigation, the on-device wallet in expo-secure-store, deposit QR, QR/photo/paste join,
@@ -42,6 +55,10 @@ every message is on Fuji: a message sent from the phone is on the web a few seco
 | Sunrise Scalpers crew vault (v2) | [`0x16E639793291E35dB63fC411fFe97dA76F35eb2b`](https://testnet.snowtrace.io/address/0x16E639793291E35dB63fC411fFe97dA76F35eb2b) | [0x0dccbb2f…](https://testnet.snowtrace.io/tx/0x0dccbb2f0c5aff156a504cd73a6638eeb4cff71b7c6ba8dd4f29aba7ff7eabb6) |
 | Slow BTC Club crew vault (v2) | [`0x4d598Fe9Dfb41Aa95F2F320f11A95d93ACb26c22`](https://testnet.snowtrace.io/address/0x4d598Fe9Dfb41Aa95F2F320f11A95d93ACb26c22) | [0x731a7621…](https://testnet.snowtrace.io/tx/0x731a76216eddb0d8e672a8e6d21d53199de22307c55065b2e53712ff91d4d334) |
 | Frog Pond crew vault (v2) | [`0x84949AEab9a9BfC2e05d5bB43583d00805598Bb7`](https://testnet.snowtrace.io/address/0x84949AEab9a9BfC2e05d5bB43583d00805598Bb7) | [0x010bf165…](https://testnet.snowtrace.io/tx/0x010bf16578d824ebef0a58908ac0276d3bf53a34f196bd9a5b6401d92f799986) |
+| **EncryptedERC** (Ava Labs eERC, converter over tUSDC, 2 dp; v2.1) | [`0xf8d4eeb6a0a5aff971c16f2baf9f0aee0fdb4c23`](https://testnet.snowtrace.io/address/0xf8d4eeb6a0a5aff971c16f2baf9f0aee0fdb4c23) | [0xba88c3ae…](https://testnet.snowtrace.io/tx/0xba88c3aecdcd42ff65c92ae7d986d7b774f122904ee7acc53ee3ec311709fae9) |
+| eERC Registrar (users' public keys) | [`0x4de185b2d8ee6a73d78e90c3e024f230799b561c`](https://testnet.snowtrace.io/address/0x4de185b2d8ee6a73d78e90c3e024f230799b561c) | [0x64c3a457…](https://testnet.snowtrace.io/tx/0x64c3a457995a044e49bf4cd5070d766251ee034cf17cb75b33816bfa09f091cd) |
+| eERC production verifiers: registration / transfer / withdraw | [`0xd94a10ff9bf7b863835b816485e878cc2b8bb1aa`](https://testnet.snowtrace.io/address/0xd94a10ff9bf7b863835b816485e878cc2b8bb1aa) / [`0xec3713a47f62d60f7f5f1f614cb30df9c6b5cfe7`](https://testnet.snowtrace.io/address/0xec3713a47f62d60f7f5f1f614cb30df9c6b5cfe7) / [`0xb1398d2a09c78f686018dbe8818b32155f7eea02`](https://testnet.snowtrace.io/address/0xb1398d2a09c78f686018dbe8818b32155f7eea02) | [0x0694f283…](https://testnet.snowtrace.io/tx/0x0694f283f8eb9ed025aaf23292874f788da852fe37079ff4a49f80b61c269c23) · [0x6e2264cc…](https://testnet.snowtrace.io/tx/0x6e2264ccb304fdb84c352117a15206eb315ef4c14c3f0c73b4f8d1e198cbfb09) · [0x7526dc0f…](https://testnet.snowtrace.io/tx/0x7526dc0f15610f6573bb88c83f82f7f3178b4c0fa82293f4878d140a7d20d191) |
+| Kumi auditor (a Kumi test account), set by the owner | [`0xB5fa31C707E9eC71edE4DE060386B0Be54AB99f3`](https://testnet.snowtrace.io/address/0xB5fa31C707E9eC71edE4DE060386B0Be54AB99f3) | [0x4975b463…](https://testnet.snowtrace.io/tx/0x4975b463c9ca8606e75cbac2b7800c62a26ff67dff95a917c2946c1b8b8aca43) |
 | TestUSDC (tUSDC, 6 dp, faucet) | [`0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd`](https://testnet.snowtrace.io/address/0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd) | [0x2c641336…](https://testnet.snowtrace.io/tx/0x2c641336d5e16c0a44bbbc2b532c62d8a6599f043cf14835e3a09718a14a54bc) |
 
 Markets were listed in [AVAX-USD](https://testnet.snowtrace.io/tx/0xd6be4f137a7d0252127fb440e1ba6a6ac9c35a1d94ab7775da93d008e96bafd5) and
@@ -137,6 +154,59 @@ app tags them "test acct". The v2 seed is 91 recorded txs under `seedV2`.
 **Run it on a phone.** `cd mobile && npm install && npx expo start`, then scan the QR with Expo Go (SDK 58). It talks
 to Fuji directly; there is no Kumi server. A new wallet needs a little Fuji AVAX for gas (Wallet tab, faucet link).
 
+## Private tips and settle-ups (eERC, v2.1)
+
+Copy trading leaks money. When followers pay a caller a cut, anyone reading the chain can add it up: how much a
+caller earns, and from that, how big their following trades. Settling up inside a crew has the same problem. Kumi
+v2.1 moves those payments into **Ava Labs' EncryptedERC** (`contracts/lib/EncryptedERC`, pinned at `8dc98cd`,
+unmodified, built by its own Foundry profile) in converter mode over Kumi's tUSDC.
+
+**In the app:** the Wallet tab has a *Private balance* (open it, move tUSDC in, move it out). A call you copied
+gets a *Tip privately* button. A crew room has a 🔒 button to send a crewmate tUSDC privately. Each send posts a card
+in the chat (`kumi:private:<tx>`), and both apps check that card against Fuji: it must be a successful eERC
+`transfer` from the person who posted it. The receiver's app decrypts the amount from the transfer, the sender's
+app decrypts its own copy from the Kumi memo, and everyone else sees "amount hidden".
+
+| On Fuji, for anyone to see | Hidden (ciphertext only) |
+|---|---|
+| Who opened a private balance (eERC registration) | Each member's private balance (ElGamal on BabyJubJub) |
+| How much tUSDC moved **in** or **out**, and by whom (it is an ERC-20 transfer) | **How much each tip or settle-up was** |
+| That A sent B something through Kumi's eERC, and which chat and call the card belongs to (the Kumi memo) | |
+| The eERC's total tUSDC | |
+| Everything on KumiPerps: positions, orders, fills, and the crew vaults' shares and NAV | |
+
+So this is private **payments around** copy trading, not private positions. KumiPerps is a public order book, and
+a copy is still recorded on KumiLobby with the venue's size. Kumi's auditor key (a Kumi test account set with
+`setAuditorPublicKey`) can read every transfer amount, as eERC requires.
+
+**How it works.** A member's eERC key is derived from one wallet signature over a fixed message (`keyMessage` in
+`sdk/src/eerc.ts`), so it is never stored. Proofs are Groth16 with Ava Labs' production circuits and zkeys (note the
+upstream names: registration and withdraw ship `circuit_final.zkey`, transfer ships `transfer.zkey`), copied into
+`web/public/eerc` and `mobile/public/eerc` by `scripts/copy-eerc-assets.mjs`. On the web and the Expo web build,
+snarkjs runs in the page. On iOS and Android, React Native's Hermes has no WebAssembly, so a hidden WebView on the
+phone runs the same snarkjs build (`mobile/lib/prover.tsx`); it downloads the public circuit files from the hosted
+app once, and the witness and proof never leave the phone. Proof times: registration ~4 s, transfer ~10 s with
+both txs, withdraw ~5 s (Expo web build, headless Chrome).
+
+**Evidence on Fuji** (all in `deployments/fuji.json`):
+
+- Seed (`eerc`): seven Kumi test accounts open private balances and move tUSDC in; sora and ren tip mika for her
+  AVAX call [#7](https://testnet.snowtrace.io/tx/0x81b6aacd61f188ed6561c50fe5eda4ba2d7fe02f11aec449a8583e611bdfb831), bo tips lia for her BTC call
+  [#5](https://testnet.snowtrace.io/tx/0x91bc20607cf98266614577e7481401fad8b3c9178db95e7abad4b88e8a6d8228), and bo settles up with mika inside Night Owls
+  [(send)](https://testnet.snowtrace.io/tx/0xa8696358c0ddd7d03a4eed4a1f93a86d2938106cfb7af50016d94edd7ac77087). 44 txs.
+- **iOS Simulator, native app in Expo Go** (`iosPrivate`): a new in-app wallet opens its private balance
+  ([registration proof made on the phone](https://testnet.snowtrace.io/tx/0x7c640ba13022fb89e1db81d6b74fb6d934be7bb8adbafb60082744157d96af5b)), moves 20.00 in,
+  moves 5.00 out ([withdraw proof on the phone](https://testnet.snowtrace.io/tx/0xf9a7d471a07bddb3cd700d41a39467e53c02817f1c57fb79483f18e8d13f4453)), copies mika's call and
+  tips her 1.00 ([transfer proof on the phone](https://testnet.snowtrace.io/tx/0xe5deb19f810a15dda490c538a4b3d90abd8159220b6dfd2d63a73e39c514ae73)). Screens: `shots/avax-kumi/v2.1/ios-*.png`.
+- Phone app, Expo web build (`phonePrivate`, `scripts/qa/phone-private.mjs`): a new wallet, faucet, open, move in,
+  copy, a 1.50 tip ([0x539cde50…](https://testnet.snowtrace.io/tx/0x539cde50a7c43e98ac50ca09b6a203c1256d50f5e58f748a6a4aaa0c0af03597)), move out. 12 txs signed in the app.
+- Web app, QA signer (`webPrivate`, `scripts/qa/web-private.mjs`): bo decrypts his Night Owls settle-up and sends
+  mika 2.00 ([0xc72554dd…](https://testnet.snowtrace.io/tx/0xc72554dd054e153c2c1bac16fd53a30ecaac4e8efa25a217a57cf507a08e4fd0)); ren tips mika 0.75 in the AVAX pit
+  ([0xe7da2295…](https://testnet.snowtrace.io/tx/0xe7da2295070147c42823a74aefa93775be55f4a6c0fd6f7cf8ea97aa9ccd019c)).
+
+Open any of those on Snowtrace: the input is a proof and ciphertexts, and the amount is not in it (the Anvil test
+checks that too).
+
 ## How it works
 
 | Piece | What it does |
@@ -146,6 +216,8 @@ to Fuji directly; there is no Kumi server. A new wallet needs a little Fuji AVAX
 | `contracts/src/venues/PrimitOrderlyAccount.sol` | **The mainnet Primit route.** It deposits USDC into Orderly's Avalanche vault and sets a delegate signer. See [docs/PRIMIT.md](docs/PRIMIT.md): Primit matches orders off-chain on Orderly, so a contract cannot place its orders. |
 | `scripts/fuji/*.ts` | **Fuji tooling:** test keys in a gitignored `.env`, funding, deployment, and the maker bot. The bot quotes 6 levels on each side, 0.05% from Chainlink, and `--skew-bps` leans the book. Every tx is recorded. |
 | `contracts/src/KumiLobby.sol` | **Public chats.** Anyone joins a channel; members chat and post calls (market, side, leverage, suggested margin; the Chainlink price is stored with the call). `copy` reverts unless the copier holds that side on KumiPerps right now, and it writes the venue's size and entry, not the copier's claim. 15 tests. |
+| `contracts/lib/EncryptedERC` | **Ava Labs' eERC**, unmodified (submodule at `8dc98cd`), built with `FOUNDRY_PROFILE=eerc` exactly as upstream (solc 0.8.27, no via-ir). Kumi adds no contract around it. |
+| `sdk/src/eerc.ts` | Keys from a wallet signature, BabyJubJub ElGamal and Poseidon ciphertexts, proof inputs for registration, transfer and withdraw, the Kumi memo, and reading a private send back by hash as sender, receiver or auditor. |
 | `mobile/` | The Expo app (SDK 58, Expo Router, viem). See "The phone app" above. |
 | `sdk/` | Order encoding (tick, lot, IOC limit inside the oracle band), candles (exchange + Chainlink + fills), the on-chain chat client for crews and lobby channels, ABIs, the chat-command parser (`/long`, `/short`, `/close`, `/captain …`, `/invite`) with its tests, and formatting helpers. |
 | `web/` | The Vite + React app. **Pages:** `/room` (the crew list, the chat with trade cards and share-weighted vote bars, and the fund pane with live positions, Chainlink and close-now PnL, liquidation price, members and rules), `/markets/:sym` (laid out like Hyperliquid: a stats strip, depth chart, recent fills, the on-chain order book and fills linked to Snowtrace), `/crew` (the fund page with every pitch and its result) and `/` (the landing). **Signing:** a browser wallet (Core or MetaMask) switched to Fuji. QA builds (`VITE_QA=1`) can also use a **QA signer** that the Playwright harness injects. It is not in production builds, and no key ships in any bundle. |
@@ -157,8 +229,9 @@ to Fuji directly; there is no Kumi server. A new wallet needs a little Fuji AVAX
 - **Chainlink on Fuji.** The AVAX/USD and BTC/USD feeds mark every position and gate every trade.
 - **C-Chain mainnet route.** Primit, an on-chain perps front end on Avalanche, was researched. Its adapter was
   simulated on a C-Chain **mainnet fork**, with no mainnet transaction.
-- **Bonus features we did not use:** no custom L1, no ICM/ICTT, no eERC. Kumi doesn't need a second chain or
-  encrypted balances, so it doesn't claim them.
+- **eERC (Avalanche bonus), used for a real job:** tips to callers and crew settle-ups move as encrypted balances
+  on Ava Labs' EncryptedERC, with proofs made on the phone. See the section above for exactly what is hidden.
+- **Not used:** no custom L1 and no ICM/ICTT. Kumi doesn't need a second chain, so it doesn't claim them.
 
 ## Try it
 
@@ -169,7 +242,8 @@ pnpm install
 cd contracts && forge test                               # 66 unit and attack tests (forks skipped)
 FORK=1 forge test --match-contract FujiForkTest          # real Chainlink feeds on a Fuji fork
 FORK=1 forge test --match-contract PrimitForkTest        # Orderly's vault on an Avalanche mainnet fork (simulation only)
-cd ../sdk && node --test test/*.test.ts                  # parser, orders, candles, chat client (live Fuji + exchange reads)
+cd ../sdk && node --test test/*.test.ts                  # parser, orders, candles, chat client, eERC (live Fuji + exchange reads)
+cd ../contracts && FOUNDRY_PROFILE=eerc forge build && cd ../scripts && pnpm test:eerc   # eERC on Anvil with real proofs (40 checks)
 cd ../mobile && npm install && npm test                  # invite-link parsing; npx expo start for the app
 cd ../web && pnpm build && pnpm preview                  # http://127.0.0.1:5341
 ```
@@ -193,12 +267,14 @@ node qa/shots.mjs http://127.0.0.1:5341                    # screenshots at 1440
 
 ## Limits, honestly
 
-- **The signed phone runs were in the Expo web build**, driven by Playwright at 375 px. The native app was also run
-  in Expo Go on the iOS Simulator (iPhone 17 Pro): wallet created in the iOS Keychain, chats, market with candles,
-  and a chat room, all live from Fuji (`shots/avax-kumi/v2/ios-*.png`); no transaction was signed from the simulator
-  wallet. No physical phone, no APK.
+- **Native, but on the simulator.** v2.1 signed real Fuji transactions from the native app in Expo Go on the iOS
+  Simulator (iPhone 17 Pro), including all three eERC proofs made on the device (`iosPrivate`). It has not been run
+  on a physical phone, and there is no APK or TestFlight build.
 - **A new wallet needs Fuji AVAX for gas.** The public faucet has a captcha, so a person gets it once by hand.
-- **No eERC, ICM/ICTT or own L1.** They were scoped for v2 and not built; nothing claims them (WIN-GAP.md).
+- **eERC hides payment amounts, not trading.** Positions, orders, copies and crew shares stay public on KumiPerps
+  and KumiCrew. Moving tUSDC in or out of the eERC is public. Kumi's auditor key can read every private amount.
+- **The phone downloads ~30 MB of circuit files** (Ava Labs' zkeys) the first time it proves, from the hosted app.
+- **No ICM/ICTT or own L1.** Not built; nothing claims them (WIN-GAP.md).
 
 - **Test money only.** Margin is Kumi's Fuji test dollar (tUSDC), not Circle USDC.
 - **Liquidity comes from Kumi's own maker bot.** The "price moves" step in the demo is the maker leaning its quotes,

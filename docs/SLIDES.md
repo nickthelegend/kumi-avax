@@ -42,13 +42,19 @@
    3 members chip in → mika pitches `/long AVAX 3x` → bo votes and it opens → the price moves → `/close AVAX`
    with PnL → ren ragequits. Every tx is in `deployments/fuji.json`.
 
+8b. **Tip the caller, privately (eERC).**
+   Copy a call, tap Tip privately: the proof is made on the phone, Snowtrace shows a proof and ciphertexts, and only
+   the caller's phone shows "+1.00". Ava Labs' EncryptedERC, unmodified; moving in and out and all positions stay
+   public. Screens: `ios-06-tip-sheet`, `ios-08-tip-card-amount-for-sender`.
+
 9. **Mainnet: Primit, honestly.**
    Primit is an Orderly broker, and orders match off-chain. A contract can deposit and name a delegate, but it
    can't place orders. Our adapter passes 7 tests on an Avalanche mainnet fork. A vote-executed trade there needs
    a trusted off-chain agent, so the Fuji venue is the product.
 
 10. **Built, tested, open.**
-    - 106 tests: 66 Foundry unit and attack tests (15 for KumiLobby), 3 Fuji-fork tests on real Chainlink feeds,
-      7 mainnet-fork Primit tests, 26 SDK tests (orders, candles and chat against live Fuji), 4 mobile tests.
+    - 151 tests: 66 Foundry unit and attack tests (15 for KumiLobby), 3 Fuji-fork tests on real Chainlink feeds,
+      7 mainnet-fork Primit tests, 31 SDK tests (orders, candles, chat and eERC against live Fuji), 4 mobile tests,
+      and 40 eERC checks on Anvil with real proofs (replayed, tampered and stolen proofs refused).
     - MIT licensed.
     - The ask: crews on mainnet once a trustless perps venue on Avalanche exposes on-chain orders.

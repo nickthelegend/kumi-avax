@@ -8,7 +8,7 @@ import { join } from 'node:path';
 import { withBrowser } from './harness.mjs';
 
 const [base = 'http://127.0.0.1:5352', ...pairs] = process.argv.slice(2);
-const OUT = '/Volumes/Extreme SSD/Projects/grokbot/orchestration/shots/avax-kumi/v2';
+const OUT = process.env.SHOTS ?? '/Volumes/Extreme SSD/Projects/grokbot/orchestration/shots/avax-kumi/v2';
 mkdirSync(OUT, { recursive: true });
 
 await withBrowser(async browser => {
@@ -18,6 +18,9 @@ await withBrowser(async browser => {
   page.on('pageerror', x => errors.push(String(x)));
   page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
   await page.goto(base, { waitUntil: 'networkidle' });
+  await page.locator('[data-testid="create-wallet"]').waitFor({ timeout: 60_000 });
+  await page.waitForTimeout(2500);
+  await page.screenshot({ path: join(OUT, 'phone-onboarding.png') });
   await page.locator('[data-testid="create-wallet"]').click();
   await page.locator('[data-testid="finish-onboarding"]').click();
   await page.getByText('Your chats').first().waitFor({ timeout: 60_000 });

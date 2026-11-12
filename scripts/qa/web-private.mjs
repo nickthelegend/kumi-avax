@@ -25,6 +25,13 @@ await withBrowser(async browser => {
       await ctx.close();
     }
   };
+  const sent = async (page, name) => {
+    const err = page.getByRole('dialog').locator('.notice-error').first();
+    await Promise.race([
+      page.getByText('Sent privately.').waitFor({ timeout: 240_000 }),
+      err.waitFor({ timeout: 240_000 }).then(async () => { await shot(page, `web-error-${name}`); throw Error(`${name}: ${await err.textContent()}`); }),
+    ]);
+  };
   const shot = async (page, name) => { await page.waitForTimeout(1000); await page.screenshot({ path: join(OUT, `${name}.png`) }); console.log(`shot ${name}.png`); };
 
   await run('bo', async page => {
@@ -42,7 +49,7 @@ await withBrowser(async browser => {
     await shot(page, 'web-crew-send-sheet-1440');
     const t0 = Date.now();
     await page.getByRole('dialog').getByRole('button', { name: /Send 2\.00 privately/ }).click();
-    await page.getByText('Sent privately.').waitFor({ timeout: 240_000 });
+    await sent(page, 'crew-send');
     console.log(`bo -> mika 2.00 privately in ${((Date.now() - t0) / 1000).toFixed(1)} s`);
     await page.getByRole('button', { name: 'Back to the chat' }).click();
     await page.waitForTimeout(8000);
@@ -59,7 +66,7 @@ await withBrowser(async browser => {
     await shot(page, 'web-lobby-tip-sheet-1440');
     const t0 = Date.now();
     await page.getByRole('dialog').getByRole('button', { name: /Tip 0\.75 privately/ }).click();
-    await page.getByText('Sent privately.').waitFor({ timeout: 240_000 });
+    await sent(page, 'lobby-tip');
     console.log(`ren tipped mika 0.75 privately in ${((Date.now() - t0) / 1000).toFixed(1)} s`);
     await page.getByRole('button', { name: 'Back to the chat' }).click();
     await page.waitForTimeout(8000);
