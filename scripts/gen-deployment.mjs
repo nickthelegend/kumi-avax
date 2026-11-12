@@ -10,7 +10,9 @@ const out = {
   // Ava Labs EncryptedERC (converter over tUSDC) and its Registrar: Kumi's private balance.
   eerc: c.eerc ? { encryptedERC: c.eerc.encryptedERC, registrar: c.eerc.registrar, auditor: d.accounts?.auditor ?? null, deployBlock: (d.eerc ?? []).find(t => t.label === 'deploy_EncryptedERC')?.block ?? 0 } : null, factory: c.factory, crewImplementation: c.crewImplementation, lobby: c.lobby,
   // KumiGasStation: a first sip of Fuji AVAX for brand-new wallets (v2.2), and the relayer key Kumi's API holds.
-  gasStation: c.gasStation ?? null, gasSponsor: d.accounts?.sponsor ?? null,
+  gasStation: c.gasStation ?? null,
+  // First block of the venue: where fill history (and so the caller leaderboard) starts.
+  perpsDeployBlock: (d.txs ?? []).find(t => t.label === 'deploy_KumiPerps')?.block ?? 0, gasSponsor: d.accounts?.sponsor ?? null,
   lobbyChannels: d.lobbyChannels ?? {},
   // Kumi's own test accounts (keys in the operator's gitignored .env). The apps label them as test accounts.
   testAccounts: [...Object.entries(d.accounts ?? {}).filter(([n]) => n !== 'deployer').map(([, a]) => a.toLowerCase()), ...Object.values(d.phoneQaWallets ?? {}).map(a => a.toLowerCase())],

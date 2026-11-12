@@ -8,3 +8,5 @@ export * from './deployment.ts';
 export * from './orders.ts';
 export * from './candles.ts';
 export * from './chat.ts';
+export * from './gas.ts';
+export * from './leaderboard.ts';

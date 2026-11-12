@@ -2894,7 +2894,13 @@
   },
   "lobbyCalls": {
     "lcall_avaxpit_long1": 7,
-    "lcall_btcdesk_long1": 5
+    "lcall_btcdesk_long1": 5,
+    "lcall_avaxpit_short1": 33,
+    "lcall_btcdesk_short1": 9,
+    "lcall_newbies_long1": 8,
+    "lcall_newbies_short1": 10,
+    "lcall_avaxpit_v22long1": 37,
+    "lcall_btcdesk_v22long1": 11
   },
   "phoneDemo": {
     "at": "2026-11-12",
@@ -3660,6 +3666,305 @@
       "gasUsed": 21000,
       "confirmMs": 2323,
       "at": "2026-11-12T13:37:23.231Z"
+    }
+  ],
+  "seedV22": [
+    {
+      "label": "join_avaxpit_tae",
+      "from": "0x477D91ac189080ec0B40Af4F9AE4246d331Ebf5b",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x65d1803fb6ceb716196949a99370a40265143dc5366bc05851795444f64aba14",
+      "status": "success",
+      "block": 60949071,
+      "gasUsed": 162077,
+      "confirmMs": 3010,
+      "at": "2026-11-12T13:40:16.604Z"
+    },
+    {
+      "label": "join_avaxpit_lia",
+      "from": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x1df763b0438854e578813b7e004d74f63c0f9a01ed1533a51d7987384f4f6add",
+      "status": "success",
+      "block": 60949072,
+      "gasUsed": 162077,
+      "confirmMs": 3931,
+      "at": "2026-11-12T13:40:21.181Z"
+    },
+    {
+      "label": "lsay_avaxpit_jun_2",
+      "from": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0xfea2cae9f3b32dbdf1ba46cc16591798caab6333e760a30f8e4275d94f095fb5",
+      "status": "success",
+      "block": 60949073,
+      "gasUsed": 149363,
+      "confirmMs": 2087,
+      "at": "2026-11-12T13:40:23.756Z"
+    },
+    {
+      "label": "lcall_avaxpit_short1",
+      "from": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x57102fcc488edd3f79d24ae9f9de3a261ada3b7ca47607ab8b9dd1dcbfd71423",
+      "status": "success",
+      "block": 60949075,
+      "gasUsed": 199414,
+      "confirmMs": 3633,
+      "at": "2026-11-12T13:40:28.087Z"
+    },
+    {
+      "label": "margin_avaxpit_short1_lia",
+      "from": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xd8dd3e5685162575e9b0046091bd3454b12312b6c1113f98a178986ec2c9aff6",
+      "status": "success",
+      "block": 60949078,
+      "gasUsed": 68608,
+      "confirmMs": 3686,
+      "at": "2026-11-12T13:40:32.099Z"
+    },
+    {
+      "label": "order_avaxpit_short1_lia",
+      "from": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xe152158b6dc03362e12c0bbb3e747746ac5c6d1ed4f6a630d48c16d51d2d123f",
+      "status": "success",
+      "block": 60949083,
+      "gasUsed": 208865,
+      "confirmMs": 2100,
+      "at": "2026-11-12T13:40:35.359Z"
+    },
+    {
+      "label": "copy_avaxpit_short1_lia",
+      "from": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0xfca159c678b3de303868f54ef2bf151e277d1da866ac2577c34ec03752001b6e",
+      "status": "success",
+      "block": 60949088,
+      "gasUsed": 182661,
+      "confirmMs": 2369,
+      "at": "2026-11-12T13:40:40.914Z"
+    },
+    {
+      "label": "margin_avaxpit_long1_bo",
+      "from": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xf6daa534701497e7ffefc2426371e3a656dd62882539a9307e0e0c00ddb25314",
+      "status": "success",
+      "block": 60949091,
+      "gasUsed": 51508,
+      "confirmMs": 3498,
+      "at": "2026-11-12T13:40:44.796Z"
+    },
+    {
+      "label": "order_avaxpit_long1_bo",
+      "from": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xae63b6803156429f30839931ba203ffbc6d247f8adbc34ffb142b2afcb0c095b",
+      "status": "success",
+      "block": 60949093,
+      "gasUsed": 253526,
+      "confirmMs": 4824,
+      "at": "2026-11-12T13:40:50.261Z"
+    },
+    {
+      "label": "copy_avaxpit_long1_bo",
+      "from": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x72a5ff93d763493762f246ae5a2a874d3e75b46d0a8e6eef2c80083301052c8c",
+      "status": "success",
+      "block": 60949095,
+      "gasUsed": 165516,
+      "confirmMs": 2113,
+      "at": "2026-11-12T13:40:52.723Z"
+    },
+    {
+      "label": "lsay_avaxpit_lia_1",
+      "from": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x72851ea6b5f3fb199d25e687b6bfe20c64bc1f6ddcb19eb9c31a19b0ccbe4c81",
+      "status": "success",
+      "block": 60949098,
+      "gasUsed": 171908,
+      "confirmMs": 3055,
+      "at": "2026-11-12T13:40:56.105Z"
+    },
+    {
+      "label": "lcall_btcdesk_short1",
+      "from": "0x477D91ac189080ec0B40Af4F9AE4246d331Ebf5b",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x75551986208f786b42bbd96d46b6192df5ee93f5b374ac053e83a39d566f57f3",
+      "status": "success",
+      "block": 60949100,
+      "gasUsed": 154606,
+      "confirmMs": 2913,
+      "at": "2026-11-12T13:40:59.550Z"
+    },
+    {
+      "label": "margin_btcdesk_short1_mika",
+      "from": "0x857429F6d1304B8ef42De42a0696f52a5FBE3acF",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x910aaf6236dd8c18e0b83e55fbd4cc51d7eb1d122b4497a89afaded0a4332832",
+      "status": "success",
+      "block": 60949103,
+      "gasUsed": 68608,
+      "confirmMs": 3429,
+      "at": "2026-11-12T13:41:03.397Z"
+    },
+    {
+      "label": "order_btcdesk_short1_mika",
+      "from": "0x857429F6d1304B8ef42De42a0696f52a5FBE3acF",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x80a1f6eefac7307a5ee23006e97a54f58cb7b652c0c58a2323fe858d83795c80",
+      "status": "success",
+      "block": 60949107,
+      "gasUsed": 208797,
+      "confirmMs": 4155,
+      "at": "2026-11-12T13:41:08.221Z"
+    },
+    {
+      "label": "copy_btcdesk_short1_mika",
+      "from": "0x857429F6d1304B8ef42De42a0696f52a5FBE3acF",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x47352a52b15e6422ffd6dc9864c3672a6c4fdfd09a3158607a20f4cb198aa5e5",
+      "status": "success",
+      "block": 60949111,
+      "gasUsed": 182673,
+      "confirmMs": 2549,
+      "at": "2026-11-12T13:41:11.114Z"
+    },
+    {
+      "label": "lcall_newbies_long1",
+      "from": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x93f072bc749e6a2fda9efab621200dfd2279386369bc5311422462f4900d0e80",
+      "status": "success",
+      "block": 60949114,
+      "gasUsed": 154698,
+      "confirmMs": 2938,
+      "at": "2026-11-12T13:41:14.718Z"
+    },
+    {
+      "label": "margin_newbies_long1_jun",
+      "from": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x6288ed0d3dfca5e781c796d57a574141807b5b4b334fd13dccadd502f2bfdaec",
+      "status": "success",
+      "block": 60949117,
+      "gasUsed": 68608,
+      "confirmMs": 4908,
+      "at": "2026-11-12T13:41:20.161Z"
+    },
+    {
+      "label": "order_newbies_long1_jun",
+      "from": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x66756f6a15238941d73425433512649835ccdd2a9e930032e218a1266bf6dfc0",
+      "status": "success",
+      "block": 60949119,
+      "gasUsed": 247901,
+      "confirmMs": 1694,
+      "at": "2026-11-12T13:41:23.071Z"
+    },
+    {
+      "label": "copy_newbies_long1_jun",
+      "from": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x25bdece4924c0d46e91945efcf4b5e9ea53f10d82fc1302fe8d91e6eb669eb04",
+      "status": "success",
+      "block": 60949121,
+      "gasUsed": 182616,
+      "confirmMs": 2437,
+      "at": "2026-11-12T13:41:28.685Z"
+    },
+    {
+      "label": "lcall_newbies_short1",
+      "from": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0xe7dbe7380275d8c175c379021da88d2d2301f6ac15ec06c3eeaec046e4d83d64",
+      "status": "success",
+      "block": 60949123,
+      "gasUsed": 154650,
+      "confirmMs": 2094,
+      "at": "2026-11-12T13:41:31.422Z"
+    },
+    {
+      "label": "lsay_newbies_tae_2",
+      "from": "0x477D91ac189080ec0B40Af4F9AE4246d331Ebf5b",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x3b407022ee732b681c38c474e9fbcd4c9ba82d69349fa7034616605e80112b59",
+      "status": "success",
+      "block": 60949128,
+      "gasUsed": 149471,
+      "confirmMs": 4671,
+      "at": "2026-11-12T13:41:38.493Z"
+    },
+    {
+      "label": "close_avaxpit_long1_ren",
+      "from": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xabf3966d0622304621b1706775a308d71f4f4dcfc72397c32779366d94c6b275",
+      "status": "success",
+      "block": 60949131,
+      "gasUsed": 172933,
+      "confirmMs": 2211,
+      "at": "2026-11-12T13:41:42.018Z"
+    },
+    {
+      "label": "lcall_avaxpit_v22long1",
+      "from": "0x477D91ac189080ec0B40Af4F9AE4246d331Ebf5b",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0xa71eb2491cabaa734348865add107fdee495f95438edec574b077fff02beae4f",
+      "status": "success",
+      "block": 60949140,
+      "gasUsed": 154758,
+      "confirmMs": 2253,
+      "at": "2026-11-12T13:42:01.881Z"
+    },
+    {
+      "label": "margin_avaxpit_v22long1_sora",
+      "from": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xbc9adb16bda9966aa39f464db26c5422d0aadffa8387ca528fc1879bc0ce88f1",
+      "status": "success",
+      "block": 60949144,
+      "gasUsed": 51508,
+      "confirmMs": 3711,
+      "at": "2026-11-12T13:42:06.091Z"
+    },
+    {
+      "label": "order_avaxpit_v22long1_sora",
+      "from": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x929cf2d72d10290cd2d3744f6dbfc958e6599f7b45d551f4d49402f486152017",
+      "status": "success",
+      "block": 60949147,
+      "gasUsed": 219073,
+      "confirmMs": 2605,
+      "at": "2026-11-12T13:42:09.520Z"
+    },
+    {
+      "label": "copy_avaxpit_v22long1_sora",
+      "from": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x1caedd12766a4ad503c77142bb60b6d759b2da3f834acf9fcf16dcc3563bb380",
+      "status": "success",
+      "block": 60949150,
+      "gasUsed": 182616,
+      "confirmMs": 2511,
+      "at": "2026-11-12T13:42:12.358Z"
+    },
+    {
+      "label": "lcall_btcdesk_v22long1",
+      "from": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x6ed6a073e5d7dd2344fd72c542b534db03c7f6aea5d94425cd82549d3d6edc14",
+      "status": "success",
+      "block": 60949154,
+      "gasUsed": 154642,
+      "confirmMs": 2285,
+      "at": "2026-11-12T13:42:15.646Z"
     }
   ]
 }

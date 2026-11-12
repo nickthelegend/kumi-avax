@@ -12,6 +12,7 @@ export const DEPLOYMENT = {
   "crewImplementation": "0x39d12adf89cb16756a4d5e775efbc0e97f68a2ef",
   "lobby": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
   "gasStation": "0xf47d3dbcb7180f6c95680e120df34a50097af44d",
+  "perpsDeployBlock": 60939962,
   "gasSponsor": "0x45Ad72e3C2083050d2D3B562eE2d7971fF4667C2",
   "lobbyChannels": {
     "avaxpit": 0,
