@@ -38,26 +38,43 @@ type Pending = { ok: (v: { proof: SnarkProof; publicSignals: string[] }) => void
 const pending = new Map<number, Pending>();
 let seq = 0;
 let inject: ((js: string) => void) | null = null;
-let ready: Promise<void> | null = null;
-let markReady: (() => void) | null = null;
-const resetReady = () => { ready = new Promise(r => { markReady = r; }); };
-resetReady();
+let isReady = false;
+let lastError: string | null = null;
 
-const PAGE = `<!doctype html><html><head><meta charset="utf-8"><script src="${EERC_HOST}/eerc/snarkjs-0.7.5.min.js"></script></head><body><script>
+const PAGE = `<!doctype html><html><head><meta charset="utf-8"></head><body><script>
 const post = (m) => window.ReactNativeWebView.postMessage(JSON.stringify(m));
+let loading = null;
+const load = () => loading || (loading = new Promise((ok, fail) => {
+  if (window.snarkjs) return ok();
+  const s = document.createElement('script');
+  s.src = '${EERC_HOST}/eerc/snarkjs-0.7.5.min.js';
+  s.onload = () => ok();
+  s.onerror = () => { loading = null; fail(new Error('could not load snarkjs from ${EERC_HOST}')); };
+  document.head.appendChild(s);
+}));
+window.kumiPing = () => load().then(() => post({ ready: !!window.snarkjs }), (e) => post({ ready: false, error: String(e.message || e) }));
 window.kumiProve = async (id, circuit, input) => {
   try {
+    await load();
     const out = await snarkjs.groth16.fullProve(input, '${EERC_HOST}/eerc/' + circuit + '.wasm', '${EERC_HOST}/eerc/' + circuit + '.zkey');
     post({ id, proof: out.proof, publicSignals: out.publicSignals });
   } catch (e) { post({ id, error: String((e && e.message) || e) }); }
 };
-window.addEventListener('load', () => post({ ready: !!window.snarkjs }));
+window.kumiPing();
 </script></body></html>`;
 
+const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
+/** Waits until the hidden WebView has loaded snarkjs (pinging it, so a reloaded page is picked up too). */
+async function whenReady() {
+  for (let i = 0; i < 30 && !isReady; i++) {
+    inject?.('window.kumiPing && window.kumiPing(); true;');
+    await sleep(1000);
+  }
+  if (!isReady) throw Error(`The on-phone prover did not start${lastError ? ` (${lastError})` : ''}. It loads the circuit files from ${EERC_HOST} the first time; check the connection.`);
+}
+
 const nativeProver: Prover = async (circuit, input) => {
-  const timeout = new Promise<never>((_, fail) => setTimeout(() => fail(Error('The on-phone prover did not start. Check the connection: it loads the circuit files from the Kumi app the first time.')), 30_000));
-  await Promise.race([ready, timeout]);
-  if (!inject) throw Error('The on-phone prover is not mounted.');
+  await whenReady();
   const id = ++seq;
   return new Promise((ok, fail) => {
     pending.set(id, { ok, fail });
@@ -72,7 +89,7 @@ export function ProverHost() {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { WebView } = require('react-native-webview') as typeof import('react-native-webview');
   const ref = useRef<any>(null);
-  useEffect(() => () => { inject = null; resetReady(); }, []);
+  useEffect(() => () => { inject = null; isReady = false; }, []);
   return (
     <View style={{ position: 'absolute', width: 1, height: 1, opacity: 0, overflow: 'hidden' }} pointerEvents="none" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
       <WebView
@@ -81,10 +98,11 @@ export function ProverHost() {
         source={{ html: PAGE, baseUrl: `${EERC_HOST}/` }}
         javaScriptEnabled
         onLoadEnd={() => { inject = js => ref.current?.injectJavaScript(js); }}
+        onError={e => { lastError = e.nativeEvent.description; }}
         onMessage={e => {
           let m: any;
           try { m = JSON.parse(e.nativeEvent.data); } catch { return; }
-          if ('ready' in m) { if (m.ready) markReady?.(); return; }
+          if ('ready' in m) { isReady = !!m.ready; if (m.error) lastError = m.error; return; }
           const p = pending.get(m.id);
           if (!p) return;
           pending.delete(m.id);

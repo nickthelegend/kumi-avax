@@ -2968,7 +2968,9 @@
     "phone-qa-1": "0x32616Bf908dCF09C383AF22fe85ae8a43B8509B3",
     "phone-qa-2": "0xb2af224B6387d3FFD60Dd6254B3E84Aff58f8E6C",
     "phone-qa-3": "0xeFcC22be9821E2DdB4cA844E8aA680aC58F84d67",
-    "phone-qa-4": "0x1f9d5D2987D6C74FC5A8C1a0FF8597a2cDA6Aa03"
+    "phone-qa-4": "0x1f9d5D2987D6C74FC5A8C1a0FF8597a2cDA6Aa03",
+    "phone-qa-5": "0x9Fd91D853Eb35bCb7eD51029f36963e38CB841d4",
+    "ios-sim": "0x6C1efFE4F32c1c82BdAFb1eEBfC90949197E10f6"
   },
   "phoneQaNote": "Wallets created inside the phone app by scripts/qa/phone.mjs. qa-1 and qa-2 stopped mid-run (script timeouts, then a margin fix); qa-3 is phoneDemo, qa-4 is phoneRuns[0]. Their keys lived only in the headless browser and are gone.",
   "eerc": [
@@ -3461,5 +3463,147 @@
       "at": "2026-11-12T12:20:12.108Z"
     }
   ],
-  "eercNote": "Kumi's private balance: Ava Labs EncryptedERC (converter over tUSDC, 2 decimals, production verifiers, unmodified at 8dc98cd). Auditor = accounts.auditor (a Kumi test account). Private tips and sends are posted in the chats as kumi:private:<tx>."
+  "eercNote": "Kumi's private balance: Ava Labs EncryptedERC (converter over tUSDC, 2 decimals, production verifiers, unmodified at 8dc98cd). Auditor = accounts.auditor (a Kumi test account). Private tips and sends are posted in the chats as kumi:private:<tx>.",
+  "phonePrivate": [
+    {
+      "at": "2026-11-12T12:36:43.177Z",
+      "wallet": "0x9Fd91D853Eb35bCb7eD51029f36963e38CB841d4",
+      "gasFromMaker": "0x50eb49cf6b5f1110f58f550a89cf3261e954a5ea960ae60254951e38a389d39e",
+      "signedInApp": [
+        {
+          "label": "Test USDC from the faucet",
+          "hash": "0x6ddcfe300522809bb352e39b49b6f0b3e0d8a6f1c54053a112c3b5bcc3dd06a7"
+        },
+        {
+          "label": "Open private balance",
+          "hash": "0x89c6cdd2c6fd96fa180ec91d56d99da6848042f44236cada341c961149361400"
+        },
+        {
+          "label": "Approve tUSDC (eERC)",
+          "hash": "0x8d9d60e4b4517ca73e1bd53a7e1165322dcd0e09819bdd110b90d7b453b81f94"
+        },
+        {
+          "label": "Move 20.00 in",
+          "hash": "0xbe328cc14a62a94a25a7b215836f706505cdf2fd83e2fd18e48acd27b947ad1d"
+        },
+        {
+          "label": "Join the chat",
+          "hash": "0xe924eb4deb48bde47a578e665dbafd9526444662e4a5313bcf55c96d83409ac8"
+        },
+        {
+          "label": "Approve tUSDC",
+          "hash": "0x1316a85b70671eb4aee18459caa1a6a78478539dfae1fa17f0458e376175de2e"
+        },
+        {
+          "label": "Deposit margin",
+          "hash": "0x4653a4aa48e4fe7ca9ab3c68b61957a7e43fb8e4d4199545d365c547ec8e060e"
+        },
+        {
+          "label": "Buy AVAX",
+          "hash": "0x0c06309a090c9d8d4901b1be8b3d6e2b32c0c875863060e559ff88edbb2af00d"
+        },
+        {
+          "label": "Copy",
+          "hash": "0x2c85fd1a934ffa3332d09b064dfd4ca38159ff7df64de3a5322a0e7cf5d8a9b2"
+        },
+        {
+          "label": "Private tip",
+          "hash": "0x539cde50a7c43e98ac50ca09b6a203c1256d50f5e58f748a6a4aaa0c0af03597"
+        },
+        {
+          "label": "Private tip card",
+          "hash": "0xe0b80525c9b2d35fcd31eb324218addaa5db77e670bf76e199270ee696d8e9d4"
+        },
+        {
+          "label": "Move 5.00 out",
+          "hash": "0x9befe90bdc25c59b779f092a163e38a6a60ec20b71d3ad979a500bc6b2dc5231"
+        }
+      ]
+    }
+  ],
+  "webPrivate": [
+    {
+      "at": "2026-11-12T12:53:42.704Z",
+      "txs": [
+        {
+          "as": "bo",
+          "hash": "0xc72554dd054e153c2c1bac16fd53a30ecaac4e8efa25a217a57cf507a08e4fd0",
+          "functionName": "transfer"
+        },
+        {
+          "as": "bo",
+          "hash": "0xf3bfce71ca13a290a78d6f863bf7714697c0d70673f45581176122d3a3701d3f",
+          "functionName": "say"
+        },
+        {
+          "as": "ren",
+          "hash": "0xe7da2295070147c42823a74aefa93775be55f4a6c0fd6f7cf8ea97aa9ccd019c",
+          "functionName": "transfer"
+        },
+        {
+          "as": "ren",
+          "hash": "0x070f2707afe2093f226f685af3c68a23ea924123322137c9eeea25ca199ec2b6",
+          "functionName": "say"
+        }
+      ]
+    }
+  ],
+  "iosPrivate": {
+    "note": "Kumi in Expo Go on the iOS Simulator (iPhone 17 Pro), in-app wallet in the Keychain, every proof made on the device in the hidden WebView prover; tx list read back from the Routescan API",
+    "wallet": "0x6C1efFE4F32c1c82BdAFb1eEBfC90949197E10f6",
+    "txs": [
+      {
+        "label": "gas from maker (outside the app)",
+        "hash": "0xb6f4f38f17ce99029b303fc1804c8933e200e35fb04de80090b4cdbf5f738e26"
+      },
+      {
+        "label": "Open private balance (registration proof made on the phone)",
+        "hash": "0x7c640ba13022fb89e1db81d6b74fb6d934be7bb8adbafb60082744157d96af5b"
+      },
+      {
+        "label": "Test USDC from the faucet",
+        "hash": "0x97fedeeea0d6b281f8ae54cafb10a1c77d7a138110689d7e749cb67a8628ccef"
+      },
+      {
+        "label": "Approve tUSDC (eERC)",
+        "hash": "0x777b33f86e5cdfae1a9b73ed0cef49a5b21e4d692d1406b71a97fd6b027e3cb9"
+      },
+      {
+        "label": "Move 20.00 in",
+        "hash": "0xd5eca517695586302420a1505b137b45caa34caaa2d7a3f7e18a26573fbefa98"
+      },
+      {
+        "label": "Move 5.00 out (withdraw proof made on the phone)",
+        "hash": "0xf9a7d471a07bddb3cd700d41a39467e53c02817f1c57fb79483f18e8d13f4453"
+      },
+      {
+        "label": "Join the AVAX pit",
+        "hash": "0x6a461dd67f61ee95c8a874ab7727e23eb38db2573f600eb19e94098aaec54ef2"
+      },
+      {
+        "label": "Approve tUSDC (KumiPerps)",
+        "hash": "0x997fd98aa170d58ec01c2f8c1834bc762bf9fb51c96050a13b61cc80d10576ca"
+      },
+      {
+        "label": "Deposit margin",
+        "hash": "0xcc5510258f31927881e777641638dc6d90dd36ba1fe3bc4fe16f19f9a53e520a"
+      },
+      {
+        "label": "Buy AVAX (IOC)",
+        "hash": "0xf3ab0a139d5070021907caf40d94924f38176bd2527e7b24bd93a678af5887e3"
+      },
+      {
+        "label": "KumiLobby.copy #7",
+        "hash": "0xa12dcca99399b9cc622831619b1f461f4dd4b8e0ee7acc0943d6aefd8aa0b785"
+      },
+      {
+        "label": "Private tip to mika for #7 (transfer proof made on the phone)",
+        "hash": "0xe5deb19f810a15dda490c538a4b3d90abd8159220b6dfd2d63a73e39c514ae73"
+      },
+      {
+        "label": "Private tip card",
+        "hash": "0x23ee31330afee0c7a6075c86c89f0f7f3cbfbcec241183ffc8435eff2ea2599e"
+      }
+    ]
+  }
 }

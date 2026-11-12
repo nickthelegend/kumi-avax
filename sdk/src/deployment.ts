@@ -29,7 +29,9 @@ export const DEPLOYMENT = {
     "0x32616bf908dcf09c383af22fe85ae8a43b8509b3",
     "0xb2af224b6387d3ffd60dd6254b3e84aff58f8e6c",
     "0xefcc22be9821e2ddb4ca844e8aa680ac58f84d67",
-    "0x1f9d5d2987d6c74fc5a8c1a0ff8597a2cda6aa03"
+    "0x1f9d5d2987d6c74fc5a8c1a0ff8597a2cda6aa03",
+    "0x9fd91d853eb35bcb7ed51029f36963e38cb841d4",
+    "0x6c1effe4f32c1c82bdafb1eebfc90949197e10f6"
   ],
   "crews": [
     {
@@ -64,6 +66,8 @@ export const DEPLOYMENT = {
     "0xb2af224b6387d3ffd60dd6254b3e84aff58f8e6c": "phone-qa-2",
     "0xefcc22be9821e2ddb4ca844e8aa680ac58f84d67": "phone-qa-3",
     "0x1f9d5d2987d6c74fc5a8c1a0ff8597a2cda6aa03": "phone-qa-4",
+    "0x9fd91d853eb35bcb7ed51029f36963e38cb841d4": "phone-qa-5",
+    "0x6c1effe4f32c1c82bdafb1eebfc90949197e10f6": "ios-sim",
     "0x1c11a95bfbfaa989afc1222d614a8fbd24f75677": "Night Owls vault",
     "0x16e639793291e35db63fc411ffe97da76f35eb2b": "Sunrise Scalpers vault",
     "0x4d598fe9dfb41aa95f2f320f11a95d93acb26c22": "Slow BTC Club vault",
