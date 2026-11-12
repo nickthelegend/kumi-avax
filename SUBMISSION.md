@@ -38,6 +38,15 @@ on iOS and Android, since Hermes has no WebAssembly) or in the browser, and the 
 Snowtrace. Only the sender, the receiver and Kumi's auditor key can read the amount. Moving money in and out of the
 private balance is public, and positions on the order book stay public; the README says exactly what is hidden.
 
+**Gas-free start, Kumi AI and a caller board (v2.2).** "Create my wallet" now ends funded: the new wallet signs a
+request and KumiGasStation on Fuji pays it 0.0002 AVAX, with the per-wallet, per-day and per-requester limits
+enforced on-chain, then the phone signs its own test-USDC faucet tx. In any chat, `/ask` (or ✨) brings in Kumi AI,
+a Claude agent (Haiku 5.5) whose read-only tools read the on-chain book, Chainlink, the chat's calls and copies,
+caller records and your positions; it shows the tools it used and can draft a call that you review and sign. The
+Top tab ranks callers from on-chain data only: each call's leveraged move from the Chainlink price stored at the
+call, and copiers' PnL from replaying every KumiPerps fill (each copy's own order is its lot). Rank badges sit on
+names in every chat.
+
 Guard rails:
 - A crew-wide leverage cap.
 - A slippage limit against Chainlink.
@@ -65,12 +74,14 @@ candles, the maker bot and the Primit work are new.
   - TestUSDC
   - KumiLobby public chats with venue-checked copies
   - on-chain chat feed
+  - KumiGasStation: first gas for new wallets, signature-checked, with on-chain caps (v2.2)
 - **Ava Labs eERC (EncryptedERC + Registrar, production Groth16 verifiers)** on Fuji: private tips and crew
   settle-ups, proofs made on the phone and in the browser, Kumi auditor key set on-chain
 - **Chainlink price feeds on Fuji**: AVAX/USD, BTC/USD
 - **Avalanche C-Chain mainnet** (simulation only): Orderly vault adapter for Primit, tested on a mainnet fork
 - Solidity 0.8.28 and Foundry (unit, fuzz, and Fuji and mainnet fork tests)
 - TypeScript, viem, React 19, Vite 7
+- Anthropic Claude API (`claude-haiku-5-5`, tool use) on a Vercel serverless function for Kumi AI; key server-side only
 - Expo SDK 58 (React Native 0.88, Expo Router, expo-secure-store, expo-camera, Reanimated 4) for the phone app
 - Playwright (screenshots, and the live demo through the UI with a build-flagged QA signer)
 
@@ -91,6 +102,10 @@ candles, the maker bot and the Primit work are new.
 - **eERC Registrar:** https://testnet.snowtrace.io/address/0x4de185b2d8ee6a73d78e90c3e024f230799b561c
 - **A private tip with its proof made on the iPhone simulator (amount hidden):** https://testnet.snowtrace.io/tx/0xe5deb19f810a15dda490c538a4b3d90abd8159220b6dfd2d63a73e39c514ae73
 - **A private tip for mika's AVAX call #7:** https://testnet.snowtrace.io/tx/0x81b6aacd61f188ed6561c50fe5eda4ba2d7fe02f11aec449a8583e611bdfb831
+- **KumiGasStation:** https://testnet.snowtrace.io/address/0xf47d3dbcb7180f6c95680e120df34a50097af44d
+- **A new wallet's first gas, from the iOS Simulator:** https://testnet.snowtrace.io/tx/0x41b018b49971b96450ee574c0a3d0960c7cb258190ec56b0b27d17ed3166fbf2
+- **A call drafted by Kumi AI and signed on the iOS Simulator:** https://testnet.snowtrace.io/tx/0x06996f58ae578449e1daedd549be8f3ec11b19c4504641a2ebb3a27b4d3b0802
+- **Kumi API:** https://kumi-avax-api.vercel.app/api/health
 - **Phone app (Expo web build):** https://kumi-avax-app.vercel.app
 - **Web app:** https://kumi-avax-web.vercel.app
 - **Phone on a device:** `cd mobile && npm install && npx expo start`, scan with Expo Go (SDK 58)
@@ -108,6 +123,7 @@ README's "The live demo" section.
 
 - **Claude Code** (Anthropic) wrote the contracts, tests, scripts, web app, phone app, the eERC integration and docs,
   and drove the live demos (web, phone web build and the iOS Simulator).
+- **Claude Haiku 5.5** (Anthropic API) is inside the product: it powers Kumi AI in the chats (v2.2).
 - The **Primit research** was done by a Claude Code subagent from public pages and read-only RPC calls.
 - **ChatGPT images** made the clay art and 3D objects reused from Kumi's NEAR build, and the v2.1 set for this
   build: the app icon, splash, nine new crew mascots, onboarding scenes, empty states and chat stickers

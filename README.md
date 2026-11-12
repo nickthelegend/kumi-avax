@@ -16,12 +16,19 @@ EncryptedERC (unmodified), with the zk proofs made on the phone itself (iOS, And
 The chat shows a card that anyone can check on Snowtrace; only the sender, the receiver and Kumi's auditor key can
 read the number. [What is hidden and what is not](#private-tips-and-settle-ups-eerc-v21).
 
+**New in v2.2: no faucet, an AI in the chat, and a caller board.** A new phone wallet gets its first gas from
+Kumi's own on-chain gas station (KumiGasStation, with its limits on Fuji), so "Create my wallet" ends funded and
+ready. Type `/ask` (or tap ✨) in any chat and **Kumi AI**, a Claude agent, answers from live Fuji data and shows
+which tools it read; it can draft a call that you review and sign yourself. The **Top** tab ranks callers from
+on-chain data only, and their rank shows next to their name in every chat. [How each one works](#v22-gas-free-start-kumi-ai-top-callers).
+
 | Live | Link |
 |---|---|
 | Phone app (Expo web build, open at phone width) | https://kumi-avax-app.vercel.app |
 | Web app | https://kumi-avax-web.vercel.app |
 | A public chat on the web | https://kumi-avax-web.vercel.app/room?chat=l-0 |
 | Markets with candles and the book | https://kumi-avax-web.vercel.app/markets/AVAX |
+| Kumi API (gas sponsor, Kumi AI; v2.2) | https://kumi-avax-api.vercel.app/api/health |
 
 > **Prior work, disclosed.** Kumi was first built for NEAR (`grokbot/projects/kumi`): crew rooms, `/buy SOL 10%`
 > chat commands, Sputnik DAO votes, captain limits, ragequit, and the coral and plum clay art with its mascots and
@@ -60,6 +67,8 @@ read the number. [What is hidden and what is not](#private-tips-and-settle-ups-e
 | eERC production verifiers: registration / transfer / withdraw | [`0xd94a10ff9bf7b863835b816485e878cc2b8bb1aa`](https://testnet.snowtrace.io/address/0xd94a10ff9bf7b863835b816485e878cc2b8bb1aa) / [`0xec3713a47f62d60f7f5f1f614cb30df9c6b5cfe7`](https://testnet.snowtrace.io/address/0xec3713a47f62d60f7f5f1f614cb30df9c6b5cfe7) / [`0xb1398d2a09c78f686018dbe8818b32155f7eea02`](https://testnet.snowtrace.io/address/0xb1398d2a09c78f686018dbe8818b32155f7eea02) | [0x0694f283…](https://testnet.snowtrace.io/tx/0x0694f283f8eb9ed025aaf23292874f788da852fe37079ff4a49f80b61c269c23) · [0x6e2264cc…](https://testnet.snowtrace.io/tx/0x6e2264ccb304fdb84c352117a15206eb315ef4c14c3f0c73b4f8d1e198cbfb09) · [0x7526dc0f…](https://testnet.snowtrace.io/tx/0x7526dc0f15610f6573bb88c83f82f7f3178b4c0fa82293f4878d140a7d20d191) |
 | Kumi auditor (a Kumi test account), set by the owner | [`0xB5fa31C707E9eC71edE4DE060386B0Be54AB99f3`](https://testnet.snowtrace.io/address/0xB5fa31C707E9eC71edE4DE060386B0Be54AB99f3) | [0x4975b463…](https://testnet.snowtrace.io/tx/0x4975b463c9ca8606e75cbac2b7800c62a26ff67dff95a917c2946c1b8b8aca43) |
 | TestUSDC (tUSDC, 6 dp, faucet) | [`0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd`](https://testnet.snowtrace.io/address/0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd) | [0x2c641336…](https://testnet.snowtrace.io/tx/0x2c641336d5e16c0a44bbbc2b532c62d8a6599f043cf14835e3a09718a14a54bc) |
+| **KumiGasStation** (first gas for new wallets, limits on-chain; v2.2) | [`0xf47d3dbcb7180f6c95680e120df34a50097af44d`](https://testnet.snowtrace.io/address/0xf47d3dbcb7180f6c95680e120df34a50097af44d) | [0x7a3d4f98…](https://testnet.snowtrace.io/tx/0x7a3d4f9827d684fc5b75cbe02ea55a55e13966e60a7d9ebb536a90c3cd321c7e) |
+| Kumi gas relayer (a Kumi account; its key is only on the API) | [`0x45Ad72e3C2083050d2D3B562eE2d7971fF4667C2`](https://testnet.snowtrace.io/address/0x45Ad72e3C2083050d2D3B562eE2d7971fF4667C2) | [funded 0x798ba67a…](https://testnet.snowtrace.io/tx/0x798ba67a996b5963f0e057e3841b346f49d9a640628a85c2a73e9773e8f9cd4e) |
 
 Markets were listed in [AVAX-USD](https://testnet.snowtrace.io/tx/0xd6be4f137a7d0252127fb440e1ba6a6ac9c35a1d94ab7775da93d008e96bafd5) and
 [BTC-USD](https://testnet.snowtrace.io/tx/0x8c87a9dc0180642bb7074804697e14ed9f740376883ae5430ec2f830611223ca), and the insurance fund was
@@ -137,11 +146,13 @@ Expo Go on the iOS Simulator).
 
 | Tab / screen | What is real |
 |---|---|
-| Onboarding | Creates (or imports) a Fuji key on the phone, in the iOS Keychain / Android Keystore via expo-secure-store. Backup screen reveals it only after a tap. The web preview keeps it in the browser's storage and says so. |
+| Onboarding | Creates (or imports) a Fuji key on the phone, in the iOS Keychain / Android Keystore via expo-secure-store, then (v2.2) gets its first gas from KumiGasStation and 1,000 tUSDC, both shown with Snowtrace links. Backup screen reveals the key only after a tap. The web preview keeps it in the browser's storage and says so. |
 | Chats | Your crews and joined public chats with the last message and unread badges; the public lobby with one-tap **Join** (`KumiLobby.join`); crews you are not in, read-only. Join by QR (camera or a photo) or by pasting `kumi://join/...`. |
 | Chat room | Crew rooms read the vault's on-chain feed (chat, pitches with live share-weighted vote bars, fills, chip-ins, ragequits); members vote and pitch `/long AVAX 3x 20%` from the phone. Public chats show call cards; **Copy** deposits margin, sends an IOC order to KumiPerps and records the copy, which the contract checks against the venue. |
 | Market | The on-chain book (cumulative depth bars, spread, Chainlink in the middle, last-fill pulse, levels flash on change); candles 1m / 5m / 15m / 1h; a ticket (market or limit, margin, leverage) that signs and sends `placeOrder`; your position with PnL and liquidation price; open orders with cancel. |
-| Wallet | AVAX, tUSDC and venue margin; deposit QR; **Get 1,000 test USDC**; the Fuji faucet link; positions; crew vault shares; every tx this phone signed, with Snowtrace links. |
+| Top (v2.2) | The caller board from Fuji: all chats or one, a #1 card, win rate, average move, copies and copiers' PnL; tap a caller for their calls. Caller badges show in every chat. |
+| Kumi AI (v2.2) | ✨ or `/ask` in any chat: answers from live Fuji reads with the tools it used shown, and drafts calls you sign yourself. |
+| Wallet | AVAX, tUSDC and venue margin; deposit QR; **Get 1,000 test USDC**; **Get gas from Kumi** when the wallet has no AVAX (v2.2); the Fuji faucet link; positions; crew vault shares; every tx this phone signed, with Snowtrace links. |
 
 **Candles are real data only.** Coinbase Exchange public candles for AVAX-USD / BTC-USD (Binance as a fallback),
 labelled with their source on the chart; Chainlink's Fuji price as the dashed line; Kumi's own KumiPerps fills as
@@ -207,6 +218,69 @@ both txs, withdraw ~5 s (Expo web build, headless Chrome).
 Open any of those on Snowtrace: the input is a proof and ciphertexts, and the amount is not in it (the Anvil test
 checks that too).
 
+## v2.2: gas-free start, Kumi AI, Top callers
+
+### Gas-free start
+
+A brand-new wallet can't send its first transaction without AVAX, and the public Fuji faucet has a captcha. Now the
+phone signs a small request with its new key and Kumi's API relays it to **KumiGasStation**, which pays the wallet
+0.0002 AVAX (about a billion gas at Fuji's 160 wei). The phone then signs `TestUSDC.faucet()` itself. Both txs
+show in onboarding with their Snowtrace links.
+
+The station checks everything on-chain, so the limits hold no matter which server instance relays:
+
+| Rule | Where |
+|---|---|
+| Only a wallet that signed this exact request (station, chain, wallet, deadline ≤ 1 h) is paid | `KumiGasStation.drip` (EIP-191, low-s) |
+| Once per wallet, only a wallet with no AVAX, never a contract | on-chain flags and checks |
+| 20 drips per UTC day in total, 3 per requester per day | on-chain counters; the requester tag is an HMAC of the IP made on the API, so no IP is on chain |
+| Only Kumi's relayer key can call `drip` (so a requester can't choose its own tag); the owner can rotate it | `relayer`, `setRelayer` |
+| Empty or misconfigured sponsor | the app shows **Setup required** and the Fuji faucet link |
+
+It was funded with 0.006 AVAX from Kumi's mika and bo test accounts (30 drips). The relayer pays its own gas.
+Live drips: [the iOS Simulator's new wallet](https://testnet.snowtrace.io/tx/0x41b018b49971b96450ee574c0a3d0960c7cb258190ec56b0b27d17ed3166fbf2)
+(then [1,000 tUSDC signed by that wallet](https://testnet.snowtrace.io/tx/0xfdfbd462bb2cebf457737f90a80a71a6b82c2e34a5515d768efb31ce7a70b733)),
+[the hosted phone app's new wallet](https://testnet.snowtrace.io/tx/0xb875e155dcaee02ff9f89437a2191560a7680160ea5a7eb08253439ee13b3507)
+(then [tUSDC](https://testnet.snowtrace.io/tx/0x5a348943cbcbc61fab9a73301c4603921882d682ee78cb32360f9c528441b92a) and
+[joining the AVAX pit](https://testnet.snowtrace.io/tx/0x3fa71c29c8197f6db24779892f51af82dea48628bf0a6b16e5ed5ab6b89d70b5)),
+and [the API's live test](https://testnet.snowtrace.io/tx/0x4e52c67b2538cfca7819b8c0b55c43a8688e72f19669209be6cff8bab1e84352).
+An ERC-2771 forwarder for KumiLobby and KumiPerps was the other route; it would have meant redeploying the venue
+under the seeded state, so it was not taken.
+
+### Kumi AI in the chat
+
+`/ask who is the best caller here?` or the ✨ button, in a public chat or a crew room, on the phone and the web.
+Kumi AI is a Claude agent (`claude-haiku-5-5`) on Kumi's API; the Anthropic key is a server env var and never
+reaches an app. Its tools are read-only views of live Fuji: the KumiPerps book and recent fills, Chainlink's Fuji
+feeds, this chat's calls and copies with their PnL, a caller's record, the caller board and the asker's own
+positions. The answer shows which tools it called as chips. When you ask for a trade, it uses `draft_call`: the app
+shows a draft card, **Review and post** opens the call sheet filled in (in a crew, **Pitch it** fills
+`/long BTC 2x 5%` into the composer), and you sign it yourself. It never signs or sends anything.
+
+- Access: the wallet signs a one-hour pass (`Kumi AI / wallet / expires`); the API checks it and that the wallet is
+  a member of that chat on-chain. Rate limits per wallet, per IP and per instance.
+- Answers are labelled Kumi AI and stay on the asker's device ("Only you see this"); nothing is posted on chain.
+- [A call Kumi AI drafted on the iOS Simulator and the ios-sim wallet signed](https://testnet.snowtrace.io/tx/0x06996f58ae578449e1daedd549be8f3ec11b19c4504641a2ebb3a27b4d3b0802) (AVAX pit #39).
+
+### Top callers and reputation
+
+The **Top** tab (phone) and the **Top callers** panel (web) rank everyone who has posted a call in the public chats,
+from on-chain data only (`sdk/src/leaderboard.ts`):
+
+- **A call's move:** Chainlink price stored by KumiLobby at the call → Chainlink now, signed by side and times the
+  call's leverage. A call wins when that is above zero; a call with no move yet is not scored.
+- **Copiers' PnL:** every KumiPerps `Filled` event since the venue was deployed, replayed per account and market
+  first in first out. The fills of a copy's own order tx (`orderTx`, stored by `KumiLobby.copy`) are its lot: later
+  closes are its realised PnL, the open rest is marked to Chainlink. Before funding.
+- **Rank:** win rate smoothed toward 50% (one lucky call doesn't top the board), then average move; callers with no
+  scored call go last. Per chat and across all chats.
+- **Badges:** rank and win rate next to a caller's name in every chat and on their call cards; a crown for a top-3
+  caller who wins at least half the time.
+
+The test replays every fill and checks the result equals each account's KumiPerps position on Fuji, and each copy
+against the fills in its own order tx. Seeded with six more real calls, five copies and one closed copy from Kumi's
+test accounts (`seedV22` in `deployments/fuji.json`).
+
 ## How it works
 
 | Piece | What it does |
@@ -218,6 +292,8 @@ checks that too).
 | `contracts/src/KumiLobby.sol` | **Public chats.** Anyone joins a channel; members chat and post calls (market, side, leverage, suggested margin; the Chainlink price is stored with the call). `copy` reverts unless the copier holds that side on KumiPerps right now, and it writes the venue's size and entry, not the copier's claim. 15 tests. |
 | `contracts/lib/EncryptedERC` | **Ava Labs' eERC**, unmodified (submodule at `8dc98cd`), built with `FOUNDRY_PROFILE=eerc` exactly as upstream (solc 0.8.27, no via-ir). Kumi adds no contract around it. |
 | `sdk/src/eerc.ts` | Keys from a wallet signature, BabyJubJub ElGamal and Poseidon ciphertexts, proof inputs for registration, transfer and withdraw, the Kumi memo, and reading a private send back by hash as sender, receiver or auditor. |
+| `contracts/src/KumiGasStation.sol` | **Gas for new wallets (v2.2).** Pays 0.0002 AVAX once to a wallet that signed the request and holds no AVAX, with a daily cap and a per-requester cap on-chain; only Kumi's relayer calls it. 21 tests incl. forged, moved, cross-station, malleated and expired signatures. |
+| `api/` | **Kumi's API (v2.2, Vercel):** `POST /api/gas` (relays a gas request after off-chain checks), `POST /api/ask` (Kumi AI: Claude with read-only Fuji tools), `GET /api/health`. Bundled with esbuild; keys are Vercel env vars. 16 live tests. |
 | `mobile/` | The Expo app (SDK 58, Expo Router, viem). See "The phone app" above. |
 | `sdk/` | Order encoding (tick, lot, IOC limit inside the oracle band), candles (exchange + Chainlink + fills), the on-chain chat client for crews and lobby channels, ABIs, the chat-command parser (`/long`, `/short`, `/close`, `/captain …`, `/invite`) with its tests, and formatting helpers. |
 | `web/` | The Vite + React app. **Pages:** `/room` (the crew list, the chat with trade cards and share-weighted vote bars, and the fund pane with live positions, Chainlink and close-now PnL, liquidation price, members and rules), `/markets/:sym` (laid out like Hyperliquid: a stats strip, depth chart, recent fills, the on-chain order book and fills linked to Snowtrace), `/crew` (the fund page with every pitch and its result) and `/` (the landing). **Signing:** a browser wallet (Core or MetaMask) switched to Fuji. QA builds (`VITE_QA=1`) can also use a **QA signer** that the Playwright harness injects. It is not in production builds, and no key ships in any bundle. |
@@ -231,6 +307,8 @@ checks that too).
   simulated on a C-Chain **mainnet fork**, with no mainnet transaction.
 - **eERC (Avalanche bonus), used for a real job:** tips to callers and crew settle-ups move as encrypted balances
   on Ava Labs' EncryptedERC, with proofs made on the phone. See the section above for exactly what is hidden.
+- **Gas sponsorship on C-Chain (v2.2):** a new wallet's first gas comes from an on-chain station with on-chain
+  limits, and costs Kumi 0.0002 AVAX, because Fuji gas is that cheap.
 - **Not used:** no custom L1 and no ICM/ICTT. Kumi doesn't need a second chain, so it doesn't claim them.
 
 ## Try it
@@ -239,10 +317,11 @@ Node 22+ and pnpm 10.
 
 ```bash
 pnpm install
-cd contracts && forge test                               # 66 unit and attack tests (forks skipped)
+cd contracts && forge test                               # 87 unit, attack and fuzz tests (forks skipped)
 FORK=1 forge test --match-contract FujiForkTest          # real Chainlink feeds on a Fuji fork
 FORK=1 forge test --match-contract PrimitForkTest        # Orderly's vault on an Avalanche mainnet fork (simulation only)
-cd ../sdk && node --test test/*.test.ts                  # parser, orders, candles, chat client, eERC (live Fuji + exchange reads)
+cd ../sdk && node --test test/*.test.ts                  # parser, orders, candles, chat, eERC, gas digest, caller board (live Fuji)
+cd ../api && node --test test/*.test.ts                  # gas sponsor (one real drip) and Kumi AI (one real model run); keys read by name
 cd ../contracts && FOUNDRY_PROFILE=eerc forge build && cd ../scripts && pnpm test:eerc   # eERC on Anvil with real proofs (40 checks)
 cd ../mobile && npm install && npm test                  # invite-link parsing; npx expo start for the app
 cd ../web && pnpm build && pnpm preview                  # http://127.0.0.1:5341
@@ -270,7 +349,13 @@ node qa/shots.mjs http://127.0.0.1:5341                    # screenshots at 1440
 - **Native, but on the simulator.** v2.1 signed real Fuji transactions from the native app in Expo Go on the iOS
   Simulator (iPhone 17 Pro), including all three eERC proofs made on the device (`iosPrivate`). It has not been run
   on a physical phone, and there is no APK or TestFlight build.
-- **A new wallet needs Fuji AVAX for gas.** The public faucet has a captcha, so a person gets it once by hand.
+- **The gas station is small on purpose.** 0.006 AVAX funds 30 new wallets; past the daily cap or when it runs dry,
+  the app says so and links the Fuji faucet. The per-requester cap keys on IP, which a determined farmer can rotate.
+- **Kumi AI is an assistant, not an oracle.** Its numbers come from its tool reads, but its sentences are a model's;
+  the in-memory rate limits reset when a server instance restarts (the hard money limits are the gas station's,
+  on-chain). It only drafts; you sign.
+- **The caller board is young.** With a handful of calls per caller, win rates are noisy; calls are scored to
+  Chainlink now, not at a fixed horizon, and PnL is before funding.
 - **eERC hides payment amounts, not trading.** Positions, orders, copies and crew shares stay public on KumiPerps
   and KumiCrew. Moving tUSDC in or out of the eERC is public. Kumi's auditor key can read every private amount.
 - **The phone downloads ~30 MB of circuit files** (Ava Labs' zkeys) the first time it proves, from the hosted app.

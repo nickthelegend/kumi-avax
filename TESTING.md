@@ -1,6 +1,6 @@
 # Testing
 
-| Suite | Command | Tests | Result (Nov 12, 2026) |
+| Suite | Command | Tests | Result (Nov 12, 2026, v2.2) |
 |---|---|---|---|
 | Order book, matching | `forge test --match-contract KumiPerpsBookTest` | 11 | pass |
 | Margin | `forge test --match-contract KumiPerpsMarginTest` | 5 | pass |
@@ -10,6 +10,7 @@
 | Conservation fuzz (256 runs) | `forge test --match-contract KumiPerpsConservationTest` | 1 | pass |
 | Crew vault | `forge test --match-contract KumiCrewTest` | 21 | pass |
 | **KumiLobby (v2)**: membership, calls, copies checked against real KumiPerps fills, attacks, fuzz | `forge test --match-contract KumiLobbyTest` | 15 | pass |
+| **KumiGasStation (v2.2)**: a drip to a new wallet, only the relayer, signatures from another key / moved to another wallet / for another station / with a changed deadline / malformed / high-s malleated, expired and far deadlines, a second drip after spending it all, a wallet holding AVAX, an address with code, per-requester and daily caps (and the next-day reset), an empty station, owner-only config and relayer rotation, a 256-run fuzz that no other key's signature pays | `forge test --match-contract KumiGasStationTest` | 21 | pass |
 | Real Chainlink feeds, Fuji fork | `FORK=1 forge test --match-contract FujiForkTest` | 3 | pass |
 | Primit (Orderly vault), Avalanche mainnet fork | `FORK=1 forge test --match-contract PrimitForkTest` | 7 | pass |
 | SDK: chat-command parser | `cd sdk && node --test test/*.test.ts` | 7 | pass |
@@ -17,14 +18,25 @@
 | **SDK (v2): candles**, incl. live Coinbase/Binance candles, Chainlink rounds on Fuji vs the exchange, Kumi fills from the on-chain ring | same | 7 | pass |
 | **SDK (v2): chat client**, read live from Fuji: channels, a call and its copies (each copy's order tx is a real KumiPerps tx from the copier), crews and feeds | same | 4 | pass |
 | **SDK (v2.1): eERC**, live Fuji: converter at 2 dp with the Kumi auditor set, what the public can and cannot read, every private-tip card in the AVAX pit is a real eERC transfer from the poster to the caller, the Night Owls settle-up; PCT round trip and wrong-key refusal | `cd sdk && node --test test/eerc.test.ts` | 5 | pass |
+| **SDK (v2.2): gas request**, live Fuji: the digest the phone signs equals `KumiGasStation.digest` on Fuji and recovers to the wallet; the live station's relayer, drip and caps | `cd sdk && node --test test/gas.test.ts` | 2 | pass |
+| **SDK (v2.2): caller board**, live Fuji: FIFO lot math (two lots, a partial close, a flip, a maker fill); leveraged call return; **the fill replay equals every copier's KumiPerps position**; each copy's lot is the fills of its own order tx and its entry is the lobby's stored Chainlink price; ren's closed copy's realised PnL equals its close fills; caller counts, wins and copy PnL add up, ranks 1..n, unscored last, marks are Chainlink | `cd sdk && node --test test/leaderboard.test.ts` | 6 | pass |
+| **API (v2.2): gas sponsor**, live Fuji: Setup required without keys; malformed address / signature / deadline; a forged or moved signature (401); expired and far deadlines; a wallet holding AVAX (409); **one real drip to a new wallet** read back from the `Dripped` event, then the same wallet refused; the per-IP limiter's 7th request (429); the station's on-chain room | `cd api && node --test test/gas.test.ts` | 8 | pass |
+| **API (v2.2): Kumi AI**, live Fuji: `order_book`, `chainlink_price`, `chat_activity` (lobby and crew), `top_callers` / `caller_record` (equal to `readLeaderboard`), `my_positions` (equal to `positionsOf`) each checked against a direct chain read; `draft_call` (lobby margin, crew leverage cap, crew pitch command); the endpoint refuses a missing key (Setup required), a pass from another key, an expired pass, a non-member and a non-Kumi crew; **one real `claude-haiku-5-5` answer** that called `order_book` and a caller tool | `cd api && node --test test/ask.test.ts` | 8 | pass |
 | **Mobile (v2): invite links** (QR / paste) | `cd mobile && npm test` | 4 | pass |
 | **eERC end-to-end on Anvil (v2.1)**: Ava Labs' EncryptedERC with production verifiers, Kumi's TestUSDC and real Groth16 proofs; stolen, cross-chain, forged, replayed and tampered proofs, redirected sends and over-spending are refused | `cd contracts && FOUNDRY_PROFILE=eerc forge build && cd ../scripts && pnpm test:eerc` | 40 checks | pass |
-| **Total** | | **151** | **151 pass** |
+| **Total** | | **196** | **196 pass** |
 
-`forge test` runs 66 tests and skips the two fork suites (they need `FORK=1` and public RPCs). The SDK suite is 31
-tests; the order, candle and chat tests that touch a chain read **live Fuji** and the public exchange APIs, with no
+`forge test` runs 87 tests and skips the two fork suites (they need `FORK=1` and public RPCs). The SDK suite is 39
+tests and the API suite 16; the order, candle and chat tests that touch a chain read **live Fuji** and the public exchange APIs, with no
 mocked RPC. The phone app imports the same SDK code (`@kumi-avax/sdk` is bundled by Metro), so these cover the phone's
 order encoding, candle builder and chat client.
+
+**v2.2 end to end.** The native app in Expo Go on the iOS Simulator made a new wallet, got gas from KumiGasStation
+through the hosted API and signed its own tUSDC faucet tx; asked Kumi AI in the AVAX pit; and posted a call Kumi AI
+drafted (`v22Runs`). `scripts/qa/hosted-v22.mjs` repeats the gas-free start, the Top tab, a join and a Kumi AI
+answer on the hosted phone build, and checks the hosted web app at 1440 and 375, with no console errors
+(`hostedV22`). `scripts/qa/web-v22.mjs` runs real Kumi AI answers in the web lobby and crew room through the QA
+signer.
 
 **End-to-end on Fuji, through the phone app:** `scripts/qa/phone.mjs` drives the Expo web build at 375 px: a new
 wallet made in the app, the tUSDC faucet, joining a public chat, copying a call (approve, deposit, IOC order,
