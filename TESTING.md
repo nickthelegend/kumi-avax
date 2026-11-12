@@ -9,12 +9,25 @@
 | Attacks on the venue | `forge test --match-contract KumiPerpsAttackTest` | 6 | pass |
 | Conservation fuzz (256 runs) | `forge test --match-contract KumiPerpsConservationTest` | 1 | pass |
 | Crew vault | `forge test --match-contract KumiCrewTest` | 21 | pass |
-| Real Chainlink feeds, Fuji fork | `FORK=1 forge test --match-contract FujiForkTest` | 3 | pass |
-| Primit (Orderly vault), Avalanche mainnet fork | `FORK=1 forge test --match-contract PrimitForkTest` | 7 | pass |
-| Chat-command parser | `cd sdk && node --test test/*.test.ts` | 7 | pass |
-| **Total** | | **68** | **68 pass** |
+| **KumiLobby (v2)**: membership, calls, copies checked against real KumiPerps fills, attacks, fuzz | `forge test --match-contract KumiLobbyTest` | 15 | pass |
+| Real Chainlink feeds, Fuji fork | `FORK=1 forge test --match-contract FujiForkTest` | 3 | pass (v1 run) |
+| Primit (Orderly vault), Avalanche mainnet fork | `FORK=1 forge test --match-contract PrimitForkTest` | 7 | pass (v1 run) |
+| SDK: chat-command parser | `cd sdk && node --test test/*.test.ts` | 7 | pass |
+| **SDK (v2): order encoding**, incl. KumiPerps accepting a live-book order and refusing an off-band one in an eth_call on Fuji | same | 8 | pass |
+| **SDK (v2): candles**, incl. live Coinbase/Binance candles, Chainlink rounds on Fuji vs the exchange, Kumi fills from the on-chain ring | same | 7 | pass |
+| **SDK (v2): chat client**, read live from Fuji: channels, a call and its copies (each copy's order tx is a real KumiPerps tx from the copier), crews and feeds | same | 4 | pass |
+| **Mobile (v2): invite links** (QR / paste) | `cd mobile && npm test` | 4 | pass |
+| **Total** | | **106** | **106 pass** |
 
-The plain `forge test` runs 51 tests and skips the two fork suites. Those need `FORK=1` and the public RPCs.
+`forge test` runs 66 tests and skips the two fork suites (they need `FORK=1` and public RPCs). The SDK suite is 26
+tests; the order, candle and chat tests that touch a chain read **live Fuji** and the public exchange APIs, with no
+mocked RPC. The phone app imports the same SDK code (`@kumi-avax/sdk` is bundled by Metro), so these cover the phone's
+order encoding, candle builder and chat client.
+
+**End-to-end on Fuji, through the phone app:** `scripts/qa/phone.mjs` drives the Expo web build at 375 px: a new
+wallet made in the app, the tUSDC faucet, joining a public chat, copying a call (approve, deposit, IOC order,
+`KumiLobby.copy`), a chat message, a BTC limit order, the crew room and the join-code QR. The txs are in
+`deployments/fuji.json` (`phoneDemo`, `phoneRuns`) and in the README.
 
 ## What the tests cover
 
@@ -116,3 +129,12 @@ in the live demo. No test stubs an RPC.
 - `node scripts/qa/demo.mjs` drives the real UI with the three QA signers on Fuji.
 - Each transaction is captured from the app and logged to `deployments/fuji.json` under `demo`.
 - Step screenshots go to `docs/screenshots/`.
+
+**KumiLobby** (`test/KumiLobby.t.sol`, v2)
+- Creating a channel joins the creator; bad names and unknown markets revert; joining twice reverts.
+- Leaving removes the member both ways (channel list and the member's channel list) and blocks posting; rejoining works.
+- Only members post (fuzzed over random addresses); messages are 1 to 280 bytes.
+- A call stores the Chainlink price, leverage and margin; a stale feed stores price 0 instead of reverting.
+- **A copy is checked against the venue:** after a real IOC fill on KumiPerps, the copy records the venue's size and
+  entry (20.01, the best ask). No position, the wrong side, copying twice, copying your own call, copying a
+  non-call, or copying from outside the channel all revert.

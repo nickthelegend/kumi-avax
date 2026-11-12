@@ -33,6 +33,11 @@
    You leave with your slice. Your share of every open position closes on the book first, and you pay that
    spread. The test shows the remaining members' share price doesn't move.
 
+3b. **Now on your phone (v2).**
+   Phone screens: Chats (crews + public lobby with unread badges), a call card with Copy, the copy sheet signing
+   approve → deposit → IOC order → KumiLobby.copy, and the Market tab (on-chain book, Coinbase candles with Chainlink
+   and Kumi's own fills as markers). The same chat shows on the web, because the chat is on Fuji.
+
 8. **The live Fuji demo.**
    3 members chip in → mika pitches `/long AVAX 3x` → bo votes and it opens → the price moves → `/close AVAX`
    with PnL → ren ragequits. Every tx is in `deployments/fuji.json`.
@@ -43,7 +48,7 @@
    a trusted off-chain agent, so the Fuji venue is the product.
 
 10. **Built, tested, open.**
-    - 68 tests: 51 Foundry unit and attack tests, 3 Fuji-fork tests on real Chainlink feeds, 7 mainnet-fork Primit
-      tests, and 7 parser tests.
+    - 106 tests: 66 Foundry unit and attack tests (15 for KumiLobby), 3 Fuji-fork tests on real Chainlink feeds,
+      7 mainnet-fork Primit tests, 26 SDK tests (orders, candles and chat against live Fuji), 4 mobile tests.
     - MIT licensed.
     - The ask: crews on mainnet once a trustless perps venue on Avalanche exposes on-chain orders.

@@ -2,8 +2,9 @@
 
 **Name:** Kumi on Avalanche
 
-**One-liner:** Your group chat is a fund, now trading perps. Pitch `/long AVAX 3x` in chat, vote with your shares,
-and the crew vault opens it on an on-chain order book on Avalanche.
+**One-liner:** Your group chat is a fund, now on your phone. Join a chat, copy a friend's trade call with one tap,
+or vote your crew's vault into a perp: every message and order is signed on the phone and fills on an on-chain
+order book on Avalanche.
 
 ## Description
 
@@ -22,6 +23,13 @@ tracks who owns what. Kumi turns the chat itself into the fund.
 5. **Leave.** Any member can ragequit at any time. If positions are open, the leaver's slice of each one closes on
    the book first and the leaver pays that spread. The members who stay keep exactly what they had per share.
 
+**On the phone (v2).** Kumi is an Expo app with its own Fuji wallet. Public chats (KumiLobby) sit next to the
+crews: anyone joins, posts a call like "Long AVAX 3x, 50 tUSDC", and others tap **Copy**. The phone deposits margin,
+sends its own IOC order to the book and records the copy; the contract refuses a copy unless the copier really holds
+that side on KumiPerps, and writes the venue's size and entry into the chat. The Market tab has the live on-chain
+book, real candles (Coinbase public candles, Chainlink's Fuji mark, Kumi's own fills as markers) and a ticket that
+signs `placeOrder`. The web app shows the same chats, because there is no chat server: it is all on Fuji.
+
 Guard rails:
 - A crew-wide leverage cap.
 - A slippage limit against Chainlink.
@@ -36,8 +44,10 @@ delegate signer). A vote-executed trade there would need a trusted off-chain age
 venue is the product.
 
 **Prior work.** Kumi started as a NEAR project: crew rooms, chat commands, Sputnik DAO votes and the clay art.
-This Avalanche build reuses that UX and art. The Solidity perps venue, the vault, on-chain chat, the markets page,
-the maker bot and the Primit work are new.
+This Avalanche build reuses that UX and art. The phone app reuses the mobile skeleton of Nakama, Nick's earlier
+Sui crew wallet (navigation, secure-store wallet, QR join, notifications), with viem on Fuji in place of Sui and
+Kumi's look on every screen. The Solidity perps venue, the vault, KumiLobby, on-chain chat, the markets page,
+candles, the maker bot and the Primit work are new.
 
 ## Tech stack (Avalanche parts in bold)
 
@@ -45,11 +55,13 @@ the maker bot and the Primit work are new.
   - KumiPerps (on-chain order book perps)
   - KumiCrew vaults (EIP-1167 clones from KumiCrewFactory)
   - TestUSDC
+  - KumiLobby public chats with venue-checked copies
   - on-chain chat feed
 - **Chainlink price feeds on Fuji**: AVAX/USD, BTC/USD
 - **Avalanche C-Chain mainnet** (simulation only): Orderly vault adapter for Primit, tested on a mainnet fork
 - Solidity 0.8.28 and Foundry (unit, fuzz, and Fuji and mainnet fork tests)
 - TypeScript, viem, React 19, Vite 7
+- Expo SDK 58 (React Native 0.88, Expo Router, expo-secure-store, expo-camera, Reanimated 4) for the phone app
 - Playwright (screenshots, and the live demo through the UI with a build-flagged QA signer)
 
 ## Live links
@@ -63,8 +75,11 @@ the maker bot and the Primit work are new.
 - **Vote that closed it (+3.05 tUSDC):** https://testnet.snowtrace.io/tx/0x80f1f7c0e878e0a0c536c5623be06dac391e66653ad394317eb506e8832ec821
 - **Ragequit while a BTC short was open:** https://testnet.snowtrace.io/tx/0x38e9477e9cc10f5a825421432b3f892ec50d1ecc19c1a733717365a9b9a168c1
 - **All txs:** `deployments/fuji.json`
-- **Web app:** runs locally (`pnpm --filter @kumi-avax/web build && pnpm --filter @kumi-avax/web preview`). It is not
-  hosted yet.
+- **KumiLobby:** https://testnet.snowtrace.io/address/0x86c916ab60f186a43ab6b31603d91641dc228e7a
+- **A copy signed in the phone app (17.79 AVAX on the book):** https://testnet.snowtrace.io/tx/0x1d351d7ee13d874a04d958869bd338c838dfb4a62fd930e2ec86295077c6f8fb
+- **Phone app (Expo web build):** https://kumi-avax-app.vercel.app
+- **Web app:** https://kumi-avax-web.vercel.app
+- **Phone on a device:** `cd mobile && npm install && npx expo start`, scan with Expo Go (SDK 58)
 
 ## Demo video
 
@@ -77,8 +92,9 @@ README's "The live demo" section.
 
 ## AI tools used
 
-- **Claude Code** (Anthropic) wrote the contracts, tests, scripts, web app and docs, and drove the live demo.
+- **Claude Code** (Anthropic) wrote the contracts, tests, scripts, web app, phone app and docs, and drove the live
+  demos (web and phone).
 - The **Primit research** was done by a Claude Code subagent from public pages and read-only RPC calls.
 - **ChatGPT images** made the clay art and 3D objects reused from Kumi's NEAR build. No new art was generated for
-  this build.
+  this build. The phone app uses the same art.
 - Codex was not used.

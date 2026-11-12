@@ -5,12 +5,30 @@ threshold, the crew's vault opens the position on an **on-chain order book perps
 updates live in the room, marked to Chainlink. Any member can **ragequit with their exact share**, even while a
 position is open.
 
+**New in v2: Kumi is a phone app.** The Expo app (`mobile/`) has its own Fuji wallet on the phone, crew group
+chats and public chats you can join, trade calls you copy with one tap (your own order on the on-chain book, signed
+on the phone), a live order book, real price candles and a trade ticket. The web app shows the same chats, because
+every message is on Fuji: a message sent from the phone is on the web a few seconds later.
+
+| Live | Link |
+|---|---|
+| Phone app (Expo web build, open at phone width) | https://kumi-avax-app.vercel.app |
+| Web app | https://kumi-avax-web.vercel.app |
+| A public chat on the web | https://kumi-avax-web.vercel.app/room?chat=l-0 |
+| Markets with candles and the book | https://kumi-avax-web.vercel.app/markets/AVAX |
+
 > **Prior work, disclosed.** Kumi was first built for NEAR (`grokbot/projects/kumi`): crew rooms, `/buy SOL 10%`
 > chat commands, Sputnik DAO votes, captain limits, ragequit, and the coral and plum clay art with its mascots and
 > 3D objects. This repo reuses that UX, the stylesheet (`web/src/styles.css`, unchanged) and the art in
 > `web/public/art`. Everything else is new for Avalanche: the Solidity order book perps venue (`KumiPerps`), the
 > crew vault that trades perps by vote (`KumiCrew`), on-chain chat, the markets page, the maker bot, the Primit
 > research and adapter, and this web app's perps screens.
+>
+> **The phone app reuses Nakama's mobile skeleton** (`grokbot/projects/nakama/packages/mobile`, Nick's earlier Sui
+> crew wallet): Expo Router navigation, the on-device wallet in expo-secure-store, deposit QR, QR/photo/paste join,
+> notifications and the font mapping. The Sui layer was replaced with viem on Avalanche Fuji, and every screen was
+> redrawn in Kumi's approved look (cream, plum and coral, Baloo 2 / Urbanist / Space Mono, the Kumi clay mascots and
+> 3D objects). KumiLobby, the chat client, candles and order encoding are new in v2.
 
 ## Live on Fuji (chainId 43113)
 
@@ -20,6 +38,10 @@ position is open.
 | KumiCrewFactory | [`0x7be7c269acf2e0d0b7074e9a0bdc7dfb730b778c`](https://testnet.snowtrace.io/address/0x7be7c269acf2e0d0b7074e9a0bdc7dfb730b778c) | [0x5177a484…](https://testnet.snowtrace.io/tx/0x5177a48405f2a8519d505a2cb632fb779b80d7ae7cd1d27e6a31ce23c6f11a13) |
 | KumiCrew implementation | [`0x39d12adf89cb16756a4d5e775efbc0e97f68a2ef`](https://testnet.snowtrace.io/address/0x39d12adf89cb16756a4d5e775efbc0e97f68a2ef) | [0xaf19b760…](https://testnet.snowtrace.io/tx/0xaf19b7602ffae6db231e84bce357048f05c2deab346f3864f441190486ed3b74) |
 | Night Owls crew vault (clone) | [`0x1c11A95bfBfaA989afC1222d614A8FbD24f75677`](https://testnet.snowtrace.io/address/0x1c11A95bfBfaA989afC1222d614A8FbD24f75677) | [0x82cf5d3c…](https://testnet.snowtrace.io/tx/0x82cf5d3c08bf69f366c89d7c0ff14510364c9f7de70760de6a78871f18f628f1) |
+| KumiLobby (public chats, calls, checked copies) | [`0x86c916ab60f186a43ab6b31603d91641dc228e7a`](https://testnet.snowtrace.io/address/0x86c916ab60f186a43ab6b31603d91641dc228e7a) | [0x9ffb5d5e…](https://testnet.snowtrace.io/tx/0x9ffb5d5eef13a6076f326566fc504c0c840c8a19024b414d152c6f22567fc238) |
+| Sunrise Scalpers crew vault (v2) | [`0x16E639793291E35dB63fC411fFe97dA76F35eb2b`](https://testnet.snowtrace.io/address/0x16E639793291E35dB63fC411fFe97dA76F35eb2b) | [0x0dccbb2f…](https://testnet.snowtrace.io/tx/0x0dccbb2f0c5aff156a504cd73a6638eeb4cff71b7c6ba8dd4f29aba7ff7eabb6) |
+| Slow BTC Club crew vault (v2) | [`0x4d598Fe9Dfb41Aa95F2F320f11A95d93ACb26c22`](https://testnet.snowtrace.io/address/0x4d598Fe9Dfb41Aa95F2F320f11A95d93ACb26c22) | [0x731a7621…](https://testnet.snowtrace.io/tx/0x731a76216eddb0d8e672a8e6d21d53199de22307c55065b2e53712ff91d4d334) |
+| Frog Pond crew vault (v2) | [`0x84949AEab9a9BfC2e05d5bB43583d00805598Bb7`](https://testnet.snowtrace.io/address/0x84949AEab9a9BfC2e05d5bB43583d00805598Bb7) | [0x010bf165…](https://testnet.snowtrace.io/tx/0x010bf16578d824ebef0a58908ac0276d3bf53a34f196bd9a5b6401d92f799986) |
 | TestUSDC (tUSDC, 6 dp, faucet) | [`0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd`](https://testnet.snowtrace.io/address/0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd) | [0x2c641336…](https://testnet.snowtrace.io/tx/0x2c641336d5e16c0a44bbbc2b532c62d8a6599f043cf14835e3a09718a14a54bc) |
 
 Markets were listed in [AVAX-USD](https://testnet.snowtrace.io/tx/0xd6be4f137a7d0252127fb440e1ba6a6ac9c35a1d94ab7775da93d008e96bafd5) and
@@ -73,6 +95,46 @@ There are 108 recorded Fuji txs in all: 22 setup, 71 maker quotes and 15 demo st
 (160 wei while we built). The five test accounts were funded with 0.02 AVAX in total, and all of the txs together
 burned under 0.00001 AVAX of it.
 
+## The phone app on Fuji (v2)
+
+The app ran end to end on Fuji through its Expo web build at 375 px (headless Chrome, `scripts/qa/phone.mjs`). It
+made a **new wallet inside the app**; the only step outside the app was 0.0002 AVAX of gas from Kumi's maker test
+account, because the public Fuji faucet needs a captcha. Everything below was signed by the app's own key:
+
+| Step | Tx |
+|---|---|
+| Test USDC from the faucet (`TestUSDC.faucet`) | [0x37da94ae…](https://testnet.snowtrace.io/tx/0x37da94aef2e448f9140e0d6de925e7997529f4bf27b62b9a9467b57cd429648f) |
+| Join the AVAX pit (`KumiLobby.join`) | [0x3fe2f6c9…](https://testnet.snowtrace.io/tx/0x3fe2f6c9d91ae122d5bba11ddec184d42e07a1f55ca497f4ba819263632d77ec) |
+| Copy mika's "Long AVAX 3x, 50 tUSDC": approve | [0x4b8e95d6…](https://testnet.snowtrace.io/tx/0x4b8e95d6b537dc2bc071604e88532272702b9323c691a2711911ccdf3e677b91) |
+| deposit 50 tUSDC margin into KumiPerps | [0x27454690…](https://testnet.snowtrace.io/tx/0x2745469001d233a5c691c30d6f81508d3f7b91eb11872a49483c55b7ab3ca9d8) |
+| IOC buy: **17.79 AVAX at $8.430** on the on-chain book | [0x1d351d7e…](https://testnet.snowtrace.io/tx/0x1d351d7ee13d874a04d958869bd338c838dfb4a62fd930e2ec86295077c6f8fb) |
+| `KumiLobby.copy`: the lobby read the position from KumiPerps and posted it | [0x7b80d5b2…](https://testnet.snowtrace.io/tx/0x7b80d5b2a0377e88788f0c0badfde041c3a00bb0ba254ce6b19be074aeab0ecd) |
+| A chat message | [0x439124cf…](https://testnet.snowtrace.io/tx/0x439124cf3c2826f94c37f025e4844fdfbe7329356ea129ae0b465d47a8813d31) |
+
+The same run, and any later run, is recorded in `deployments/fuji.json` (`phoneDemo`, `phoneRuns`). Screenshots of
+every phone screen: `orchestration/shots/avax-kumi/v2/phone-*.png`.
+
+**What the phone app does**
+
+| Tab / screen | What is real |
+|---|---|
+| Onboarding | Creates (or imports) a Fuji key on the phone, in the iOS Keychain / Android Keystore via expo-secure-store. Backup screen reveals it only after a tap. The web preview keeps it in the browser's storage and says so. |
+| Chats | Your crews and joined public chats with the last message and unread badges; the public lobby with one-tap **Join** (`KumiLobby.join`); crews you are not in, read-only. Join by QR (camera or a photo) or by pasting `kumi://join/...`. |
+| Chat room | Crew rooms read the vault's on-chain feed (chat, pitches with live share-weighted vote bars, fills, chip-ins, ragequits); members vote and pitch `/long AVAX 3x 20%` from the phone. Public chats show call cards; **Copy** deposits margin, sends an IOC order to KumiPerps and records the copy, which the contract checks against the venue. |
+| Market | The on-chain book (cumulative depth bars, spread, Chainlink in the middle, last-fill pulse, levels flash on change); candles 1m / 5m / 15m / 1h; a ticket (market or limit, margin, leverage) that signs and sends `placeOrder`; your position with PnL and liquidation price; open orders with cancel. |
+| Wallet | AVAX, tUSDC and venue margin; deposit QR; **Get 1,000 test USDC**; the Fuji faucet link; positions; crew vault shares; every tx this phone signed, with Snowtrace links. |
+
+**Candles are real data only.** Coinbase Exchange public candles for AVAX-USD / BTC-USD (Binance as a fallback),
+labelled with their source on the chart; Chainlink's Fuji price as the dashed line; Kumi's own KumiPerps fills as
+triangles on the candle they landed in. Same code (`sdk/src/candles.ts`) on the phone and the web.
+
+**Kumi test accounts.** mika, bo and ren (v1) and jun, sora, tae and lia (v2) are Kumi's own test wallets, seeded by
+`scripts/fuji/seed-v2.ts` (keys in the gitignored `.env`). They chat, call, copy and vote for real on Fuji, and the
+app tags them "test acct". The v2 seed is 91 recorded txs under `seedV2`.
+
+**Run it on a phone.** `cd mobile && npm install && npx expo start`, then scan the QR with Expo Go (SDK 58). It talks
+to Fuji directly; there is no Kumi server. A new wallet needs a little Fuji AVAX for gas (Wallet tab, faucet link).
+
 ## How it works
 
 | Piece | What it does |
@@ -81,7 +143,9 @@ burned under 0.00001 AVAX of it.
 | `contracts/src/KumiCrew.sol` | **The crew vault**, one EIP-1167 clone per crew. **Joining:** it is invite-only, and new members are added by vote. Shares are minted at the marked NAV, and all the money sits as margin in one KumiPerps account. **Pitches and votes:** `pitch` is the on-chain form of `/long AVAX 3x 20%`, and the pitcher's own yes vote counts. Votes are weighted by **current** shares, so a member who has ragequit no longer counts. The deciding vote executes in the same transaction, through `try/catch` so a venue refusal keeps the vote. The deciding vote needs at least 2.5M gas, so gas estimation can't settle on the caught out-of-gas path. **Execution:** the trade is an IOC order at most `maxSlippageBps` from Chainlink. **Policy:** a vote threshold, the voting period, max leverage per pitch, and a **crew-wide leverage cap** (total notional ≤ NAV × maxLeverage, checked after every open). **Captain lane:** the captain can trade without a vote within limits on leverage, size as a share of NAV, and trades per day. **Ragequit** closes `shares / total` of every open position on the book. The leaver takes `equityAfter − (1 − s) × equityBefore`, so the members who stay keep exactly what they had per share, and the leaver pays the spread. A full exit ends membership. **Chat** (`say`) and every pitch, vote, fill, deposit and exit are kept as on-chain feed entries. |
 | `contracts/src/venues/PrimitOrderlyAccount.sol` | **The mainnet Primit route.** It deposits USDC into Orderly's Avalanche vault and sets a delegate signer. See [docs/PRIMIT.md](docs/PRIMIT.md): Primit matches orders off-chain on Orderly, so a contract cannot place its orders. |
 | `scripts/fuji/*.ts` | **Fuji tooling:** test keys in a gitignored `.env`, funding, deployment, and the maker bot. The bot quotes 6 levels on each side, 0.05% from Chainlink, and `--skew-bps` leans the book. Every tx is recorded. |
-| `sdk/` | ABIs, the chat-command parser (`/long`, `/short`, `/close`, `/captain …`, `/invite`) with its tests, and formatting helpers. |
+| `contracts/src/KumiLobby.sol` | **Public chats.** Anyone joins a channel; members chat and post calls (market, side, leverage, suggested margin; the Chainlink price is stored with the call). `copy` reverts unless the copier holds that side on KumiPerps right now, and it writes the venue's size and entry, not the copier's claim. 15 tests. |
+| `mobile/` | The Expo app (SDK 58, Expo Router, viem). See "The phone app" above. |
+| `sdk/` | Order encoding (tick, lot, IOC limit inside the oracle band), candles (exchange + Chainlink + fills), the on-chain chat client for crews and lobby channels, ABIs, the chat-command parser (`/long`, `/short`, `/close`, `/captain …`, `/invite`) with its tests, and formatting helpers. |
 | `web/` | The Vite + React app. **Pages:** `/room` (the crew list, the chat with trade cards and share-weighted vote bars, and the fund pane with live positions, Chainlink and close-now PnL, liquidation price, members and rules), `/markets/:sym` (laid out like Hyperliquid: a stats strip, depth chart, recent fills, the on-chain order book and fills linked to Snowtrace), `/crew` (the fund page with every pitch and its result) and `/` (the landing). **Signing:** a browser wallet (Core or MetaMask) switched to Fuji. QA builds (`VITE_QA=1`) can also use a **QA signer** that the Playwright harness injects. It is not in production builds, and no key ships in any bundle. |
 
 ### Avalanche, and why
@@ -100,10 +164,11 @@ Node 22+ and pnpm 10.
 
 ```bash
 pnpm install
-cd contracts && forge test                               # 51 unit and attack tests (forks skipped)
+cd contracts && forge test                               # 66 unit and attack tests (forks skipped)
 FORK=1 forge test --match-contract FujiForkTest          # real Chainlink feeds on a Fuji fork
 FORK=1 forge test --match-contract PrimitForkTest        # Orderly's vault on an Avalanche mainnet fork (simulation only)
-cd ../sdk && node --test test/*.test.ts                  # chat-command parser
+cd ../sdk && node --test test/*.test.ts                  # parser, orders, candles, chat client (live Fuji + exchange reads)
+cd ../mobile && npm install && npm test                  # invite-link parsing; npx expo start for the app
 cd ../web && pnpm build && pnpm preview                  # http://127.0.0.1:5341
 ```
 
@@ -125,6 +190,11 @@ node qa/shots.mjs http://127.0.0.1:5341                    # screenshots at 1440
 ```
 
 ## Limits, honestly
+
+- **The phone run was in the Expo web build**, driven by Playwright at 375 px, not on a physical phone or simulator.
+  The native build was not compiled in this session (see WIN-GAP.md).
+- **A new wallet needs Fuji AVAX for gas.** The public faucet has a captcha, so a person gets it once by hand.
+- **No eERC, ICM/ICTT or own L1.** They were scoped for v2 and not built; nothing claims them (WIN-GAP.md).
 
 - **Test money only.** Margin is Kumi's Fuji test dollar (tUSDC), not Circle USDC.
 - **Liquidity comes from Kumi's own maker bot.** The "price moves" step in the demo is the maker leaning its quotes,
