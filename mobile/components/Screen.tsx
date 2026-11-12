@@ -20,6 +20,8 @@ export function Screen({ children, scroll = true, tabs, pad = 16, style }: { chi
     <View style={{ flex: 1, backgroundColor: C.cream }}>
       <Backdrop />
       {scroll ? <ScrollView contentContainerStyle={[body, style]} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>{children}</ScrollView> : <View style={[{ flex: 1 }, body, style]}>{children}</View>}
+      {/* Status-bar scrim: scrolled content never runs under the clock or the Dynamic Island (same cream as the chat header). */}
+      {insets.top > 0 && <View pointerEvents="none" style={{ position: 'absolute', left: 0, right: 0, top: 0, height: insets.top, backgroundColor: 'rgba(255,240,207,0.96)' }} />}
     </View>
   );
 }

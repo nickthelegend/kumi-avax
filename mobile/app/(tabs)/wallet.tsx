@@ -12,6 +12,7 @@ import { FACTORY, FAUCET_URL, pub, readAccount, useLive } from '../../lib/chain'
 import { getTestUsdc } from '../../lib/actions';
 import { useApp } from '../../lib/store';
 import { IS_WEB } from '../../lib/wallet';
+import { PrivateBalance } from '../../components/PrivateBalance';
 import { C, F } from '../../lib/theme';
 
 /** Wallet: this phone's Fuji wallet, deposit QR, test-dollar faucet, positions, crew shares and signed activity. */
@@ -67,6 +68,8 @@ export default function Wallet() {
       {IS_WEB && <Notice>Web preview: the key sits in this browser's storage. On the phone it lives in the iOS Keychain / Android Keystore.</Notice>}
       {noGas && <Notice error>No Fuji AVAX yet, so this wallet can't pay gas. Get some from the Fuji faucet (free test AVAX), then come back. Gas was about 160 wei while we built, so 0.001 AVAX lasts thousands of messages.</Notice>}
       {act.error && <Notice error>{act.error}</Notice>}
+
+      <PrivateBalance me={address} publicUsdc={a?.usdc} onTxs={t => { record(t); acct.reload(); }} />
 
       <Card pad={16}>
         <View style={{ flexDirection: 'row', gap: 14, alignItems: 'center' }}>

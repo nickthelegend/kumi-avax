@@ -116,7 +116,8 @@ export async function send(address: Address, abi: Abi, functionName: string, arg
     } catch (e) {
       last = e;
       const msg = readable(e);
-      const transient = /InsufficientAllowance|nonce|RPC did not answer/i.test(msg + String((e as Error)?.message));
+      // A margin deposit or eERC deposit the other RPC has not seen yet reads as "not enough" for a moment too.
+      const transient = /InsufficientAllowance|nonce|RPC did not answer|Not enough margin|Not enough free margin/i.test(msg + String((e as Error)?.message));
       if (!transient) break;
       await new Promise(r => setTimeout(r, 1500 * (attempt + 1)));
     }

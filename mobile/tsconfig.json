@@ -4,7 +4,7 @@
     "strict": true,
     "allowImportingTsExtensions": true,
     "noEmit": true,
-    "paths": { "@kumi-avax/sdk": ["../sdk/src/index.ts"] }
+    "paths": { "@kumi-avax/sdk": ["../sdk/src/index.ts"], "@kumi-avax/sdk/eerc": ["../sdk/src/eerc.ts"] }
   },
   "include": ["**/*.ts", "**/*.tsx", "../sdk/src/**/*.ts"],
   "exclude": ["node_modules", "dist", "test"]

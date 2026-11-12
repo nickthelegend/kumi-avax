@@ -6,6 +6,8 @@ import type { Address } from 'viem';
 import { MARKETS, describe, parseCommand, parseDecimal, readChannelMessages, readChannels, readCrewMessages, sizeFor, price as fmtPrice, size as fmtSize, usd as fmtUsd, signedUsd, type ChatItem } from '@kumi-avax/sdk';
 import { Text, TextInput } from '../../components/T';
 import { Backdrop } from '../../components/Screen';
+import { Sheet, inp } from '../../components/Sheet';
+import { JoinLine, PrivateCard, PrivateSendSheet } from '../../components/Private';
 import { Bubble, CallCard, CopyPill, EventPill, PitchCard } from '../../components/Message';
 import { Btn, Chip, CrewAvatar, Empty, Ic, Notice, Skeleton, TokenLogo, TxLink, st, tap, useBusy } from '../../components/ui';
 import { LOBBY, crewAbi, nameOf, pub, useLive, PERPS, perpsAbi } from '../../lib/chain';
@@ -27,7 +29,7 @@ export default function ChatRoom() {
   const insets = useSafeAreaInsets();
   const act = useBusy();
   const [text, setText] = useState(typeof draft === 'string' ? draft : '');
-  const [sheet, setSheet] = useState<null | 'call' | { copy: ChatItem }>(null);
+  const [sheet, setSheet] = useState<null | 'call' | 'private' | { copy: ChatItem } | { tip: ChatItem }>(null);
   const [lastTxs, setLastTxs] = useState<{ hash: string; label: string }[]>([]);
 
   const live = useLive(async () => {
@@ -40,12 +42,12 @@ export default function ChatRoom() {
         pub.readContract({ address: crew, abi: crewAbi, functionName: 'policy' }),
         pub.readContract({ address: crew, abi: crewAbi, functionName: 'nav' }).catch(() => 0n),
       ]);
-      return { items, name, members: members.length, joined: isMember, topic: `Crew vault · NAV $${fmtUsd(nav, 2)}`, maxLev: Number(policy[2]), market: undefined as number | undefined };
+      return { items, name, members: members.length, memberList: [...members] as Address[], joined: isMember, topic: `Crew vault · NAV $${fmtUsd(nav, 2)}`, maxLev: Number(policy[2]), market: undefined as number | undefined };
     }
     const [items, chans] = await Promise.all([readChannelMessages(pub as any, LOBBY, channel, 120), readChannels(pub as any, LOBBY, address ?? undefined)]);
     const c = chans[channel];
     if (!c) throw Error(`No channel #${channel} in the Kumi lobby`);
-    return { items, name: c.name, members: c.memberCount, joined: c.joined, topic: c.topic, maxLev: 10, market: c.market };
+    return { items, name: c.name, members: c.memberCount, memberList: [] as Address[], joined: c.joined, topic: c.topic, maxLev: 10, market: c.market };
   }, [chat, address], 4000);
 
   const d = live.data;
@@ -57,7 +59,19 @@ export default function ChatRoom() {
     return m;
   }, [items]);
   const parsed = isCrew ? parseCommand(text, d?.maxLev ?? 5) : null;
-  const list = useMemo(() => [...items].reverse(), [items]);
+  // Runs of joins and leaves fold into one quiet line, so messages and trade calls lead the feed.
+  type Row = ChatItem | { kind: 'joins'; key: string; items: ChatItem[]; who: string; ts: number };
+  const list = useMemo(() => {
+    const rows: Row[] = [];
+    for (const it of items) {
+      const last = rows[rows.length - 1];
+      if (it.kind === 'join' || it.kind === 'leave') {
+        if (last && last.kind === 'joins') { last.items.push(it); continue; }
+        rows.push({ kind: 'joins', key: `joins:${it.key}`, items: [it], who: '', ts: it.ts });
+      } else rows.push(it);
+    }
+    return rows.reverse();
+  }, [items]);
 
   const sendText = () => act.run('Sending', async () => {
     const t = text.trim();
@@ -70,12 +84,15 @@ export default function ChatRoom() {
     record([tx]); setLastTxs([tx]); setText(''); live.reload();
   });
 
-  const renderItem = ({ item: m, index }: { item: ChatItem; index: number }) => {
+  const renderItem = ({ item: row, index }: { item: Row; index: number }) => {
+    if (row.kind === 'joins') return <JoinLine items={row.items} me={address} />;
+    const m = row;
     const prev = list[index + 1];
     const showWho = !prev || prev.who !== m.who || prev.kind !== 'chat' || m.ts - prev.ts > 600;
     switch (m.kind) {
       case 'chat': return <Bubble m={m} me={address} showWho={showWho} />;
-      case 'call': return <CallCard m={m} me={address} copies={copiesOf.get(m.index) ?? []} canCopy={!!d?.joined} busy={act.busy !== null && sheet !== null} onCopy={() => setSheet({ copy: m })} />;
+      case 'private': return <PrivateCard m={m} me={address} />;
+      case 'call': return <CallCard m={m} me={address} copies={copiesOf.get(m.index) ?? []} canCopy={!!d?.joined} busy={act.busy !== null && sheet !== null} onCopy={() => setSheet({ copy: m })} onTip={() => setSheet({ tip: m })} />;
       case 'copy': return <CopyPill m={m} me={address} />;
       case 'pitch': return <PitchCard crew={crew} m={m} me={address} isMember={!!d?.joined} busy={act.busy !== null} onVote={(pid, yes) => act.run('Voting', async () => { const tx = await voteInCrew(crew, pid, yes); record([tx]); setLastTxs([tx]); live.reload(); })} />;
       case 'join': return <EventPill m={m} me={address} tone="mint" icon="plus" text="joined the chat" />;
@@ -155,6 +172,11 @@ export default function ChatRoom() {
               )}
               {parsed && <Text style={{ fontSize: 12.5, color: parsed.ok ? C.coralInk : C.pinkInk, fontWeight: '600' }}>{parsed.ok ? `Pitch: ${describe(parsed.cmd)}. Your shares vote yes; it trades when yes passes 50%.` : parsed.error}</Text>}
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                {isCrew && (
+                  <Pressable testID="send-private" accessibilityRole="button" accessibilityLabel="Send a crewmate tUSDC privately" onPress={() => { tap(); setSheet('private'); }} style={{ width: 48, height: 48, borderRadius: 24, backgroundColor: C.plum, alignItems: 'center', justifyContent: 'center', borderBottomWidth: 4, borderColor: C.plumEdge }}>
+                    <Ic name="lock" size={19} color="#fff" />
+                  </Pressable>
+                )}
                 {!isCrew && (
                   <Pressable testID="new-call" accessibilityRole="button" accessibilityLabel="Post a trade call" onPress={() => { tap(); setSheet('call'); }} style={{ width: 48, height: 48, borderRadius: 24, backgroundColor: C.butter, alignItems: 'center', justifyContent: 'center', borderBottomWidth: 4, borderColor: C.butterEdge }}>
                     <Ic name="bolt" size={20} color={C.plum2} />
@@ -168,7 +190,7 @@ export default function ChatRoom() {
                   </Pressable>
                 </View>
               </View>
-              <Text style={{ fontSize: 11, color: C.ink3, textAlign: 'center' }}>Every message is a Fuji transaction signed on this phone.{!isCrew ? ' ⚡ posts a trade call.' : ''}</Text>
+              <Text style={{ fontSize: 11, color: C.ink3, textAlign: 'center' }}>Every message is a Fuji transaction signed on this phone.{!isCrew ? ' ⚡ posts a trade call.' : ' 🔒 sends a crewmate tUSDC privately.'}</Text>
             </>
           ) : null}
           {d && d.joined && !isCrew && <Pressable onPress={() => act.run('Leaving', async () => { const tx = await leaveChannel(channel); record([tx]); live.reload(); })} accessibilityRole="button"><Text style={{ fontSize: 11.5, color: C.ink3, textAlign: 'center', textDecorationLine: 'underline' }}>Leave {d.name}</Text></Pressable>}
@@ -176,25 +198,10 @@ export default function ChatRoom() {
       </KeyboardAvoidingView>
 
       {sheet === 'call' && <CallSheet channel={channel} defaultMarket={d?.market ?? 0} onClose={() => setSheet(null)} onDone={txs => { record(txs); setLastTxs(txs); live.reload(); }} />}
-      {sheet && typeof sheet === 'object' && <CopySheet channel={channel} call={sheet.copy} onClose={() => setSheet(null)} onDone={txs => { record(txs); setLastTxs(txs.slice(-2)); live.reload(); }} />}
+      {sheet === 'private' && address && <PrivateSendSheet me={address} choices={(d?.memberList ?? []).filter(a => a.toLowerCase() !== address.toLowerCase())} where={{ kind: 'send', crew }} title="Send privately" onClose={() => setSheet(null)} onDone={txs => { record(txs); setLastTxs(txs); live.reload(); }} />}
+      {sheet && typeof sheet === 'object' && 'tip' in sheet && address && <PrivateSendSheet me={address} to={sheet.tip.who} where={{ kind: 'tip', channel, ref: sheet.tip.index }} title={`Tip ${nameOf(sheet.tip.who)} privately`} onClose={() => setSheet(null)} onDone={txs => { record(txs); setLastTxs(txs); live.reload(); }} />}
+      {sheet && typeof sheet === 'object' && 'copy' in sheet && <CopySheet channel={channel} call={sheet.copy} onClose={() => setSheet(null)} onDone={txs => { record(txs); setLastTxs(txs.slice(-2)); live.reload(); }} />}
     </View>
-  );
-}
-
-function Sheet({ children, onClose, title }: { children: React.ReactNode; onClose: () => void; title: string }) {
-  const insets = useSafeAreaInsets();
-  return (
-    <Modal transparent animationType="slide" onRequestClose={onClose} visible>
-      <Pressable style={{ flex: 1, backgroundColor: 'rgba(42,20,54,0.45)' }} onPress={onClose} accessibilityLabel="Close" />
-      <View style={{ backgroundColor: C.cream, borderTopLeftRadius: 30, borderTopRightRadius: 30, padding: 18, paddingBottom: insets.bottom + 18, gap: 14, maxHeight: '88%' }}>
-        <View style={{ alignSelf: 'center', width: 44, height: 5, borderRadius: 3, backgroundColor: C.line2 }} />
-        <View style={st.between}>
-          <Text style={{ fontWeight: '800', fontSize: 22, color: C.ink }}>{title}</Text>
-          <Pressable onPress={onClose} accessibilityRole="button" accessibilityLabel="Close" hitSlop={10}><Ic name="x" size={20} /></Pressable>
-        </View>
-        <ScrollView contentContainerStyle={{ gap: 14 }} keyboardShouldPersistTaps="handled">{children}</ScrollView>
-      </View>
-    </Modal>
   );
 }
 
@@ -242,7 +249,6 @@ function CallSheet({ channel, defaultMarket, onClose, onDone }: { channel: numbe
     </Sheet>
   );
 }
-const inp = { height: 50, borderRadius: 16, backgroundColor: '#fff', borderWidth: 2, borderColor: C.edge, paddingHorizontal: 14, fontSize: 16, color: C.ink, outlineStyle: 'none' } as any;
 
 /** Copy a call: shows the live book's fill estimate, then margin in, an IOC order, and the lobby's checked copy. */
 function CopySheet({ channel, call, onClose, onDone }: { channel: number; call: ChatItem; onClose: () => void; onDone: (txs: { hash: string; label: string }[]) => void }) {

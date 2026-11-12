@@ -10,6 +10,7 @@ const upstream = config.resolver.resolveRequest;
 config.resolver.resolveRequest = (context, moduleName, platform) => {
   const resolve = upstream ?? context.resolveRequest;
   if (moduleName === '@kumi-avax/sdk') return { type: 'sourceFile', filePath: path.join(sdk, 'src/index.ts') };
+  if (moduleName === '@kumi-avax/sdk/eerc') return { type: 'sourceFile', filePath: path.join(sdk, 'src/eerc.ts') };
   if (context.originModulePath.startsWith(sdk + path.sep) && !moduleName.startsWith('.')) {
     return resolve({ ...context, originModulePath: path.join(__dirname, 'package.json') }, moduleName, platform);
   }

@@ -46,7 +46,7 @@ export function EventPill({ m, me, tone, icon, text }: { m: ChatItem; me?: strin
 }
 
 /** A lobby trade call, drawn like the web's trade card: coral top for longs, plum for shorts. */
-export function CallCard({ m, me, copies, canCopy, onCopy, busy }: { m: ChatItem; me?: string | null; copies: ChatItem[]; canCopy: boolean; onCopy: () => void; busy?: boolean }) {
+export function CallCard({ m, me, copies, canCopy, onCopy, onTip, busy }: { m: ChatItem; me?: string | null; copies: ChatItem[]; canCopy: boolean; onCopy: () => void; onTip?: () => void; busy?: boolean }) {
   const mk = MARKETS[m.market ?? 0]!;
   const mine = !!me && m.who.toLowerCase() === me.toLowerCase();
   const copiedByMe = !!me && copies.some(c => c.who.toLowerCase() === me.toLowerCase());
@@ -76,7 +76,12 @@ export function CallCard({ m, me, copies, canCopy, onCopy, busy }: { m: ChatItem
             </View>
           )}
           {mine ? <Chip text="Your call" tone="coral" />
-            : copiedByMe ? <Chip text="You copied this" tone="mint" dot />
+            : copiedByMe ? (
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+                <Chip text="You copied this" tone="mint" dot />
+                {onTip && <Btn testID={`tip-${m.index}`} title="Tip privately" tone="plum" size="sm" icon="lock" onPress={onTip} />}
+              </View>
+            )
             : canCopy ? <Btn testID={`copy-${m.index}`} title={busy ? 'Copying…' : `Copy with ${fmtUsd(m.amount, 0)} tUSDC`} tone={m.isLong ? 'coral' : 'plum'} busy={busy} onPress={onCopy} icon="copy" />
             : <Text style={{ fontSize: 12.5, color: C.ink3 }}>Join the chat to copy calls.</Text>}
         </View>
