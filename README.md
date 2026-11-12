@@ -113,7 +113,8 @@ account, because the public Fuji faucet needs a captcha. Everything below was si
 | Second run, another new wallet: the same flow, plus a **BTC limit buy at $72,200** that rests on the book as the phone's open order | [0x5201918c…](https://testnet.snowtrace.io/tx/0x5201918c9f065c86bf0588d5654b59ff42665da6496f5b401db862f21eb87932) |
 
 The same run, and any later run, is recorded in `deployments/fuji.json` (`phoneDemo`, `phoneRuns`). Screenshots of
-every phone screen: `orchestration/shots/avax-kumi/v2/phone-*.png`.
+every phone screen: `orchestration/shots/avax-kumi/v2/phone-*.png` (web build) and `ios-*.png` (the native app in
+Expo Go on the iOS Simulator).
 
 **What the phone app does**
 
@@ -192,8 +193,10 @@ node qa/shots.mjs http://127.0.0.1:5341                    # screenshots at 1440
 
 ## Limits, honestly
 
-- **The phone run was in the Expo web build**, driven by Playwright at 375 px, not on a physical phone or simulator.
-  The native build was not compiled in this session (see WIN-GAP.md).
+- **The signed phone runs were in the Expo web build**, driven by Playwright at 375 px. The native app was also run
+  in Expo Go on the iOS Simulator (iPhone 17 Pro): wallet created in the iOS Keychain, chats, market with candles,
+  and a chat room, all live from Fuji (`shots/avax-kumi/v2/ios-*.png`); no transaction was signed from the simulator
+  wallet. No physical phone, no APK.
 - **A new wallet needs Fuji AVAX for gas.** The public faucet has a captcha, so a person gets it once by hand.
 - **No eERC, ICM/ICTT or own L1.** They were scoped for v2 and not built; nothing claims them (WIN-GAP.md).
 
