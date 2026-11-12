@@ -181,3 +181,19 @@ in the live demo. No test stubs an RPC.
 - **A copy is checked against the venue:** after a real IOC fill on KumiPerps, the copy records the venue's size and
   entry (20.01, the best ask). No position, the wrong side, copying twice, copying your own call, copying a
   non-call, or copying from outside the channel all revert.
+
+## Ship round QA (Nov 12, 2026)
+
+- **Every hosted screen, read-only:** `node scripts/qa/ship-shots.mjs after` opens all web routes (landing, crew
+  room, a public chat, both markets, a crew fund page, a 404) at 1440 and 375, then the phone build at 375 with a
+  brand-new in-page wallet (its real gas-free start) and every tab and sheet. It fails on sideways overflow or any
+  console error. Before and after shots: `grokbot/orchestration/shots/avax-kumi/ship/{before,after}/`; the scores
+  are in [docs/SCREEN-AUDIT.md](docs/SCREEN-AUDIT.md).
+- **Standalone iOS Simulator build:** `mobile/scripts/build-ios-sim.sh` (prebuild, Release `xcodebuild` for arm64
+  simulators, ad-hoc signed). Installed on the iPhone 17 Pro simulator and checked by hand: first launch, Create my
+  wallet (the keychain write that failed in the unsigned build now works), the gas-free start's per-network cap
+  notice, Chats, Market, Top, Wallet and a public chat. Native shots: `.../ship/native/`.
+- **The download a judge gets:** the hosted `Kumi-iOS-Simulator.zip` was fetched back from
+  kumi-avax-web.vercel.app and its SHA-256 matches `download/manifest.json` and the `.sha256` file; unzipped, the
+  app passes `codesign --verify --deep` and has bundle id `xyz.kumi.avax`, version 0.2.0, iOS 16.4+.
+- **Builds:** `pnpm --filter @kumi-avax/web build` and `tsc --noEmit` in `mobile/` pass.

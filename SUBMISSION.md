@@ -2,7 +2,7 @@
 
 **Name:** Kumi on Avalanche
 
-**One-liner:** Your group chat is a fund, now on your phone. Join a chat, copy a friend's trade call with one tap,
+**One-liner:** Your group chat is a fund: get the Kumi app. Join a chat, copy a friend's trade call with one tap,
 or vote your crew's vault into a perp: every message and order is signed on the phone and fills on an on-chain
 order book on Avalanche.
 
@@ -106,6 +106,8 @@ candles, the maker bot and the Primit work are new.
 - **A new wallet's first gas, from the iOS Simulator:** https://testnet.snowtrace.io/tx/0x41b018b49971b96450ee574c0a3d0960c7cb258190ec56b0b27d17ed3166fbf2
 - **A call drafted by Kumi AI and signed on the iOS Simulator:** https://testnet.snowtrace.io/tx/0x06996f58ae578449e1daedd549be8f3ec11b19c4504641a2ebb3a27b4d3b0802
 - **Kumi API:** https://kumi-avax-api.vercel.app/api/health
+- **Get the app (landing):** https://kumi-avax-web.vercel.app/#get-app
+- **iOS Simulator download (standalone Release build):** https://kumi-avax-web.vercel.app/download/Kumi-iOS-Simulator.zip (SHA-256 `cafab634fd3e4265581d81c9db29670ac166ab0f277f0556cd84736ed52c0965`; install with `xcrun simctl install booted Kumi.app`)
 - **Phone app (Expo web build):** https://kumi-avax-app.vercel.app
 - **Web app:** https://kumi-avax-web.vercel.app
 - **Phone on a device:** `cd mobile && npm install && npx expo start`, scan with Expo Go (SDK 58)

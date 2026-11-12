@@ -74,4 +74,16 @@ They are new crew members alongside the existing owl, fox, bear and frog. Each o
 - First offline penguin and the first two party bunnies: a "?" mark, or a streamer shaped like one. Regenerated
   without symbols.
 
+## Ship round (Nov 12): landing art, in `web/public/art`
+
+Four more images from one fresh ChatGPT chat with the same style line (matte polymer clay, the six Kumi colours,
+closed happy arcs, blush cheeks, knit scarves, no text). Transparent ones are 768 px WebP under 100 KB.
+
+| File | What it shows | Where |
+|---|---|---|
+| `kumi5-get-app.webp` | The fox and the bunny hug a plum clay phone full of coral, cream and mint chat bubbles and a rising bar card, with coins | Landing, Get the app |
+| `kumi5-private.webp` | A coral clay envelope with a happy face, a butter heart wax seal and a plum padlock charm | Landing, Private |
+| `kumi5-proof.webp` | The owl in butter glasses checks a cream receipt with a magnifying glass; a mint check stamp | Landing, Proven |
+| `kumi5-og.jpg` | OG card, 1200×630: the crew around a coral phone on plum; the headline is set in Baloo 2 by the page renderer, not drawn by the model | `og:image` |
+
 Art generated with ChatGPT.

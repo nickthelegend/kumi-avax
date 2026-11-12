@@ -1,8 +1,9 @@
 # Kumi on Avalanche: slide outline
 
-1. **Your group chat is a fund. Now it trades perps.**
-   Kumi crew art, the room on the right. One line: friends pitch a perp in chat, vote with their shares, and the
-   vault opens it on an on-chain order book on Avalanche.
+1. **Your group chat is a fund. Get the app.**
+   Kumi crew art, the phone app on the right. One line: friends pitch a trade in the chat, vote with their shares,
+   and the crew fund trades it on an on-chain order book on Avalanche. Download for the iOS Simulator, or open it
+   in the browser (kumi-avax-web.vercel.app/#get-app).
 
 2. **The problem.**
    Group chats already talk trades ("AVAX 3x?"). Pooling money today means one friend holds the keys and a

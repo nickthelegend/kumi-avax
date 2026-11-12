@@ -1,4 +1,14 @@
-# Kumi on Avalanche: your group chat is a fund, now trading perps
+# Kumi on Avalanche: your group chat is a fund
+
+**Get the app.** Kumi is a phone app for friends who trade together: pitch a trade in the chat, the crew votes, and
+the crew fund trades it on an order book on Avalanche. Leave anytime with your exact share.
+
+| Get Kumi | How |
+|---|---|
+| **iOS Simulator** (standalone build, its own icon and splash) | [Kumi-iOS-Simulator.zip](https://kumi-avax-web.vercel.app/download/Kumi-iOS-Simulator.zip) (22.3 MB, SHA-256 `cafab634fd3e4265581d81c9db29670ac166ab0f277f0556cd84736ed52c0965`). Unzip, open a simulator, then `xcrun simctl install booted Kumi.app && xcrun simctl launch booted xyz.kumi.avax`. Release build for Apple-silicon Macs. |
+| **Expo Go** | Setup required: the Expo account login is Nick's step; then `mobile/scripts/publish-expo.sh` publishes and puts the QR on the landing. Until then: `cd mobile && npm install && npx expo start`. |
+| **In the browser** | Phone build: https://kumi-avax-app.vercel.app · Web app: https://kumi-avax-web.vercel.app |
+
 
 Friends pitch a trade in the crew chat: `/long AVAX 3x 20%`. Members vote with their shares. When yes passes the
 threshold, the crew's vault opens the position on an **on-chain order book perps market on Avalanche Fuji**. PnL
@@ -347,8 +357,10 @@ node qa/shots.mjs http://127.0.0.1:5341                    # screenshots at 1440
 ## Limits, honestly
 
 - **Native, but on the simulator.** v2.1 signed real Fuji transactions from the native app in Expo Go on the iOS
-  Simulator (iPhone 17 Pro), including all three eERC proofs made on the device (`iosPrivate`). It has not been run
-  on a physical phone, and there is no APK or TestFlight build.
+  Simulator (iPhone 17 Pro), including all three eERC proofs made on the device (`iosPrivate`). The ship round adds a
+  standalone Release build for the simulator (downloadable above; arm64, so Apple-silicon Macs). It has not been run
+  on a physical phone, and there is no APK or TestFlight build: the APK was skipped because the Mac had ~10 GB free
+  with another app's Xcode build queued behind this one. Expo Go publishing waits on the Expo account login.
 - **The gas station is small on purpose.** 0.006 AVAX funds 30 new wallets; past the daily cap or when it runs dry,
   the app says so and links the Fuji faucet. The per-requester cap keys on IP, which a determined farmer can rotate.
 - **Kumi AI is an assistant, not an oracle.** Its numbers come from its tool reads, but its sentences are a model's;
