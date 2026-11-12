@@ -86,9 +86,9 @@ export function TopNav({ path }: { path: string }) {
       <div className={`nav-in ${path.startsWith('/room') || path.startsWith('/markets') ? 'wide' : ''}`}>
         <Brand />
         <nav className="nav-links" aria-label="Main">
-          <Link to="/room" aria-current={cur('/room')}><Ic name="chat" size={16} />Crew chat</Link>
-          <Link to="/markets" aria-current={cur('/markets')}><Ic name="book" size={16} />Markets</Link>
-          <Link to="/crew" aria-current={cur('/crew')}><Ic name="jar" size={16} />Crew fund</Link>
+          <Link to="/room" aria-current={cur('/room')} aria-label="Crew chat"><Ic name="chat" size={16} /><span className="nl">Crew chat</span></Link>
+          <Link to="/markets" aria-current={cur('/markets')} aria-label="Markets"><Ic name="book" size={16} /><span className="nl">Markets</span></Link>
+          <Link to="/crew" aria-current={cur('/crew')} aria-label="Crew fund"><Ic name="jar" size={16} /><span className="nl">Crew fund</span></Link>
         </nav>
         <div className="nav-right">
           <span className="net-pill"><AvaxMark size={14} />Fuji testnet</span>
@@ -106,7 +106,7 @@ export function TopNav({ path }: { path: string }) {
               <Avatar id={who.address} /><span className="who-label">{who.label}</span>
             </button>
           ) : (
-            <button className="btn btn-sm btn-plum" onClick={() => connectWallet().catch(e => setErr((e as Error).message))}>Connect wallet</button>
+            <button className="btn btn-sm btn-plum" onClick={() => connectWallet().catch(e => setErr((e as Error).message))}><span className="nl-full">Connect wallet</span><span className="nl-short">Connect</span></button>
           )}
           {path === '/' && <Link to="/room" className="btn btn-primary btn-sm hide-sm">Open the room</Link>}
         </div>

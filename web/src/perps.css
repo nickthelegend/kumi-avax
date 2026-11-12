@@ -147,3 +147,14 @@
   .table th, .table td { padding: 10px 8px; font-size: 13.5px; }
   .crew-page .page-head .row { flex-wrap: wrap; }
 }
+.nl-short { display: none; }
+@media (max-width: 720px) {
+  .nav-links { display: flex; margin: 0 0 0 auto; padding: 3px; gap: 2px; }
+  .nav-links a { padding: 0 11px; min-height: 36px; }
+  .nav-links .nl { display: none; }
+  .nav-right { margin-left: 0; }
+  .nl-full { display: none; } .nl-short { display: inline; }
+  .nav .brand small { display: none; }
+  .qa-who .qa-tag { display: none; }
+}
+@media (max-width: 1020px) { .thread-tabs { display: inline-flex; } }
