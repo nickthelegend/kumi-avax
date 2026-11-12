@@ -86,7 +86,7 @@ export function LobbyRoom({ channel, list }: { channel: number; list: React.Reac
               <input value={text} onChange={e => { setText(e.target.value); setErr(null); }} placeholder={`Message ${c.name}`} aria-label="Message" maxLength={280} disabled={!!busy} />
               <button className="send" aria-label="Send" disabled={!!busy || !text.trim()}>{busy ? <span className="spin" /> : <Ic name="send" size={19} />}</button>
             </form>
-            <p className="composer-note">{busy ? `${busy}…` : 'Every message is a Fuji transaction. The same chat is in the Kumi phone app.'}</p>
+            {busy && <p className="composer-note">{busy}…</p>}
           </>}
       </div>
     </section>

@@ -155,7 +155,6 @@ function CrewRoom({ crew, crews }: { crew: Address; crews: Awaited<ReturnType<ty
                 <input ref={input} value={text} onChange={e => { setText(e.target.value); setErr(null); }} placeholder={(s.me?.shares ?? 0n) > 0n ? 'Message the crew, or /long AVAX 3x 20%' : 'Say hi, then chip in to get a vote'} aria-label="Message" maxLength={280} disabled={busy} />
                 <button className="send" aria-label="Send" disabled={busy || !text.trim()}>{busy ? <span className="spin" /> : <Ic name="send" size={19} />}</button>
               </form>
-              <p className="composer-note">Every message is a Fuji transaction. Perps fill on Kumi's on-chain order book, margin in test USDC.</p>
             </>}
         </div>
       </section>
