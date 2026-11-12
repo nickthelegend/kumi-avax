@@ -8,7 +8,7 @@ import { Avatar, Brand, Btn, Card, Chip, CrewAvatar, Empty, Ic, Notice, Skeleton
 import { FACTORY, LOBBY, nameOf, pub, useLive } from '../../lib/chain';
 import { joinChannel } from '../../lib/actions';
 import { crewChat, lobbyChat, useApp } from '../../lib/store';
-import { C, F, TONE, crewTone } from '../../lib/theme';
+import { C, F, TONE, crewTone, art } from '../../lib/theme';
 import { MARKETS } from '@kumi-avax/sdk';
 
 type Row = { chat: string; name: string; kind: 'channel' | 'crew'; idKey: string; last?: ChatItem; unread: number; members: number; joined: boolean; sub: string; market?: number; nav?: bigint };
@@ -69,14 +69,14 @@ export default function Chats() {
         <Text style={{ fontSize: 14.5, color: C.ink2, marginTop: 2 }}>Every message, call and vote is a Fuji transaction signed on this phone.</Text>
       </View>
 
-      {live.error && !live.data && <Notice error>Could not read the chats from Fuji: {live.error}</Notice>}
+      {live.error && !live.data && <Card pad={6}><Empty scene={art.scene.offline} alt="A worried penguin holding an unplugged cable" title="Can't reach Fuji" body={`Could not read the chats: ${live.error}`} action={<Btn title="Try again" tone="plum" size="sm" onPress={live.reload} />} /></Card>}
       {join.error && <Notice error>{join.error}</Notice>}
       {!live.data && !live.error && <Skeleton rows={4} height={76} />}
 
       {live.data && (
         <Card pad={6}>
           {mine.length === 0 ? (
-            <Empty obj="chat" title="No chats yet" body="Join a public channel below. Calls there can be copied with one tap, from this wallet, on the Fuji order book." />
+            <Empty scene={art.scene.joinCrew} alt="A frog and a fox welcoming a bunny into a chat bubble" title="No chats yet" body="Join a public channel below. Calls there can be copied with one tap, from this wallet, on the Fuji order book." />
           ) : mine.map((r, i) => <ChatRow key={r.chat} r={r} me={address} first={i === 0} onPress={() => router.push(`/chat/${r.chat}`)} />)}
         </Card>
       )}

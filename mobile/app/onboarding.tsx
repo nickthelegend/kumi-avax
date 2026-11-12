@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Image } from 'expo-image';
 import { Text, TextInput } from '../components/T';
@@ -30,6 +30,17 @@ export default function Onboarding() {
         <Text style={{ fontSize: 16, lineHeight: 23, color: C.ink2 }}>Chat with your crew, call a trade, and copy it with one tap. Orders fill on Kumi's on-chain order book on Avalanche, signed right here on your phone.</Text>
       </View>
 
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} snapToInterval={232} decelerationRate="fast" contentContainerStyle={{ gap: 12, paddingRight: 8 }} style={{ marginHorizontal: -16, paddingLeft: 16 }}>
+        {([[art.scene.onboard1, 'Start a crew', 'A cat, a bunny and a bear waving from chat bubbles'], [art.scene.onboard2, 'Vote on trades together', 'A fox and a frog giving thumbs up beside a rising chart'], [art.scene.onboard3, 'Leave anytime with your share', 'A bunny walking out a door with a jar of coins']] as const).map(([img, t, alt]) => (
+          <View key={t} style={{ width: 220, borderRadius: 24, backgroundColor: C.edge, paddingBottom: 5 }}>
+            <View style={{ borderRadius: 24, overflow: 'hidden', backgroundColor: '#fff', borderWidth: 3, borderColor: '#fff' }}>
+              <Image source={img} accessibilityLabel={alt} style={{ width: '100%', aspectRatio: 1.25 }} contentFit="cover" />
+              <Text style={{ fontWeight: '800', fontSize: 15, color: C.ink, padding: 10 }}>{t}</Text>
+            </View>
+          </View>
+        ))}
+      </ScrollView>
+
       {!app.address ? (
         <Card pad={16}>
           <View style={{ gap: 12 }}>
@@ -53,10 +64,11 @@ export default function Onboarding() {
       ) : (
         <Card pad={16}>
           <View style={{ gap: 12 }}>
-            <View style={st.row}><Obj name="success" size={54} /><View style={{ flex: 1 }}><Text style={st.h2}>Wallet ready</Text><Text style={{ fontFamily: F.mono, fontSize: 12, color: C.ink2 }}>{app.address}</Text></View></View>
+            <View style={st.row}><Image source={art.scene.wallet} accessibilityLabel="A happy coral wallet with coins dropping in" style={{ width: 58, height: 58 }} contentFit="contain" /><View style={{ flex: 1 }}><Text style={st.h2}>Wallet ready</Text><Text style={{ fontFamily: F.mono, fontSize: 12, color: C.ink2 }}>{app.address}</Text></View></View>
             {[['chat', 'Join a public chat, or open your crew'], ['rocket', 'Copy a trade call: your order fills on the book'], ['vote', 'In a crew, vote pitches with your shares']].map(([o, t]) => (
               <View key={t} style={st.row}><Obj name={o as any} size={40} still /><Text style={{ flex: 1, fontSize: 14.5, color: C.ink }}>{t}</Text></View>
             ))}
+            <View style={st.row}><Image source={art.scene.notify} accessibilityLabel="A ringing coral bell" style={{ width: 40, height: 40 }} contentFit="contain" /><Text style={{ flex: 1, fontSize: 13.5, color: C.ink2 }}>Next, Kumi asks to notify you when someone posts a call. You can say no.</Text></View>
             <Btn testID="finish-onboarding" title="Open Kumi" size="lg" onPress={() => act.run('Opening', finish)} />
             <Btn title="Back up the key first" tone="white" icon="key" onPress={() => router.push('/backup')} />
           </View>

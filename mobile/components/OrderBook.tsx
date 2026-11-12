@@ -3,7 +3,8 @@ import { Pressable, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSequence, withTiming, ReduceMotion } from 'react-native-reanimated';
 import { price as fmtPrice, size as fmtSize, type MARKETS } from '@kumi-avax/sdk';
 import { Text } from './T';
-import { C, F } from '../lib/theme';
+import { Image } from 'expo-image';
+import { C, F, art } from '../lib/theme';
 import type { Book } from '../lib/chain';
 import { ago, tap } from './ui';
 
@@ -27,7 +28,13 @@ export function OrderBook({ book, m, rows = 7, onPrice }: { book: Book; m: M; ro
         <Text style={[hd, { flex: 1, textAlign: 'right' }]}>Size {m.symbol}</Text>
         <Text style={[hd, { width: 74, textAlign: 'right' }]}>Total</Text>
       </View>
-      {asks.length === 0 && <Text style={{ fontSize: 12.5, color: C.ink3, padding: 8 }}>No asks resting on the book.</Text>}
+      {asks.length === 0 && bids.length === 0 && (
+        <View style={{ alignItems: 'center', paddingVertical: 8, gap: 4 }}>
+          <Image source={art.scene.emptyMarket} accessibilityLabel="A sleepy chat bubble on an empty price ladder" style={{ width: 120, height: 120 }} contentFit="contain" />
+          <Text style={{ fontSize: 13, color: C.ink2, fontWeight: '600' }}>The book is empty. Place the first order below.</Text>
+        </View>
+      )}
+      {asks.length === 0 && bids.length > 0 && <Text style={{ fontSize: 12.5, color: C.ink3, padding: 8 }}>No asks resting on the book.</Text>}
       {[...asks].reverse().map((l, ri) => { const i = asks.length - 1 - ri; return <Row key={`a${l.price}`} l={l} total={askCum[i]!} max={maxCum} side="ask" m={m} onPrice={onPrice} />; })}
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: 6, paddingHorizontal: 10, height: 40, borderRadius: 14, backgroundColor: C.butterSoft }}>
         <LastPrice price={book.lastPrice} m={m} up={book.trades[0]?.takerBuy ?? true} />
@@ -35,7 +42,7 @@ export function OrderBook({ book, m, rows = 7, onPrice }: { book: Book; m: M; ro
         <Text style={{ fontFamily: F.mono, fontSize: 11, color: C.ink2 }}>{bps.toFixed(1)} bp</Text>
       </View>
       {bids.map((l, i) => <Row key={`b${l.price}`} l={l} total={bidCum[i]!} max={maxCum} side="bid" m={m} onPrice={onPrice} />)}
-      {bids.length === 0 && <Text style={{ fontSize: 12.5, color: C.ink3, padding: 8 }}>No bids resting on the book.</Text>}
+      {bids.length === 0 && asks.length > 0 && <Text style={{ fontSize: 12.5, color: C.ink3, padding: 8 }}>No bids resting on the book.</Text>}
     </View>
   );
 }

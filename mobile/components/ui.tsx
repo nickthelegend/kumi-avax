@@ -113,10 +113,11 @@ export function Obj({ name, size = 64, still }: { name: ObjName; size?: number; 
   return <Animated.View style={a}><Image source={art.obj[name]} style={{ width: size, height: size }} contentFit="contain" /></Animated.View>;
 }
 
-export function Empty({ obj = 'empty', image, title, body, action }: { obj?: ObjName; image?: any; title: string; body?: ReactNode; action?: ReactNode }) {
+export function Empty({ obj = 'empty', image, scene, alt, title, body, action }: { obj?: ObjName; image?: any; scene?: any; alt?: string; title: string; body?: ReactNode; action?: ReactNode }) {
   return (
     <View style={{ alignItems: 'center', paddingVertical: 18, paddingHorizontal: 14, gap: 8 }}>
-      {image ? <Image source={image} style={{ width: 200, height: 140, borderRadius: 20 }} contentFit="cover" /> : <Obj name={obj} size={92} />}
+      {scene ? <Image source={scene} accessibilityLabel={alt} accessible={!!alt} style={{ width: 150, height: 150 }} contentFit="contain" />
+        : image ? <Image source={image} style={{ width: 200, height: 140, borderRadius: 20 }} contentFit="cover" /> : <Obj name={obj} size={92} />}
       <Text style={{ fontWeight: '800', fontSize: 19, color: C.ink, textAlign: 'center' }}>{title}</Text>
       {body ? <Text style={{ fontSize: 14.5, lineHeight: 21, color: C.ink2, textAlign: 'center' }}>{body}</Text> : null}
       {action}

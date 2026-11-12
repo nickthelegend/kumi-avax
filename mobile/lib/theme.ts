@@ -39,6 +39,35 @@ export const art = {
     fox: require('../assets/art/kumi3-av-fox.webp'),
     bear: require('../assets/art/kumi3-av-bear.webp'),
     frog: require('../assets/art/kumi3-av-frog.webp'),
+    // v2.1 crew mascots (ChatGPT, art-incoming/ART.md)
+    cat: require('../assets/art/kumi4-av-cat.webp'),
+    bunny: require('../assets/art/kumi4-av-bunny.webp'),
+    panda: require('../assets/art/kumi4-av-panda.webp'),
+    penguin: require('../assets/art/kumi4-av-penguin.webp'),
+    raccoon: require('../assets/art/kumi4-av-raccoon.webp'),
+    duck: require('../assets/art/kumi4-av-duck.webp'),
+    hamster: require('../assets/art/kumi4-av-hamster.webp'),
+    tiger: require('../assets/art/kumi4-av-tiger.webp'),
+    axolotl: require('../assets/art/kumi4-av-axolotl.webp'),
+  },
+  scene: {
+    emptyChat: require('../assets/art/kumi4-empty-chat.webp'),
+    emptyMarket: require('../assets/art/kumi4-empty-market.webp'),
+    joinCrew: require('../assets/art/kumi4-join-crew.webp'),
+    offline: require('../assets/art/kumi4-offline.webp'),
+    wallet: require('../assets/art/kumi4-wallet.webp'),
+    notify: require('../assets/art/kumi4-notify.webp'),
+    onboard1: require('../assets/art/kumi4-onboard-1.webp'),
+    onboard2: require('../assets/art/kumi4-onboard-2.webp'),
+    onboard3: require('../assets/art/kumi4-onboard-3.webp'),
+  },
+  sticker: {
+    party: require('../assets/art/kumi4-st-party.webp'),
+    hold: require('../assets/art/kumi4-st-hold.webp'),
+    winFox: require('../assets/art/kumi4-win-fox.webp'),
+    winFrog: require('../assets/art/kumi4-win-frog.webp'),
+    lossBear: require('../assets/art/kumi4-loss-bear.webp'),
+    lossOwl: require('../assets/art/kumi4-loss-owl.webp'),
   },
   obj: {
     captain: require('../assets/art/3d/kumi-3d-captain.webp'),
@@ -60,12 +89,14 @@ export const art = {
 export type ObjName = keyof typeof art.obj;
 
 const TONES: Tone[] = ['coral', 'butter', 'mint', 'pink'];
-const ANIMALS = ['owl', 'fox', 'bear', 'frog'] as const;
+const ANIMALS = ['owl', 'fox', 'bear', 'frog', 'cat', 'bunny', 'panda', 'penguin', 'raccoon', 'duck', 'hamster', 'tiger', 'axolotl'] as const;
+/** Crews and public chats whose names call for a mascot; the rest are picked from the address (same as the web). */
+const CREW_MASCOT: Record<string, (typeof ANIMALS)[number]> = { '0x1c11a95bfbfaa989afc1222d614a8fbd24f75677': 'owl', '0x84949aeab9a9bfc2e05d5bb43583d00805598bb7': 'frog', '0x4d598fe9dfb41aa95f2f320f11a95d93acb26c22': 'panda', '0x16e639793291e35db63fc411ffe97da76f35eb2b': 'tiger', 'lobby-0': 'fox', 'lobby-1': 'bear', 'lobby-2': 'bunny' };
 const HUES = ['#ff6f59', '#ffd166', '#3ddc97', '#ff8fc7', '#ffb38a', '#c8e66b'];
 export const hashOf = (id: string) => { let h = 0; for (const ch of id.toLowerCase()) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return h; };
 /** Same picks as the web (web/src/ui/bits.tsx), so a crew or a member looks the same on both. */
 export const crewTone = (addr: string): Tone => TONES[hashOf(addr) % TONES.length]!;
-export const crewAnimal = (addr: string) => ANIMALS[hashOf(addr) % ANIMALS.length]!;
+export const crewAnimal = (addr: string) => CREW_MASCOT[addr.toLowerCase()] ?? ANIMALS[hashOf(addr) % ANIMALS.length]!;
 export const memberHue = (a: string) => HUES[hashOf(a) % HUES.length]!;
 const MEMBER_MASCOT: Record<string, (typeof ANIMALS)[number]> = { mika: 'owl', bo: 'bear', ren: 'fox' };
 export const mascotOf = (a: string, name: string) => MEMBER_MASCOT[name] ?? ANIMALS[hashOf(a) % ANIMALS.length]!;

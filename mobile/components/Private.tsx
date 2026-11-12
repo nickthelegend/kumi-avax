@@ -8,7 +8,7 @@ import type { ChatItem } from '@kumi-avax/sdk';
 import { Text, TextInput } from './T';
 import { Avatar, Btn, Empty, Ic, Notice, Obj, TxLink, st, tap, useBusy, yay } from './ui';
 import { Sheet, inp } from './Sheet';
-import { C, F } from '../lib/theme';
+import { C, F, art } from '../lib/theme';
 import { nameOf, useLive } from '../lib/chain';
 import { fmt, readCard, readPrivate, sendPrivately, type Where } from '../lib/private';
 import { PROVER_WHERE } from '../lib/prover';
@@ -111,7 +111,7 @@ export function PrivateSendSheet({ me, to, choices, where, title, onClose, onDon
         </>
       ) : (
         <View style={{ gap: 10 }}>
-          <Empty obj="shield" title="Sent privately" body={`${nameOf(pick)} can see the amount on their phone. Everyone else sees the card, not the number.`} />
+          <Empty scene={art.sticker.hold} alt="A panda hugging a coin" title="Sent privately" body={`${nameOf(pick)} can see the amount on their phone. Everyone else sees the card, not the number.`} />
           {done.map(t => <View key={t.hash} style={st.between}><Text style={{ fontSize: 13.5, color: C.ink }}>{t.label}</Text><TxLink hash={t.hash} /></View>)}
           <Btn title="Back to the chat" tone="plum" onPress={onClose} />
         </View>

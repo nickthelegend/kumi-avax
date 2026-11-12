@@ -5,7 +5,8 @@ import type { Address } from 'viem';
 import { MARKETS, price as fmtPrice, size as fmtSize, usd as fmtUsd, signedUsd, type ChatItem } from '@kumi-avax/sdk';
 import { Text } from './T';
 import { Avatar, Btn, Chip, Ic, TestTag, TokenLogo, TxLink, ago } from './ui';
-import { C, F, TONE, type Tone } from '../lib/theme';
+import { Image } from 'expo-image';
+import { C, F, TONE, art, type Tone } from '../lib/theme';
 import { crewAbi, nameOf, pub, useLive } from '../lib/chain';
 
 const enter = FadeInDown.duration(260).reduceMotion(ReduceMotion.System);
@@ -153,7 +154,12 @@ export function PitchCard({ crew, m, me, isMember, onVote, busy }: { crew: Addre
                 <View style={{ position: 'absolute', left: '50%', top: -2, bottom: -2, width: 3, backgroundColor: C.plum }} />
               </View>
               {pr && pr.executed && kind === 0 && pr.filled > 0n && <Text style={{ fontSize: 13, color: C.ink2 }}>Filled <Text style={{ fontFamily: F.monoBold, color: C.ink }}>{fmtSize(pr.filled, mk.sizeDp)} {mk.symbol}</Text> at ${fmtPrice(pr.avgPrice, mk.priceDp)} on the book</Text>}
-              {pr && pr.executed && kind === 1 && <Text style={{ fontSize: 13, color: C.ink2 }}>Closed, realised <Text style={{ fontFamily: F.monoBold, color: pr.resultPnl >= 0n ? C.mintInk : C.pinkInk }}>{signedUsd(pr.resultPnl)} tUSDC</Text></Text>}
+              {pr && pr.executed && kind === 1 && (
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                  <Image source={pr.resultPnl >= 0n ? art.sticker.winFox : art.sticker.lossBear} accessibilityLabel={pr.resultPnl >= 0n ? 'A fox cheering with an up arrow' : 'A bear holding a bending down arrow'} style={{ width: 52, height: 52 }} contentFit="contain" />
+                  <Text style={{ flex: 1, fontSize: 13, color: C.ink2 }}>Closed, realised <Text style={{ fontFamily: F.monoBold, color: pr.resultPnl >= 0n ? C.mintInk : C.pinkInk }}>{signedUsd(pr.resultPnl)} tUSDC</Text></Text>
+                </View>
+              )}
             </View>
           )}
           {d && pr && !pr.executed && Date.now() / 1000 <= Number(pr.deadline) && isMember && d.mine === 0 && (

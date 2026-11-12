@@ -13,7 +13,8 @@ import { Btn, Chip, CrewAvatar, Empty, Ic, Notice, Skeleton, TokenLogo, TxLink, 
 import { LOBBY, crewAbi, nameOf, pub, useLive, PERPS, perpsAbi } from '../../lib/chain';
 import { callInChannel, copyCall, joinChannel, leaveChannel, pitchInCrew, sayInChannel, sayInCrew, voteInCrew } from '../../lib/actions';
 import { useApp } from '../../lib/store';
-import { C, F } from '../../lib/theme';
+import { C, F, art } from '../../lib/theme';
+import { Image } from 'expo-image';
 
 const HINTS: [string, 'coral' | 'pink' | 'butter' | 'mint'][] = [['/long AVAX 3x 20%', 'coral'], ['/short BTC 2x 10%', 'pink'], ['/close AVAX', 'butter']];
 
@@ -132,7 +133,7 @@ export default function ChatRoom() {
       </View>
 
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        {live.error && !d && <View style={{ padding: 16 }}><Notice error>Could not read this chat from Fuji: {live.error}</Notice></View>}
+        {live.error && !d && <View style={{ padding: 16 }}><Empty scene={art.scene.offline} alt="A worried penguin holding an unplugged cable" title="Can't reach Fuji" body={`Could not read this chat: ${live.error}`} action={<Btn title="Try again" tone="plum" size="sm" onPress={live.reload} />} /></View>}
         {!d && !live.error && <View style={{ padding: 16 }}><Skeleton rows={5} height={70} /></View>}
         {d && (
           <FlatList
@@ -145,7 +146,7 @@ export default function ChatRoom() {
               <Text style={{ fontSize: 13, color: C.ink2, textAlign: 'center' }}>{d.topic}</Text>
               <Text style={{ fontSize: 11.5, color: C.ink3, textAlign: 'center' }}>{isCrew ? 'On-chain chat in the crew vault' : `KumiLobby channel #${channel}`} · {items.length} messages shown</Text>
             </View>}
-            ListEmptyComponent={<Empty obj="empty" title="Quiet in here" body={isCrew ? 'Chip in, then pitch a perp with /long AVAX 3x 20%.' : 'Say hi, or post the first trade call.'} />}
+            ListEmptyComponent={<Empty scene={art.scene.emptyChat} alt="A cat asleep on a chat bubble" title="Quiet in here" body={isCrew ? 'Chip in, then pitch a perp with /long AVAX 3x 20%.' : 'Say hi, or post the first trade call.'} />}
           />
         )}
 
@@ -157,7 +158,8 @@ export default function ChatRoom() {
           {d && !d.joined ? (
             isCrew ? (
               <View style={{ gap: 8 }}>
-                <Text style={{ fontSize: 13.5, color: C.ink2 }}><Text style={{ fontWeight: '800', color: C.ink }}>Invite-only.</Text> Members vote new people in. Show a member your code; they scan it and pitch /invite.</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}><Image source={art.scene.joinCrew} accessibilityLabel="A frog and a fox welcoming a bunny into the crew" style={{ width: 64, height: 64 }} contentFit="contain" />
+                <Text style={{ flex: 1, fontSize: 13.5, color: C.ink2 }}><Text style={{ fontWeight: '800', color: C.ink }}>Invite-only.</Text> Members vote new people in. Show a member your code; they scan it and pitch /invite.</Text></View>
                 <Btn title="Show my join code" tone="plum" icon="qr" onPress={() => router.push({ pathname: '/invite', params: { chat, name: d.name, request: '1' } })} />
               </View>
             ) : (
@@ -289,7 +291,7 @@ function CopySheet({ channel, call, onClose, onDone }: { channel: number; call: 
         </>
       ) : (
         <View style={{ gap: 10 }}>
-          <Empty obj="success" title="Copied on the book" body="Your order filled on KumiPerps and the lobby recorded your position." />
+          <Empty scene={art.sticker.party} alt="A bunny jumping in confetti" title="Copied on the book" body="Your order filled on KumiPerps and the lobby recorded your position." />
           {done.map(t => <View key={t.hash} style={st.between}><Text style={{ fontSize: 13.5, color: C.ink }}>{t.label}</Text><TxLink hash={t.hash} /></View>)}
           <Btn title="Back to the chat" tone="plum" onPress={onClose} />
         </View>

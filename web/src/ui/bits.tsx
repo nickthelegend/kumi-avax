@@ -26,13 +26,17 @@ export function Art({ name, alt, className, eager }: { name: string | string[]; 
 }
 
 export const TONES = ['coral', 'butter', 'mint', 'pink'] as const;
-const ANIMALS = ['owl', 'fox', 'bear', 'frog'];
+const ANIMALS = ['owl', 'fox', 'bear', 'frog', 'cat', 'bunny', 'panda', 'penguin', 'raccoon', 'duck', 'hamster', 'tiger', 'axolotl'];
+/** Same picks as the phone (mobile/lib/theme.ts). The first four are the v1 kit, the rest the v2.1 set. */
+const avSrc = (a: string) => `/art/${['owl', 'fox', 'bear', 'frog'].includes(a) ? 'kumi3' : 'kumi4'}-av-${a}.webp`;
+const CREW_MASCOT: Record<string, string> = { '0x1c11a95bfbfaa989afc1222d614a8fbd24f75677': 'owl', '0x84949aeab9a9bfc2e05d5bb43583d00805598bb7': 'frog', '0x4d598fe9dfb41aa95f2f320f11a95d93acb26c22': 'panda', '0x16e639793291e35db63fc411ffe97da76f35eb2b': 'tiger', 'lobby-0': 'fox', 'lobby-1': 'bear', 'lobby-2': 'bunny' };
+const crewAnimal = (addr: string) => CREW_MASCOT[addr.toLowerCase()] ?? ANIMALS[hashOf(addr) % ANIMALS.length]!;
 const hashOf = (id: string) => { let h = 0; for (const c of id.toLowerCase()) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
 export const crewTone = (addr: string) => TONES[hashOf(addr) % TONES.length]!;
 export function CrewAvatar({ address, name, size }: { address: string; name: string; size?: 'lg' | 'sm' }) {
   const [ok, setOk] = useState(true);
   return <span className={`crew-av tone-${crewTone(address)} ${size ? `crew-av-${size}` : ''}`} aria-hidden>
-    {ok ? <img src={`/art/kumi3-av-${ANIMALS[hashOf(address) % ANIMALS.length]}.webp`} alt="" onError={() => setOk(false)} /> : name.slice(0, 1)}
+    {ok ? <img src={avSrc(crewAnimal(address))} alt="" onError={() => setOk(false)} /> : name.slice(0, 1)}
   </span>;
 }
 
@@ -44,7 +48,7 @@ export const memberHue = (a: string) => HUES[hashOf(a) % HUES.length]!;
 export function Avatar({ id, size }: { id: string; size?: 'lg' }) {
   const [ok, setOk] = useState(true);
   return <span className={`avatar ${size === 'lg' ? 'avatar-lg' : ''} ${ok ? 'avatar-m' : ''}`} style={{ background: memberHue(id) }} title={nameOf(id)} aria-hidden>
-    {ok ? <img src={`/art/kumi3-av-${mascotOf(id)}.webp`} alt="" onError={() => setOk(false)} /> : nameOf(id).slice(0, 2)}
+    {ok ? <img src={avSrc(mascotOf(id))} alt="" onError={() => setOk(false)} /> : nameOf(id).slice(0, 2)}
   </span>;
 }
 
