@@ -2,6 +2,12 @@
 export const DEPLOYMENT = {
   "usdc": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
   "perps": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+  "eerc": {
+    "encryptedERC": "0xf8d4eeb6a0a5aff971c16f2baf9f0aee0fdb4c23",
+    "registrar": "0x4de185b2d8ee6a73d78e90c3e024f230799b561c",
+    "auditor": "0xB5fa31C707E9eC71edE4DE060386B0Be54AB99f3",
+    "deployBlock": 60945947
+  },
   "factory": "0x7be7c269acf2e0d0b7074e9a0bdc7dfb730b778c",
   "crewImplementation": "0x39d12adf89cb16756a4d5e775efbc0e97f68a2ef",
   "lobby": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
@@ -19,6 +25,7 @@ export const DEPLOYMENT = {
     "0xcb1268aa3fe4fe543e234e53daa2c3e17de23c5d",
     "0x477d91ac189080ec0b40af4f9ae4246d331ebf5b",
     "0xfa64a68213d008d36e63d284d0f560beb3f9d2a5",
+    "0xb5fa31c707e9ec71ede4de060386b0be54ab99f3",
     "0x32616bf908dcf09c383af22fe85ae8a43b8509b3",
     "0xb2af224b6387d3ffd60dd6254b3e84aff58f8e6c",
     "0xefcc22be9821e2ddb4ca844e8aa680ac58f84d67",
@@ -52,6 +59,7 @@ export const DEPLOYMENT = {
     "0xcb1268aa3fe4fe543e234e53daa2c3e17de23c5d": "sora",
     "0x477d91ac189080ec0b40af4f9ae4246d331ebf5b": "tae",
     "0xfa64a68213d008d36e63d284d0f560beb3f9d2a5": "lia",
+    "0xb5fa31c707e9ec71ede4de060386b0be54ab99f3": "auditor",
     "0x32616bf908dcf09c383af22fe85ae8a43b8509b3": "phone-qa-1",
     "0xb2af224b6387d3ffd60dd6254b3e84aff58f8e6c": "phone-qa-2",
     "0xefcc22be9821e2ddb4ca844e8aa680ac58f84d67": "phone-qa-3",

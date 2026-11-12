@@ -121,7 +121,19 @@
         "captain": "lia"
       }
     ],
-    "lobby": "0x86c916ab60f186a43ab6b31603d91641dc228e7a"
+    "lobby": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+    "eerc": {
+      "encryptedERC": "0xf8d4eeb6a0a5aff971c16f2baf9f0aee0fdb4c23",
+      "registrar": "0x4de185b2d8ee6a73d78e90c3e024f230799b561c",
+      "babyJubJub": "0x09050a3233e6ee1c9b13be64c6ddda16e415b646",
+      "verifiers": {
+        "registration": "0xd94a10ff9bf7b863835b816485e878cc2b8bb1aa",
+        "mint": "0xb31bc418b25281ae7172cf871f75bc57118a4eea",
+        "withdraw": "0xb1398d2a09c78f686018dbe8818b32155f7eea02",
+        "transfer": "0xec3713a47f62d60f7f5f1f614cb30df9c6b5cfe7",
+        "burn": "0x7caba83dbacd184aa9d2f09976b007e19e78223b"
+      }
+    }
   },
   "txs": [
     {
@@ -431,7 +443,8 @@
     "jun": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
     "sora": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
     "tae": "0x477D91ac189080ec0B40Af4F9AE4246d331Ebf5b",
-    "lia": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5"
+    "lia": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+    "auditor": "0xB5fa31C707E9eC71edE4DE060386B0Be54AB99f3"
   },
   "makerTxs": [
     {
@@ -2957,5 +2970,496 @@
     "phone-qa-3": "0xeFcC22be9821E2DdB4cA844E8aA680aC58F84d67",
     "phone-qa-4": "0x1f9d5D2987D6C74FC5A8C1a0FF8597a2cDA6Aa03"
   },
-  "phoneQaNote": "Wallets created inside the phone app by scripts/qa/phone.mjs. qa-1 and qa-2 stopped mid-run (script timeouts, then a margin fix); qa-3 is phoneDemo, qa-4 is phoneRuns[0]. Their keys lived only in the headless browser and are gone."
+  "phoneQaNote": "Wallets created inside the phone app by scripts/qa/phone.mjs. qa-1 and qa-2 stopped mid-run (script timeouts, then a margin fix); qa-3 is phoneDemo, qa-4 is phoneRuns[0]. Their keys lived only in the headless browser and are gone.",
+  "eerc": [
+    {
+      "label": "abandoned_deploy_RegistrationVerifier",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": null,
+      "hash": "0xa8ae915ddd2567c0d91b0fb2f09db97fa97e79ea0528f3c423455b55709a0e5e",
+      "status": "success",
+      "block": 60945906,
+      "gasUsed": 425936,
+      "confirmMs": 4353,
+      "at": "2026-11-12T12:16:47.258Z",
+      "note": "first deploy attempt stopped on an RPC nonce error; these verifiers are unused"
+    },
+    {
+      "label": "abandoned_deploy_MintVerifier",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": null,
+      "hash": "0x16eead7de5ebb8f97c5254e3d491252be3474ee3ab7e9164dcea10bea82142e6",
+      "status": "success",
+      "block": 60945910,
+      "gasUsed": 813961,
+      "confirmMs": 3064,
+      "at": "2026-11-12T12:16:50.327Z",
+      "note": "first deploy attempt stopped on an RPC nonce error; these verifiers are unused"
+    },
+    {
+      "label": "abandoned_deploy_WithdrawVerifier",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": null,
+      "hash": "0xafe2f4ffd30eb4f5860af19b37815ab0d5afd4a847371ace091973a38a915856",
+      "status": "success",
+      "block": 60945912,
+      "gasUsed": 649853,
+      "confirmMs": 3050,
+      "at": "2026-11-12T12:16:53.379Z",
+      "note": "first deploy attempt stopped on an RPC nonce error; these verifiers are unused"
+    },
+    {
+      "label": "abandoned_deploy_TransferVerifier",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": null,
+      "hash": "0x5c44ecba84fa69ebeb794245869b5708d8bdae0336fe4d10e51f6498cd12bc3a",
+      "status": "success",
+      "block": 60945915,
+      "gasUsed": 978066,
+      "confirmMs": 2944,
+      "at": "2026-11-12T12:16:56.330Z",
+      "note": "first deploy attempt stopped on an RPC nonce error; these verifiers are unused"
+    },
+    {
+      "label": "deploy_RegistrationVerifier",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": null,
+      "hash": "0x0694f283f8eb9ed025aaf23292874f788da852fe37079ff4a49f80b61c269c23",
+      "status": "success",
+      "block": 60945928,
+      "gasUsed": 425936,
+      "confirmMs": 4779,
+      "at": "2026-11-12T12:17:17.465Z"
+    },
+    {
+      "label": "deploy_MintVerifier",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": null,
+      "hash": "0xc0ff9df6839281237bd983eadc1b402647b11bacffe362374dc90c426e33d6d2",
+      "status": "success",
+      "block": 60945931,
+      "gasUsed": 813961,
+      "confirmMs": 3034,
+      "at": "2026-11-12T12:17:20.502Z"
+    },
+    {
+      "label": "deploy_WithdrawVerifier",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": null,
+      "hash": "0x7526dc0f15610f6573bb88c83f82f7f3178b4c0fa82293f4878d140a7d20d191",
+      "status": "success",
+      "block": 60945932,
+      "gasUsed": 649853,
+      "confirmMs": 2621,
+      "at": "2026-11-12T12:17:23.127Z"
+    },
+    {
+      "label": "deploy_TransferVerifier",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": null,
+      "hash": "0x6e2264ccb304fdb84c352117a15206eb315ef4c14c3f0c73b4f8d1e198cbfb09",
+      "status": "success",
+      "block": 60945935,
+      "gasUsed": 978066,
+      "confirmMs": 3675,
+      "at": "2026-11-12T12:17:26.813Z"
+    },
+    {
+      "label": "deploy_BurnVerifier",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": null,
+      "hash": "0xdb92144f6f4d19ae3e4509d213729118467a6c934032071d59cac84166d02e1d",
+      "status": "success",
+      "block": 60945937,
+      "gasUsed": 711621,
+      "confirmMs": 5606,
+      "at": "2026-11-12T12:17:32.422Z"
+    },
+    {
+      "label": "deploy_BabyJubJub",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": null,
+      "hash": "0xca5de483b1530951cd46ca672269e38de29e1daaffde73f4c329e21d38e89308",
+      "status": "success",
+      "block": 60945942,
+      "gasUsed": 435950,
+      "confirmMs": 3037,
+      "at": "2026-11-12T12:17:35.468Z"
+    },
+    {
+      "label": "deploy_Registrar",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": null,
+      "hash": "0x64c3a457995a044e49bf4cd5070d766251ee034cf17cb75b33816bfa09f091cd",
+      "status": "success",
+      "block": 60945944,
+      "gasUsed": 454935,
+      "confirmMs": 3030,
+      "at": "2026-11-12T12:17:38.509Z"
+    },
+    {
+      "label": "deploy_EncryptedERC",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": null,
+      "hash": "0xba88c3aecdcd42ff65c92ae7d986d7b774f122904ee7acc53ee3ec311709fae9",
+      "status": "success",
+      "block": 60945947,
+      "gasUsed": 4393238,
+      "confirmMs": 2813,
+      "at": "2026-11-12T12:17:41.337Z"
+    },
+    {
+      "label": "gas_auditor",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": "0xB5fa31C707E9eC71edE4DE060386B0Be54AB99f3",
+      "hash": "0xefb3a9740c1af38e7dbd350f69c348899a0c2474fae5e3b606e096186293e2ab",
+      "status": "success",
+      "block": 60945950,
+      "gasUsed": 21000,
+      "confirmMs": 3367,
+      "at": "2026-11-12T12:17:44.896Z"
+    },
+    {
+      "label": "auditor_register",
+      "from": "0xB5fa31C707E9eC71edE4DE060386B0Be54AB99f3",
+      "to": "0x4de185b2d8ee6a73d78e90c3e024f230799b561c",
+      "hash": "0x40d9ef373024e38da7dd111c646ace605ea4f63994b898ccc37c83937c89faef",
+      "status": "success",
+      "block": 60945956,
+      "gasUsed": 319542,
+      "confirmMs": 5159,
+      "at": "2026-11-12T12:17:50.849Z"
+    },
+    {
+      "label": "set_auditor",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": "0xf8d4eeb6a0a5aff971c16f2baf9f0aee0fdb4c23",
+      "hash": "0x4975b463c9ca8606e75cbac2b7800c62a26ff67dff95a917c2946c1b8b8aca43",
+      "status": "success",
+      "block": 60945959,
+      "gasUsed": 103905,
+      "confirmMs": 2443,
+      "at": "2026-11-12T12:17:53.616Z"
+    },
+    {
+      "label": "register_mika",
+      "from": "0x857429F6d1304B8ef42De42a0696f52a5FBE3acF",
+      "to": "0x4de185b2d8ee6a73d78e90c3e024f230799b561c",
+      "hash": "0xc51de6f85f516d2c2f9ea1b355bff44065f63348981bde8720146db4f05e2b95",
+      "status": "success",
+      "block": 60945962,
+      "gasUsed": 319554,
+      "confirmMs": 3402,
+      "at": "2026-11-12T12:17:57.657Z"
+    },
+    {
+      "label": "shield_mika_approve",
+      "from": "0x857429F6d1304B8ef42De42a0696f52a5FBE3acF",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0x382288e104cb97fe17105f9d80e27f5bcdf172941df9291df2f95522e258c5d4",
+      "status": "success",
+      "block": 60945966,
+      "gasUsed": 45913,
+      "confirmMs": 4204,
+      "at": "2026-11-12T12:18:02.510Z"
+    },
+    {
+      "label": "shield_mika",
+      "from": "0x857429F6d1304B8ef42De42a0696f52a5FBE3acF",
+      "to": "0xf8d4eeb6a0a5aff971c16f2baf9f0aee0fdb4c23",
+      "hash": "0x5eead04e8769609ac1896c4216ea27700f9ba766d32b151054bc4b5495da8250",
+      "status": "success",
+      "block": 60945970,
+      "gasUsed": 634507,
+      "confirmMs": 2451,
+      "at": "2026-11-12T12:18:05.353Z"
+    },
+    {
+      "label": "register_bo",
+      "from": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+      "to": "0x4de185b2d8ee6a73d78e90c3e024f230799b561c",
+      "hash": "0x396fc1dd226f0602dca0ca7be3a135c0eba48229ea50cc275c34b64fb634dddb",
+      "status": "success",
+      "block": 60945971,
+      "gasUsed": 319554,
+      "confirmMs": 3449,
+      "at": "2026-11-12T12:18:09.473Z"
+    },
+    {
+      "label": "shield_bo_approve",
+      "from": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0x6ac953248247dc770b52cd27b671485c4864c0ce50d3f04646b5df93955767c0",
+      "status": "success",
+      "block": 60945974,
+      "gasUsed": 45901,
+      "confirmMs": 3401,
+      "at": "2026-11-12T12:18:13.516Z"
+    },
+    {
+      "label": "shield_bo",
+      "from": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+      "to": "0xf8d4eeb6a0a5aff971c16f2baf9f0aee0fdb4c23",
+      "hash": "0x59c98bb098911b3d8eee2734d166f58122b3df8495a80e7754755d3be3998a03",
+      "status": "success",
+      "block": 60945976,
+      "gasUsed": 504623,
+      "confirmMs": 3670,
+      "at": "2026-11-12T12:18:17.544Z"
+    },
+    {
+      "label": "register_ren",
+      "from": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363",
+      "to": "0x4de185b2d8ee6a73d78e90c3e024f230799b561c",
+      "hash": "0x1fa5989a209ec11b81c6b600553b2cf3fbba587b56e7213d733cf29910d4068c",
+      "status": "success",
+      "block": 60945978,
+      "gasUsed": 319566,
+      "confirmMs": 3421,
+      "at": "2026-11-12T12:18:21.610Z"
+    },
+    {
+      "label": "shield_ren_approve",
+      "from": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0xe7b56439b38f77f928c915f73b7060ab291257dbaf5ca07e4e590da278f5bcc8",
+      "status": "success",
+      "block": 60945979,
+      "gasUsed": 45901,
+      "confirmMs": 4496,
+      "at": "2026-11-12T12:18:26.745Z"
+    },
+    {
+      "label": "shield_ren",
+      "from": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363",
+      "to": "0xf8d4eeb6a0a5aff971c16f2baf9f0aee0fdb4c23",
+      "hash": "0x9c035e6653a57aad5e185ee3b6ffd9be22fed27590946cf5288b1b5e09d5c017",
+      "status": "success",
+      "block": 60945981,
+      "gasUsed": 509074,
+      "confirmMs": 5377,
+      "at": "2026-11-12T12:18:32.498Z"
+    },
+    {
+      "label": "register_jun",
+      "from": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
+      "to": "0x4de185b2d8ee6a73d78e90c3e024f230799b561c",
+      "hash": "0x5fb479ae2ab9435ec9d48fcc1eb52cccdebc373f5b71351205f87c49416debaf",
+      "status": "success",
+      "block": 60945986,
+      "gasUsed": 319554,
+      "confirmMs": 5337,
+      "at": "2026-11-12T12:18:38.490Z"
+    },
+    {
+      "label": "shield_jun_approve",
+      "from": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0xbba01306c240d3176e763f3a06f121aa8f735812233db8fa85f7be821dc96033",
+      "status": "success",
+      "block": 60945989,
+      "gasUsed": 45901,
+      "confirmMs": 5114,
+      "at": "2026-11-12T12:18:44.237Z"
+    },
+    {
+      "label": "shield_jun",
+      "from": "0x232a67F57752B06e1d847Aa37D8aBf10dE3D70D8",
+      "to": "0xf8d4eeb6a0a5aff971c16f2baf9f0aee0fdb4c23",
+      "hash": "0x5450f273a53c3a84ea346e2332a6729a172cb0cdb53834066e247dde28c1dc67",
+      "status": "success",
+      "block": 60945994,
+      "gasUsed": 504623,
+      "confirmMs": 2860,
+      "at": "2026-11-12T12:18:47.465Z"
+    },
+    {
+      "label": "register_sora",
+      "from": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+      "to": "0x4de185b2d8ee6a73d78e90c3e024f230799b561c",
+      "hash": "0xbe79f04168a8a6abb9a4846d7205ff8e0a7a13782658d62b3d82097ead49c6b6",
+      "status": "success",
+      "block": 60945998,
+      "gasUsed": 319566,
+      "confirmMs": 5318,
+      "at": "2026-11-12T12:18:53.437Z"
+    },
+    {
+      "label": "shield_sora_approve",
+      "from": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0x15e096f9845e9c0772c80d2d2075b0c04b03e4847ec39cb7c6e68782b6c06706",
+      "status": "success",
+      "block": 60946004,
+      "gasUsed": 45901,
+      "confirmMs": 5293,
+      "at": "2026-11-12T12:18:59.377Z"
+    },
+    {
+      "label": "shield_sora",
+      "from": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+      "to": "0xf8d4eeb6a0a5aff971c16f2baf9f0aee0fdb4c23",
+      "hash": "0xdc4e595f24a47c537c14947a91461a9e0b0ee03fb5773c1a3659e241e92f33f4",
+      "status": "success",
+      "block": 60946010,
+      "gasUsed": 509110,
+      "confirmMs": 4313,
+      "at": "2026-11-12T12:19:04.043Z"
+    },
+    {
+      "label": "register_tae",
+      "from": "0x477D91ac189080ec0B40Af4F9AE4246d331Ebf5b",
+      "to": "0x4de185b2d8ee6a73d78e90c3e024f230799b561c",
+      "hash": "0x7fc825eab958b84928ad0be1b0ba871c6f7fbf18edb770b72d1127aa313d464f",
+      "status": "success",
+      "block": 60946014,
+      "gasUsed": 319578,
+      "confirmMs": 2903,
+      "at": "2026-11-12T12:19:07.596Z"
+    },
+    {
+      "label": "shield_tae_approve",
+      "from": "0x477D91ac189080ec0B40Af4F9AE4246d331Ebf5b",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0xcff561bd0eda5488f9e577777d408b44ce01e8202edba0326134ba7ca7ac8e72",
+      "status": "success",
+      "block": 60946017,
+      "gasUsed": 45901,
+      "confirmMs": 2461,
+      "at": "2026-11-12T12:19:10.699Z"
+    },
+    {
+      "label": "shield_tae",
+      "from": "0x477D91ac189080ec0B40Af4F9AE4246d331Ebf5b",
+      "to": "0xf8d4eeb6a0a5aff971c16f2baf9f0aee0fdb4c23",
+      "hash": "0xcf579ee1d89038659bc5643a540916742bae7e8f541869d8d435524c4578a509",
+      "status": "success",
+      "block": 60946018,
+      "gasUsed": 499967,
+      "confirmMs": 3668,
+      "at": "2026-11-12T12:19:14.730Z"
+    },
+    {
+      "label": "register_lia",
+      "from": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+      "to": "0x4de185b2d8ee6a73d78e90c3e024f230799b561c",
+      "hash": "0xab1b8d2d22ceb398931cfa4f0d9203fa9e205c56058e52f313fc71fb9f991190",
+      "status": "success",
+      "block": 60946021,
+      "gasUsed": 319554,
+      "confirmMs": 4980,
+      "at": "2026-11-12T12:19:20.351Z"
+    },
+    {
+      "label": "shield_lia_approve",
+      "from": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+      "to": "0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd",
+      "hash": "0xe63c426c210c124dd9ef81de87be7c2ce0ed8ff598ba318eae930e06f41868a3",
+      "status": "success",
+      "block": 60946023,
+      "gasUsed": 45901,
+      "confirmMs": 5750,
+      "at": "2026-11-12T12:19:26.747Z"
+    },
+    {
+      "label": "shield_lia",
+      "from": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+      "to": "0xf8d4eeb6a0a5aff971c16f2baf9f0aee0fdb4c23",
+      "hash": "0x5ab2d5d6320557abd1d2d7efaa73a2b1f0fa9f5c018a0ca403664c6f79b9811c",
+      "status": "success",
+      "block": 60946025,
+      "gasUsed": 499955,
+      "confirmMs": 3371,
+      "at": "2026-11-12T12:19:30.485Z"
+    },
+    {
+      "label": "tip_c0_call7_sora",
+      "from": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+      "to": "0xf8d4eeb6a0a5aff971c16f2baf9f0aee0fdb4c23",
+      "hash": "0x81b6aacd61f188ed6561c50fe5eda4ba2d7fe02f11aec449a8583e611bdfb831",
+      "status": "success",
+      "block": 60946031,
+      "gasUsed": 1085701,
+      "confirmMs": 4098,
+      "at": "2026-11-12T12:19:38.323Z"
+    },
+    {
+      "label": "tip_c0_call7_sora_post",
+      "from": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0xe101b548c317c779600a034831cd19f4bcc9247a9c16dd640e60e2c4360fe335",
+      "status": "success",
+      "block": 60946034,
+      "gasUsed": 172052,
+      "confirmMs": 3425,
+      "at": "2026-11-12T12:19:42.095Z"
+    },
+    {
+      "label": "tip_c0_call7_ren",
+      "from": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363",
+      "to": "0xf8d4eeb6a0a5aff971c16f2baf9f0aee0fdb4c23",
+      "hash": "0xeabfa4936f1e5feaeac1210529d2c653af521d3fe20a4985a66ee823e767b5b0",
+      "status": "success",
+      "block": 60946039,
+      "gasUsed": 1085713,
+      "confirmMs": 2890,
+      "at": "2026-11-12T12:19:47.657Z"
+    },
+    {
+      "label": "tip_c0_call7_ren_post",
+      "from": "0x9b1d8F9Cb095A9dCb80AdC394561609A819b4363",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0xa1fbc520255789220ce5506092f24e227ad06e9d2d65ee2606518a8cca164e21",
+      "status": "success",
+      "block": 60946043,
+      "gasUsed": 172052,
+      "confirmMs": 5151,
+      "at": "2026-11-12T12:19:53.135Z"
+    },
+    {
+      "label": "tip_c1_call5_bo",
+      "from": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+      "to": "0xf8d4eeb6a0a5aff971c16f2baf9f0aee0fdb4c23",
+      "hash": "0x91bc20607cf98266614577e7481401fad8b3c9178db95e7abad4b88e8a6d8228",
+      "status": "success",
+      "block": 60946048,
+      "gasUsed": 1085701,
+      "confirmMs": 2453,
+      "at": "2026-11-12T12:19:58.373Z"
+    },
+    {
+      "label": "tip_c1_call5_bo_post",
+      "from": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+      "to": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+      "hash": "0x070405e9f9bb38fcf7a544860ac7c3fdf2fb90a9a26cb659e83edc3aba1ace10",
+      "status": "success",
+      "block": 60946051,
+      "gasUsed": 172064,
+      "confirmMs": 4101,
+      "at": "2026-11-12T12:20:02.800Z"
+    },
+    {
+      "label": "send_nightowls_bo_mika",
+      "from": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+      "to": "0xf8d4eeb6a0a5aff971c16f2baf9f0aee0fdb4c23",
+      "hash": "0xa8696358c0ddd7d03a4eed4a1f93a86d2938106cfb7af50016d94edd7ac77087",
+      "status": "success",
+      "block": 60946056,
+      "gasUsed": 905663,
+      "confirmMs": 3287,
+      "at": "2026-11-12T12:20:08.379Z"
+    },
+    {
+      "label": "send_nightowls_bo_mika_post",
+      "from": "0x4A4Bb8EDC2415841e67fC52BF00CF98267577125",
+      "to": "0x1c11A95bfBfaA989afC1222d614A8FbD24f75677",
+      "hash": "0x36db76a67c1a507b249db17c3c6460c1b31627caa421bc7245798805ef21c0c0",
+      "status": "success",
+      "block": 60946059,
+      "gasUsed": 172974,
+      "confirmMs": 3399,
+      "at": "2026-11-12T12:20:12.108Z"
+    }
+  ],
+  "eercNote": "Kumi's private balance: Ava Labs EncryptedERC (converter over tUSDC, 2 decimals, production verifiers, unmodified at 8dc98cd). Auditor = accounts.auditor (a Kumi test account). Private tips and sends are posted in the chats as kumi:private:<tx>."
 }

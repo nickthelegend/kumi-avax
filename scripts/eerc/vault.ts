@@ -52,6 +52,14 @@ export type Sent = { label: string; from: Address; to: Address | null; hash: Hex
 export type Ctx = { pub: PublicClient; chain: Chain; transport: () => Transport; log: Sent[]; onSent?: (s: Sent) => void };
 
 const walletOf = (ctx: Ctx, who: PrivateKeyAccount) => createWalletClient({ account: who, chain: ctx.chain, transport: ctx.transport() });
+// Local nonces: a public RPC that lags a block after a receipt would otherwise hand out a used nonce.
+const nonces = new Map<string, number>();
+async function nextNonce(ctx: Ctx, who: Address) {
+  const chainSays = await ctx.pub.getTransactionCount({ address: who, blockTag: 'pending' });
+  const n = Math.max(chainSays, nonces.get(who) ?? 0);
+  nonces.set(who, n + 1);
+  return n;
+}
 
 async function finish(ctx: Ctx, label: string, from: Address, to: Address | null, hash: Hex, t0: number) {
   const r = await ctx.pub.waitForTransactionReceipt({ hash, pollingInterval: 250, timeout: 120_000 });
@@ -68,7 +76,7 @@ export async function send(ctx: Ctx, who: PrivateKeyAccount, to: Address, abi: A
   await ctx.pub.call({ account: who.address, to, data }); // refuse before broadcasting, with the contract's reason
   const gas = await ctx.pub.estimateGas({ account: who.address, to, data });
   const t0 = Date.now();
-  const hash = await walletOf(ctx, who).sendTransaction({ to, data, gas: gas * 13n / 10n } as never);
+  const hash = await walletOf(ctx, who).sendTransaction({ to, data, gas: gas * 13n / 10n, nonce: await nextNonce(ctx, who.address) } as never);
   return (await finish(ctx, label, who.address, to, hash, t0)).sent;
 }
 
@@ -83,7 +91,7 @@ async function deploy(ctx: Ctx, who: PrivateKeyAccount, name: string, args: unkn
     }
   }
   const t0 = Date.now();
-  const hash = await walletOf(ctx, who).deployContract({ abi: a.abi, bytecode: code, args } as never);
+  const hash = await walletOf(ctx, who).deployContract({ abi: a.abi, bytecode: code, args, nonce: await nextNonce(ctx, who.address) } as never);
   const { receipt } = await finish(ctx, `deploy_${name}`, who.address, null, hash, t0);
   if (!receipt.contractAddress) throw Error(`deploy ${name}: no address`);
   return receipt.contractAddress;

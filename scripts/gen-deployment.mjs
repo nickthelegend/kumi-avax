@@ -6,7 +6,9 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const d = JSON.parse(readFileSync(join(root, 'deployments/fuji.json'), 'utf8'));
 const c = d.contracts;
 const out = {
-  usdc: c.usdc, perps: c.perps, factory: c.factory, crewImplementation: c.crewImplementation, lobby: c.lobby,
+  usdc: c.usdc, perps: c.perps,
+  // Ava Labs EncryptedERC (converter over tUSDC) and its Registrar: Kumi's private balance.
+  eerc: c.eerc ? { encryptedERC: c.eerc.encryptedERC, registrar: c.eerc.registrar, auditor: d.accounts?.auditor ?? null, deployBlock: (d.eerc ?? []).find(t => t.label === 'deploy_EncryptedERC')?.block ?? 0 } : null, factory: c.factory, crewImplementation: c.crewImplementation, lobby: c.lobby,
   lobbyChannels: d.lobbyChannels ?? {},
   // Kumi's own test accounts (keys in the operator's gitignored .env). The apps label them as test accounts.
   testAccounts: [...Object.entries(d.accounts ?? {}).filter(([n]) => n !== 'deployer').map(([, a]) => a.toLowerCase()), ...Object.values(d.phoneQaWallets ?? {}).map(a => a.toLowerCase())],
