@@ -210,3 +210,16 @@ export async function recentFills(blocks = 2000n) {
   }
   return out;
 }
+
+/** The newest `want` fills, walking back from the head in 2,000-block chunks (public RPC cap) up to `maxBlocks`. */
+export async function latestFills(want = 6, maxBlocks = 43_200n) {
+  const head = await pub.getBlockNumber();
+  const floor = head > maxBlocks ? head - maxBlocks : 0n;
+  const out: Awaited<ReturnType<typeof recentFills>> = [];
+  for (let to = head; to > floor && out.length < want; to -= 2000n) {
+    const from = to - 1999n > floor ? to - 1999n : floor;
+    const logs = await pub.getLogs({ address: PERPS, event: FILLED, fromBlock: from, toBlock: to });
+    for (const l of logs.reverse()) out.push({ ...l.args, hash: l.transactionHash, block: l.blockNumber });
+  }
+  return out.slice(0, want);
+}

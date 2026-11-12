@@ -1,0 +1,1 @@
+{"rewrites":[{"source":"/((?!assets/|art/|download/|eerc/).*)","destination":"/index.html"}],"headers":[{"source":"/download/manifest.json","headers":[{"key":"Cache-Control","value":"no-cache"}]}]}

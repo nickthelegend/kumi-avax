@@ -112,7 +112,7 @@ export function TopNav({ path }: { path: string }) {
           ) : (
             <button className="btn btn-sm btn-plum" onClick={() => connectWallet().catch(e => setErr((e as Error).message))}><span className="nl-full">Connect wallet</span><span className="nl-short">Connect</span></button>
           )}
-          {path === '/' && <Link to="/room" className="btn btn-primary btn-sm hide-sm">Open the room</Link>}
+          {path === '/' && <a href="#get-app" onClick={e => { e.preventDefault(); document.getElementById('get-app')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }} className="btn btn-primary btn-sm hide-sm">Get the app</a>}
         </div>
       </div>
       {err && <div className="nav-err"><Notice error>{err} <button className="btn btn-sm btn-ghost" onClick={() => setErr(null)}>Dismiss</button></Notice></div>}

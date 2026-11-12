@@ -12,11 +12,13 @@
   "dependencies": {
     "@kumi-avax/sdk": "workspace:*",
     "@web3icons/core": "4.0.58",
+    "qrcode": "1.5.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "viem": "2.57.13"
   },
   "devDependencies": {
+    "@types/qrcode": "1.5.5",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
     "@vitejs/plugin-react": "^5.0.0",
