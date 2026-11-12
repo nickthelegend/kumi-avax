@@ -45,6 +45,9 @@ importers:
       '@kumi-avax/sdk':
         specifier: workspace:*
         version: link:../sdk
+      '@web3icons/core':
+        specifier: 4.0.58
+        version: 4.0.58
       react:
         specifier: ^19.1.0
         version: 19.3.1
@@ -529,6 +532,12 @@ packages:
     engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
       vite: ^4.2.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
+
+  '@web3icons/common@0.11.53':
+    resolution: {integrity: sha512-bNUB/Lfh9C+6T1juicWARU+oW27scRj7Xw/TkzCXlZBrJICEc/qTcIUStGpCjDq3jQuRfO6JHCbTIiiEPZAzBg==}
+
+  '@web3icons/core@4.0.58':
+    resolution: {integrity: sha512-22a+C1uHAhhEgSfumj0MisJhZty9ldJIemv1p0QeQaEfq8n/RrM3HptNf7MsAJbcq4jhqoDRGMRvYAgbUTytaA==}
 
   abitype@1.2.3:
     resolution: {integrity: sha512-Ofer5QUnuUdTFsBRwARMoWKOH1ND5ehwYhJ3OJ/BQO+StkwQjHw0XyVh4vDttzHB7QOFhPHa/o413PJ82gU/Tg==}
@@ -1129,6 +1138,12 @@ snapshots:
       vite: 7.3.8(@types/node@24.19.2)
     transitivePeerDependencies:
       - supports-color
+
+  '@web3icons/common@0.11.53': {}
+
+  '@web3icons/core@4.0.58':
+    dependencies:
+      '@web3icons/common': 0.11.53
 
   abitype@1.2.3(typescript@5.9.3):
     optionalDependencies:

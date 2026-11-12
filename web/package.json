@@ -5,12 +5,13 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 5341 --strictPort",
-    "build": "tsc -b && vite build",
-    "build:qa": "tsc -b && VITE_QA=1 vite build --outDir dist-qa",
+    "build": "tsc -p . && vite build",
+    "build:qa": "tsc -p . && VITE_QA=1 vite build --outDir dist-qa",
     "preview": "vite preview --host 127.0.0.1 --port 5341 --strictPort"
   },
   "dependencies": {
     "@kumi-avax/sdk": "workspace:*",
+    "@web3icons/core": "4.0.58",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "viem": "2.57.13"
