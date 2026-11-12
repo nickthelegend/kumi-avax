@@ -14,14 +14,20 @@ position is open.
 
 ## Live on Fuji (chainId 43113)
 
-| Contract | Address |
-|---|---|
-| KumiPerps (order book venue) | [`0x6b0b…` see deployments/fuji.json](deployments/fuji.json) |
-| KumiCrewFactory | see below |
-| Night Owls crew vault | see below |
-| TestUSDC (tUSDC, 6 dp, faucet) | see below |
+| Contract | Address | Deploy tx |
+|---|---|---|
+| KumiPerps (order book venue) | [`0x6a6c0d74862edb85f2f0534381857347d5ae09a3`](https://testnet.snowtrace.io/address/0x6a6c0d74862edb85f2f0534381857347d5ae09a3) | [0x69140d86…](https://testnet.snowtrace.io/tx/0x69140d86347ea5e44e9916a1ffbef9b87b3013e9f62a46c043ebe9c44fae0c17) |
+| KumiCrewFactory | [`0x7be7c269acf2e0d0b7074e9a0bdc7dfb730b778c`](https://testnet.snowtrace.io/address/0x7be7c269acf2e0d0b7074e9a0bdc7dfb730b778c) | [0x5177a484…](https://testnet.snowtrace.io/tx/0x5177a48405f2a8519d505a2cb632fb779b80d7ae7cd1d27e6a31ce23c6f11a13) |
+| KumiCrew implementation | [`0x39d12adf89cb16756a4d5e775efbc0e97f68a2ef`](https://testnet.snowtrace.io/address/0x39d12adf89cb16756a4d5e775efbc0e97f68a2ef) | [0xaf19b760…](https://testnet.snowtrace.io/tx/0xaf19b7602ffae6db231e84bce357048f05c2deab346f3864f441190486ed3b74) |
+| Night Owls crew vault (clone) | [`0x1c11A95bfBfaA989afC1222d614A8FbD24f75677`](https://testnet.snowtrace.io/address/0x1c11A95bfBfaA989afC1222d614A8FbD24f75677) | [0x82cf5d3c…](https://testnet.snowtrace.io/tx/0x82cf5d3c08bf69f366c89d7c0ff14510364c9f7de70760de6a78871f18f628f1) |
+| TestUSDC (tUSDC, 6 dp, faucet) | [`0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd`](https://testnet.snowtrace.io/address/0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd) | [0x2c641336…](https://testnet.snowtrace.io/tx/0x2c641336d5e16c0a44bbbc2b532c62d8a6599f043cf14835e3a09718a14a54bc) |
 
-<!-- ADDRESSES -->
+Markets were listed in [AVAX-USD](https://testnet.snowtrace.io/tx/0xd6be4f137a7d0252127fb440e1ba6a6ac9c35a1d94ab7775da93d008e96bafd5) and
+[BTC-USD](https://testnet.snowtrace.io/tx/0x8c87a9dc0180642bb7074804697e14ed9f740376883ae5430ec2f830611223ca), and the insurance fund was
+seeded with 5,000 tUSDC in [this tx](https://testnet.snowtrace.io/tx/0x1e429a9158fe9767b1792a5f3d288af5bedf96bea9493a7ad187102ad308f264).
+
+**A first crew implementation was replaced before anyone deposited.** It lacked the deciding-vote gas floor
+described below; it is recorded under `superseded` in the deployment file.
 
 Price feeds are Chainlink's own Fuji feeds, with addresses taken from Chainlink's feed directory:
 
@@ -35,7 +41,37 @@ recorded with its hash, block and gas in [`deployments/fuji.json`](deployments/f
 
 ## The live demo
 
-<!-- DEMO -->
+This demo ran through the web app on Fuji, Nov 12 2026, with three test members signing through the QA signer
+(`scripts/qa/demo.mjs`). The screenshots for each step are in [`docs/screenshots/`](docs/screenshots).
+
+| Step | What happened | Tx |
+|---|---|---|
+| 1 | mika, bo and ren chip in 400 / 350 / 250 tUSDC (approve, then deposit, from the chip-in sheet) | [mika](https://testnet.snowtrace.io/tx/0x9949011f71093cb4ac2f61dafe84a91f7e6558d263460e1e80935708151fbd0a), [bo](https://testnet.snowtrace.io/tx/0x7e83a97e7b71c0b27577a04681497784e471f66e766e9de00a2374c90ff58c5c), [ren](https://testnet.snowtrace.io/tx/0x14d9ef8ae8a5696310a322a35e49b1b62a7f5552d72f7770dc92616a90d81613) |
+| 2 | mika chats, then types `/long AVAX 3x`. That is 20% of the fund by default, and her 40% counts as yes | [chat](https://testnet.snowtrace.io/tx/0x1a57cc0c615d8ff779250b5c5bcd7bda8d7fa5f3d38a1076384efbf854d8d74e), [pitch](https://testnet.snowtrace.io/tx/0x193bfc6f0ad05e3d4e8b2428a45d1657c335faa06e5ff4a12b035ab2876d5526) |
+| 3 | bo votes yes (75%), and the vault buys **69.41 AVAX at $8.698** on the book in the same tx | [vote + open](https://testnet.snowtrace.io/tx/0xd0bb3fc4e25a5c44656baf564ee72eeb4f456f9008b941c9283b0630767a2c84) |
+| 4 | The maker leans its AVAX quotes +1.2%. These are its own real orders: it cancels, then re-quotes | [cancel](https://testnet.snowtrace.io/tx/0xc9f41128ad77a08335559d113e9aabe576d46bfeeb99271ec6a561779adff1ed), [new best ask](https://testnet.snowtrace.io/tx/0x401724afae3b767bef5fd1b8efef2ddfcbf638713841f071f71307bc8df2ae65) |
+| 5 | ren pitches `/close AVAX`. mika votes yes (65%), and the vault sells 69.41 AVAX at $8.742: **+3.05 tUSDC realised** | [pitch](https://testnet.snowtrace.io/tx/0x63db0e9b6e5b510fc0a80be004b9bc446b38172015b73d39be72591e9840917a), [vote + close](https://testnet.snowtrace.io/tx/0x80f1f7c0e878e0a0c536c5623be06dac391e66653ad394317eb506e8832ec821) |
+| 6 | ren ragequits with everything: **250.76 tUSDC** for 250 shares | [ragequit](https://testnet.snowtrace.io/tx/0xd442eb5f5052a920e8fd899b9e906926071aeb51e42ad9cde9358915c963e7dc) |
+| 7 (bonus) | mika (now 53%) pitches `/short BTC 2x 10%`. It passes on her own vote and opens 0.00204 BTC short at $73,631 | [pitch + open](https://testnet.snowtrace.io/tx/0xa31c64bca530feed749e1861104da7743cbc9b64f888702e9b90a3f188e03c39) |
+| 8 (bonus) | bo ragequits **while the BTC short is open**. The vault buys back his slice (0.00054 BTC) and pays him 200.57 tUSDC | [ragequit](https://testnet.snowtrace.io/tx/0x38e9477e9cc10f5a825421432b3f892ec50d1ecc19c1a733717365a9b9a168c1) |
+
+**How the price moved, plainly.** During the demo, Chainlink's AVAX price fell from about $8.69 to $8.64, so marked
+at Chainlink the long was slightly down. The +3.05 tUSDC came from the maker bot leaning its bids up 1.2%, which is
+the "move the price via the maker" option. The close sold into those real bids. The room shows both numbers: PnL at
+Chainlink, and "Close now" at the book.
+
+**The mid-position ragequit was fair on-chain.** The crew's share price was 1.0029402 tUSDC in the block before
+bo's exit (752.205160 NAV / 750 shares) and 1.0029402 in the block of it (551.617117 / 550). bo paid the 2-cent spread
+of closing his slice.
+
+**A UI bug the demo caught.** bo meant to leave with 50% of his shares, but burned 200 of his 350. Right after the QA
+signer switched from mika to bo, the ragequit sheet was still showing mika's share count. The contract did exactly
+what was signed. The room now refuses to show or act on a stake until it has re-read the new signer
+(`meFresh` in `Room.tsx`).
+
+There are 108 recorded Fuji txs in all: 22 setup, 71 maker quotes and 15 demo steps. Gas is almost free on Fuji
+(160 wei while we built). The five test accounts were funded with 0.02 AVAX in total, and all of the txs together
+burned under 0.00001 AVAX of it.
 
 ## How it works
 

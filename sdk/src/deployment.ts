@@ -15,7 +15,8 @@ export const DEPLOYMENT = {
     "0x856ca6cd84bde22b1e40e9ef5e704d37a029c380": "maker",
     "0x857429f6d1304b8ef42de42a0696f52a5fbe3acf": "mika",
     "0x4a4bb8edc2415841e67fc52bf00cf98267577125": "bo",
-    "0x9b1d8f9cb095a9dcb80adc394561609a819b4363": "ren"
+    "0x9b1d8f9cb095a9dcb80adc394561609a819b4363": "ren",
+    "0x1c11a95bfbfaa989afc1222d614a8fbd24f75677": "Night Owls vault"
   },
   "deployTxs": {
     "deploy_TestUSDC": "0x2c641336d5e16c0a44bbbc2b532c62d8a6599f043cf14835e3a09718a14a54bc",

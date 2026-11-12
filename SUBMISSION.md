@@ -54,7 +54,17 @@ the maker bot and the Primit work are new.
 
 ## Live links
 
-<!-- LINKS -->
+- Repo: this folder (`grokbot/avax/kumi-avax`). It is not pushed; Nick pushes.
+- **KumiPerps venue:** https://testnet.snowtrace.io/address/0x6a6c0d74862edb85f2f0534381857347d5ae09a3
+- **Night Owls crew vault:** https://testnet.snowtrace.io/address/0x1c11A95bfBfaA989afC1222d614A8FbD24f75677
+- **KumiCrewFactory:** https://testnet.snowtrace.io/address/0x7be7c269acf2e0d0b7074e9a0bdc7dfb730b778c
+- **TestUSDC:** https://testnet.snowtrace.io/address/0xd3fb99ea91a049f9dfde5f9ea17ea1355a1799bd
+- **Vote that opened the 3x AVAX long:** https://testnet.snowtrace.io/tx/0xd0bb3fc4e25a5c44656baf564ee72eeb4f456f9008b941c9283b0630767a2c84
+- **Vote that closed it (+3.05 tUSDC):** https://testnet.snowtrace.io/tx/0x80f1f7c0e878e0a0c536c5623be06dac391e66653ad394317eb506e8832ec821
+- **Ragequit while a BTC short was open:** https://testnet.snowtrace.io/tx/0x38e9477e9cc10f5a825421432b3f892ec50d1ecc19c1a733717365a9b9a168c1
+- **All txs:** `deployments/fuji.json`
+- **Web app:** runs locally (`pnpm --filter @kumi-avax/web build && pnpm --filter @kumi-avax/web preview`). It is not
+  hosted yet.
 
 ## Demo video
 
