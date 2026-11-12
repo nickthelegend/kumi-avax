@@ -1,8 +1,8 @@
 /** Sends transactions on Fuji and records every one (label, hash, block, gas, timing) in deployments/fuji.json. */
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { createWalletClient, http, type Abi, type Account, type Hex } from 'viem';
-import { client, fuji, FUJI_RPC } from '@kumi-avax/sdk';
+import { createWalletClient, type Abi, type Account, type Hex } from 'viem';
+import { client, fuji, FUJI_RPC, fujiTransport } from '@kumi-avax/sdk';
 import { ROOT } from './env.ts';
 
 export const DEPLOYMENT = join(ROOT, 'deployments/fuji.json');
@@ -24,7 +24,7 @@ export function record(r: Rec, section = 'txs') {
   save(d);
 }
 
-export function wallet(acct: Account) { return createWalletClient({ account: acct, chain: fuji, transport: http(FUJI_RPC) }); }
+export function wallet(acct: Account) { return createWalletClient({ account: acct, chain: fuji, transport: fujiTransport() }); }
 
 async function finish(label: string, from: string, to: string | null, hash: Hex, t0: number, section: string) {
   const r = await pub.waitForTransactionReceipt({ hash, pollingInterval: 250, timeout: 120_000 });

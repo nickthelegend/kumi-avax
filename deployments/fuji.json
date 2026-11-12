@@ -631,6 +631,149 @@
       "gasUsed": 228037,
       "confirmMs": 3288,
       "at": "2026-11-12T09:46:11.121Z"
+    },
+    {
+      "label": "maker_cancel_AVAX_12",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xaa19e8456c37ca4f206bca6a93a3501160d5e90e18f85d13656b151ae4cfbb98",
+      "status": "success",
+      "block": 60941114,
+      "gasUsed": 416846,
+      "confirmMs": 4131,
+      "at": "2026-11-12T10:13:35.718Z"
+    },
+    {
+      "label": "maker_AVAX_bid_1",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xe73f01acbd2366b1b449573b1b7129853836e7cf33eeb2921467ec7509a4f40a",
+      "status": "success",
+      "block": 60941120,
+      "gasUsed": 221056,
+      "confirmMs": 4977,
+      "at": "2026-11-12T10:13:41.506Z"
+    },
+    {
+      "label": "maker_AVAX_ask_1",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x470724dc8a2a8ee176689a047479da6acd2fbc59db7db5ac930757d6137dab51",
+      "status": "success",
+      "block": 60941123,
+      "gasUsed": 204225,
+      "confirmMs": 5216,
+      "at": "2026-11-12T10:13:47.536Z"
+    },
+    {
+      "label": "maker_AVAX_bid_2",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xd037100cee03364a6c188de6f59578e5d41212677a00785d3f99d16d9e167096",
+      "status": "success",
+      "block": 60941129,
+      "gasUsed": 218109,
+      "confirmMs": 2454,
+      "at": "2026-11-12T10:13:50.805Z"
+    },
+    {
+      "label": "maker_AVAX_ask_2",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x3deec29ad9c6793f20fe2faac4e4a5e3189147e7e2080190080b00d8571c35ce",
+      "status": "success",
+      "block": 60941133,
+      "gasUsed": 218233,
+      "confirmMs": 3391,
+      "at": "2026-11-12T10:13:55.001Z"
+    },
+    {
+      "label": "maker_AVAX_bid_3",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x936d8f8bc9c0cf276c10df5aab62da166283c89f686af7ce820063027f2aaf54",
+      "status": "success",
+      "block": 60941137,
+      "gasUsed": 220591,
+      "confirmMs": 3278,
+      "at": "2026-11-12T10:13:59.093Z"
+    },
+    {
+      "label": "maker_AVAX_ask_3",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xc9173d6d0d687c008826e54932a460c4ff9d0f16ff5f7dbe45e2084c9a73f105",
+      "status": "success",
+      "block": 60941140,
+      "gasUsed": 220704,
+      "confirmMs": 5633,
+      "at": "2026-11-12T10:14:05.548Z"
+    },
+    {
+      "label": "maker_AVAX_bid_4",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x91af3d14ab5d15c7664c399b0b8f59ab365aedb1f65ef9cead8b9ac52e75593e",
+      "status": "success",
+      "block": 60941146,
+      "gasUsed": 223061,
+      "confirmMs": 2446,
+      "at": "2026-11-12T10:14:08.814Z"
+    },
+    {
+      "label": "maker_AVAX_ask_4",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xd43d9222ecda924704971f2b29034b149c096380787b45b542d569aefc86a9d9",
+      "status": "success",
+      "block": 60941149,
+      "gasUsed": 223175,
+      "confirmMs": 4924,
+      "at": "2026-11-12T10:14:14.574Z"
+    },
+    {
+      "label": "maker_AVAX_bid_5",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xf0b49488bba91a9d5d7c925093b2cf28b23324f4e861b8cc4873896e2729f01d",
+      "status": "success",
+      "block": 60941152,
+      "gasUsed": 225531,
+      "confirmMs": 5182,
+      "at": "2026-11-12T10:14:20.592Z"
+    },
+    {
+      "label": "maker_AVAX_ask_5",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x29a678b7ea33bf0d4e4f61ca5f0f172ca8a22193ce22f9a5d75cb14f99153722",
+      "status": "success",
+      "block": 60941153,
+      "gasUsed": 225646,
+      "confirmMs": 3405,
+      "at": "2026-11-12T10:14:24.816Z"
+    },
+    {
+      "label": "maker_AVAX_bid_6",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x2067fd00ff58a4d43613b76cc8e44d9b8e346aa4b59424000345fd7691dd1878",
+      "status": "success",
+      "block": 60941155,
+      "gasUsed": 228001,
+      "confirmMs": 2441,
+      "at": "2026-11-12T10:14:28.079Z"
+    },
+    {
+      "label": "maker_AVAX_ask_6",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x57057cb27b1cd7f86d71dca89534fc5932403be2bac843585bf2c5525d640f67",
+      "status": "success",
+      "block": 60941157,
+      "gasUsed": 228117,
+      "confirmMs": 2441,
+      "at": "2026-11-12T10:14:31.430Z"
     }
   ],
   "superseded": [

@@ -13,7 +13,8 @@ import { execFileSync } from 'node:child_process';
 import { withBrowser, qaPage, ROOT } from './harness.mjs';
 
 const base = process.argv[2] ?? 'http://127.0.0.1:5341';
-const from = Number(process.argv[process.argv.indexOf('--from') + 1] || 1);
+const fromAt = process.argv.indexOf('--from');
+const from = fromAt > 0 ? Number(process.argv[fromAt + 1]) : 1;
 const SHOTS = join(ROOT, 'docs/screenshots');
 mkdirSync(SHOTS, { recursive: true });
 const DEP = join(ROOT, 'deployments/fuji.json');
@@ -76,8 +77,8 @@ await withBrowser(async browser => {
     await shot('3-opened');
   }
   if (from <= 4) {
-    // Price move: the maker leans its quotes up 0.6% (its own real orders on the book); Chainlink keeps updating too.
-    execFileSync('node', ['fuji/maker.ts', '--skew-bps', process.env.DEMO_SKEW_BPS ?? '60', '--market', 'AVAX'], { cwd: join(ROOT, 'scripts'), stdio: 'inherit' });
+    // Price move: the maker leans its quotes up 1.2% (its own real orders on the book); Chainlink keeps updating too.
+    execFileSync('node', ['fuji/maker.ts', '--skew-bps', process.env.DEMO_SKEW_BPS ?? '120', '--market', 'AVAX'], { cwd: join(ROOT, 'scripts'), stdio: 'inherit' });
     await page.waitForTimeout(6000);
     await shot('4-price-moved');
   }

@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from 'react';
-import { createWalletClient, custom, http, type Abi, type Address, type Hex, type WalletClient } from 'viem';
+import { createWalletClient, custom, type Abi, type Address, type Hex, type WalletClient } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
-import { fuji, FUJI_RPC, DEPLOYMENT } from '@kumi-avax/sdk';
+import { fuji, FUJI_RPC, fujiTransport, DEPLOYMENT } from '@kumi-avax/sdk';
 import { pub, readable } from './chain';
 
 /**
@@ -40,7 +40,7 @@ export function selectQa(label: string) {
   const key = (window as QaWindow).__KUMI_QA__?.keys[label];
   if (!key) throw Error(`QA signer "${label}" was not injected`);
   const account = privateKeyToAccount(key);
-  client = createWalletClient({ account, chain: fuji, transport: http(FUJI_RPC) });
+  client = createWalletClient({ account, chain: fuji, transport: fujiTransport() });
   current = { address: account.address, label, kind: 'qa' };
   try { sessionStorage.setItem('kumi:qa', label); } catch { /* private mode */ }
   emit();

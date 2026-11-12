@@ -24,7 +24,7 @@ function CrewRoom({ crew, crews }: { crew: Address; crews: Awaited<ReturnType<ty
   const who = useWho();
   const [tab, setTab] = useState<Tab>('chat');
   const [sheet, setSheet] = useState<'chip' | 'quit' | null>(null);
-  const st = useLive(() => readCrew(crew, who?.address), [crew, who?.address], 4000);
+  const st = useLive(() => readCrew(crew, who?.address), [crew, who?.address], 5000);
   const mk = useLive(() => readMarkets(), [], 5000);
   const pitchIds = (st.data?.feed ?? []).filter(f => f.kind === FeedKind.Pitch).map(f => f.ref).slice(-30);
   const props = useLive(async () => {
@@ -203,7 +203,7 @@ type Item = CrewState['feed'][number];
 function Message({ f, prev, st, markets, props, onDone }: { f: Item; prev?: Item; st: CrewState; markets: MarketState[]; props: Record<number, Proposal>; onDone: () => void }) {
   const who = useWho();
   const [hash, setHash] = useState<string>();
-  const needsHash = f.kind !== FeedKind.Pitch && f.kind !== FeedKind.Executed;
+  const needsHash = f.kind !== FeedKind.Pitch && f.kind !== FeedKind.Executed && f.index >= st.feed.length + (st.feed[0]?.index ?? 0) - 40;
   useEffect(() => { if (needsHash) void feedTx(st.address, f.index, f.block).then(setHash).catch(() => undefined); }, [st.address, f.index, f.block, needsHash]);
   const day = new Date(f.ts * 1000).toDateString();
   const showDay = !prev || new Date(prev.ts * 1000).toDateString() !== day;

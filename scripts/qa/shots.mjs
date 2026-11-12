@@ -19,6 +19,9 @@ await withBrowser(async browser => {
       await page.waitForTimeout(Number(process.env.QA_WAIT_MS ?? 7000));
       if (route.endsWith('#fund') && w < 1000) await page.click('.tabs button:has-text("Fund")').catch(() => {});
       if (route.endsWith('#fund') && w < 1000) await page.waitForTimeout(800);
+      // Walk the page once so lazy images load before the full-page capture.
+      await page.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += 500) { scrollTo(0, y); await new Promise(r => setTimeout(r, 120)); } scrollTo(0, 0); });
+      await page.waitForTimeout(1200);
       const check = await page.evaluate(() => ({ text: (document.getElementById('root')?.innerText ?? '').trim().length, overflow: document.documentElement.scrollWidth - window.innerWidth }));
       const file = `${OUT}/${name}-${w}.png`;
       await page.screenshot({ path: file, fullPage: !route.startsWith('/room') });

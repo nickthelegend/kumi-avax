@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { createPublicClient, http, parseAbiItem, type Address } from 'viem';
-import { crewAbi, perpsAbi, usdcAbi, factoryAbi, fuji, FUJI_RPC, DEPLOYMENT, MARKETS } from '@kumi-avax/sdk';
+import { createPublicClient, parseAbiItem, type Address } from 'viem';
+import { crewAbi, perpsAbi, usdcAbi, factoryAbi, fuji, fujiTransport, DEPLOYMENT, MARKETS } from '@kumi-avax/sdk';
 
 export const PERPS = DEPLOYMENT.perps as Address;
 export const USDC = DEPLOYMENT.usdc as Address;
@@ -8,7 +8,7 @@ export const FACTORY = DEPLOYMENT.factory as Address;
 
 export const pub = createPublicClient({
   chain: { ...fuji, contracts: { multicall3: { address: '0xcA11bde05977b3631167028862bE2a173976CA11' } } },
-  transport: http(FUJI_RPC, { retryCount: 3, retryDelay: 400, timeout: 15_000 }),
+  transport: fujiTransport(),
   batch: { multicall: { wait: 16 } },
 });
 
@@ -200,6 +200,13 @@ export function feedTx(crew: Address, index: number, block: bigint): Promise<str
 const FILLED = parseAbiItem('event Filled(uint8 indexed market, uint64 indexed makerOrderId, address indexed maker, address taker, bool takerBuy, uint64 price, uint128 size)');
 export async function recentFills(blocks = 2000n) {
   const head = await pub.getBlockNumber();
-  const logs = await pub.getLogs({ address: PERPS, event: FILLED, fromBlock: head > blocks ? head - blocks : 0n, toBlock: head });
-  return logs.map(l => ({ ...l.args, hash: l.transactionHash, block: l.blockNumber }));
+  const start = head > blocks ? head - blocks : 0n;
+  const out: { market?: number; makerOrderId?: bigint; maker?: Address; taker?: Address; takerBuy?: boolean; price?: bigint; size?: bigint; hash: string; block: bigint }[] = [];
+  // Public Fuji RPCs cap eth_getLogs at 2,048 blocks: walk the range in chunks, oldest first.
+  for (let from = start; from <= head; from += 2000n) {
+    const to = from + 1999n > head ? head : from + 1999n;
+    const logs = await pub.getLogs({ address: PERPS, event: FILLED, fromBlock: from, toBlock: to });
+    for (const l of logs) out.push({ ...l.args, hash: l.transactionHash, block: l.blockNumber });
+  }
+  return out;
 }
