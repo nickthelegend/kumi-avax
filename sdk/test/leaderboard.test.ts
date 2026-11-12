@@ -102,6 +102,8 @@ test('callers: counts, wins and copy PnL add up from the calls; ranks are 1..n',
   const b = await board;
   assert.ok(b.global.length >= 6);
   b.global.forEach((s, i) => assert.equal(s.rank, i + 1));
+  const firstUnscored = b.global.findIndex(s => s.scored === 0);
+  if (firstUnscored >= 0) assert.ok(b.global.slice(firstUnscored).every(s => s.scored === 0), 'unscored callers rank last');
   for (const s of b.global) {
     const mine = b.calls.filter(c => c.who.toLowerCase() === s.who.toLowerCase());
     assert.equal(s.calls, mine.length);

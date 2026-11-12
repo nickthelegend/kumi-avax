@@ -1,0 +1,23 @@
+{
+  "name": "@kumi-avax/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "build": "node build.mjs",
+    "typecheck": "tsc --noEmit -p .",
+    "test": "node --test test/*.test.ts",
+    "deploy": "node build.mjs && cd out && vercel deploy --prod --yes --name kumi-avax-api"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "1.8.0",
+    "@kumi-avax/sdk": "workspace:*",
+    "viem": "2.57.13"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "esbuild": "0.28.2",
+    "typescript": "~5.9.3"
+  }
+}

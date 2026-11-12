@@ -2,3 +2,4 @@ packages:
   - sdk
   - web
   - scripts
+  - api

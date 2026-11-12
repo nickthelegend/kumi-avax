@@ -150,7 +150,8 @@ function rankCallers(calls: CallStat[]): CallerStat[] {
   const list = [...by.values()].map(s => ({ ...s, winRate: s.scored ? s.wins / s.scored : null, avgReturnBps: s.avgReturnBps === null ? null : Math.round(s.avgReturnBps * 100) / 100 }));
   // Rank by win rate smoothed toward 50% (one lucky call does not top the board), then by average return.
   const score = (s: CallerStat) => (s.wins + 1) / (s.scored + 2);
-  list.sort((a, b) => score(b) - score(a) || (b.avgReturnBps ?? -1e9) - (a.avgReturnBps ?? -1e9) || b.copies - a.copies);
+  // Callers with no scored call yet go last.
+  list.sort((a, b) => (b.scored > 0 ? 1 : 0) - (a.scored > 0 ? 1 : 0) || score(b) - score(a) || (b.avgReturnBps ?? -1e9) - (a.avgReturnBps ?? -1e9) || b.copies - a.copies);
   list.forEach((s, i) => { s.rank = i + 1; });
   return list;
 }
