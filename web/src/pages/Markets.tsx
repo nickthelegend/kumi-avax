@@ -1,9 +1,10 @@
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 import { MARKETS, price as fmtPrice, size as fmtSize, usd, PX_SIZE, addressUrl } from '@kumi-avax/sdk';
 import { PERPS, readBook, readMarkets, recentFills, useLive, type MarketState } from '../lib/chain';
 import { nameOf } from '../lib/signer';
 import { Addr, Ic, Link, MiniEmpty, Notice, Tx, ago } from '../ui/bits';
 import { TokenLogo } from '../ui/logos';
+import { Candles } from '../ui/Candles';
 
 /** Hyperliquid-style market view: stats strip, depth and trades on the left, the order book on the right. */
 export function Markets({ sym }: { sym?: string }) {
@@ -30,8 +31,10 @@ export function Markets({ sym }: { sym?: string }) {
     </section>
 
     <div className="mk-grid">
-      <section className="card mk-depth" aria-label="Depth">
-        <div className="card-head"><h3>Depth</h3><span className="label">cumulative size around the Chainlink price</span></div>
+      <section className="card mk-depth" aria-label="Price and depth">
+        <div className="card-head"><h3>Price</h3><span className="label">real candles, Chainlink mark and Kumi's own fills</span></div>
+        {book.data ? <Candles symbol={m.symbol} dp={dp} trades={book.data.trades} oracle={s ? Number(s.oracle) / 1e8 : undefined} /> : <div className="skeleton" style={{ height: 300 }} />}
+        <div className="card-head" style={{ marginTop: 18 }}><h3>Depth</h3><span className="label">cumulative size around the Chainlink price</span></div>
         {book.data ? <DepthChart bids={book.data.bids} asks={book.data.asks} oracle={s?.oracle ?? 0n} /> : <div className="skeleton" style={{ height: 220 }} />}
         <div className="card-head" style={{ marginTop: 18 }}><h3>Recent fills</h3><span className="label">from the venue's on-chain ring buffer</span></div>
         {book.data && book.data.trades.length === 0 && <MiniEmpty obj="hourglass">No fills yet. A crew vote or a taker order will print here.</MiniEmpty>}
@@ -81,17 +84,28 @@ function Stat({ label, v, sub, bad }: { label: string; v: string; sub?: string; 
 
 type Lvl = { price: bigint; size: bigint; count: number };
 function Ladder({ bids, asks, dp, sdp, s }: { bids: Lvl[]; asks: Lvl[]; dp: number; sdp: number; s?: MarketState }) {
-  const max = [...bids, ...asks].reduce((a, l) => (l.size > a ? l.size : a), 1n);
-  const row = (l: Lvl, side: 'bid' | 'ask') => <div key={`${side}${l.price}`} className={`lvl ${side}`}>
-    <i style={{ width: `${Number(l.size * 1000n / max) / 10}%` }} />
-    <span className="mono p">{fmtPrice(l.price, dp)}</span><span className="mono">{fmtSize(l.size, sdp)}</span><span className="mono faint">{l.count}</span>
+  // Bars show cumulative depth from the touch outwards; a level whose size changed since the last read flashes once.
+  const seen = useRef(new Map<string, bigint>());
+  const cum = (ls: Lvl[]) => { let t = 0n; return ls.map(l => (t += l.size)); };
+  const bc = cum(bids), ac = cum(asks);
+  const max = [...bc, ...ac].reduce((a, v) => (v > a ? v : a), 1n);
+  const changed = new Set<string>();
+  for (const [side, ls] of [['bid', bids], ['ask', asks]] as const) for (const l of ls) {
+    const k = `${side}${l.price}`;
+    const prev = seen.current.get(k);
+    if (prev !== undefined && prev !== l.size) changed.add(k);
+    seen.current.set(k, l.size);
+  }
+  const row = (l: Lvl, side: 'bid' | 'ask', total: bigint) => <div key={`${side}${l.price}:${changed.has(`${side}${l.price}`) ? l.size : ''}`} className={`lvl ${side} ${changed.has(`${side}${l.price}`) ? 'flash' : ''}`} title={`${l.count} order${l.count === 1 ? '' : 's'}`}>
+    <i style={{ width: `${Number(total * 1000n / max) / 10}%` }} />
+    <span className="mono p">{fmtPrice(l.price, dp)}</span><span className="mono">{fmtSize(l.size, sdp)}</span><span className="mono faint">{fmtSize(total, Math.min(sdp, 2))}</span>
   </div>;
   if (!bids.length && !asks.length) return <MiniEmpty obj="empty">The book is empty. Start the maker bot: <span className="mono">pnpm --filter @kumi-avax/scripts maker</span>.</MiniEmpty>;
   return <div className="ladder">
-    <div className="lvl head"><span>Price</span><span>Size</span><span>Orders</span></div>
-    {[...asks].reverse().map(l => row(l, 'ask'))}
+    <div className="lvl head"><span>Price</span><span>Size</span><span>Total</span></div>
+    {asks.map((l, i) => ({ l, t: ac[i]! })).reverse().map(({ l, t }) => row(l, 'ask', t))}
     <div className="spread-row"><span className="mono">{s ? `$${fmtPrice(s.oracle, dp + 1)}` : ''}</span><span className="faint">Chainlink</span>{bids[0] && asks[0] && <span className="faint mono">spread {fmtPrice(asks[0].price - bids[0].price, dp + 1)}</span>}</div>
-    {bids.map(l => row(l, 'bid'))}
+    {bids.map((l, i) => row(l, 'bid', bc[i]!))}
   </div>;
 }
 

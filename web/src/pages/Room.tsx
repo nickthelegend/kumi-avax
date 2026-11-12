@@ -7,6 +7,7 @@ import { Avatar, CrewAvatar, EmptyArt, Ic, Link, Notice, Tx, crewTone, navigate 
 import { ChipInSheet, FundPane, QuitSheet, retPct } from '../ui/Fund';
 import { TradeCard } from '../ui/TradeCard';
 import { TokenLogo } from '../ui/logos';
+import { LobbyRoom, PublicChats } from './Lobby';
 
 const HINTS: [string, string][] = [['/long AVAX 3x 20%', 'coral'], ['/short BTC 2x 10%', 'pink'], ['/close AVAX', 'butter'], ['/captain long AVAX 2x 5%', 'mint']];
 type Tab = 'crews' | 'chat' | 'fund';
@@ -14,10 +15,37 @@ type Tab = 'crews' | 'chat' | 'fund';
 export function Room() {
   const wanted = new URLSearchParams(location.search).get('crew');
   const crews = useLive(() => readCrews(), [], 30_000);
+  const chat = new URLSearchParams(location.search).get('chat');
+  if (chat && /^l-\d+$/.test(chat)) {
+    const channel = Number(chat.slice(2));
+    return <LobbyRoom key={chat} channel={channel} list={<aside className="pane list" aria-label="Chats">
+      <div className="list-head"><div className="row-between"><h2>Crews</h2><Link to="/markets" className="chip chip-butter"><Ic name="book" size={13} />Markets</Link></div></div>
+      <CrewList crews={crews.data ?? []} />
+      <PublicChats current={channel} />
+    </aside>} />;
+  }
   const crew = (wanted ?? crews.data?.[0]?.address ?? DEPLOYMENT.crews[0]?.address) as Address | undefined;
   if (crews.error && !crews.data && !crew) return <div className="page"><Notice error>Could not read the Kumi crew factory on Fuji: {crews.error}</Notice></div>;
   if (!crew) return <div className="page"><div className="card"><EmptyArt art={['kumi3-empty', 'kumi-og']} title="No crews yet">Run <span className="mono">pnpm --filter @kumi-avax/scripts deploy</span> to create the first crew on Fuji.</EmptyArt></div></div>;
   return <CrewRoom key={crew} crew={crew} crews={crews.data ?? []} />;
+}
+
+/** The crews in the room's left list. */
+function CrewList({ crews, current }: { crews: Awaited<ReturnType<typeof readCrews>>; current?: Address }) {
+  return (
+    <ul className="crew-list">
+      {(crews.length ? crews : DEPLOYMENT.crews.map(c => ({ address: c.address as Address, name: c.name, nav: 0n, members: 0, totalShares: 0n }))).map(c => {
+        const r = c.totalShares > 0n ? Number(c.nav * 10n ** 18n / c.totalShares - 1_000_000n) / 10_000 : 0;
+        return <li key={c.address}>
+          <a href={`/room?crew=${c.address}`} className={`crew-item tone-${crewTone(c.address)}`} aria-current={!!current && c.address.toLowerCase() === current.toLowerCase() ? 'page' : undefined} onClick={e => { e.preventDefault(); navigate(`/room?crew=${c.address}`); }}>
+            <CrewAvatar address={c.address} name={c.name} />
+            <span style={{ minWidth: 0 }}><span className="n" style={{ display: 'block' }}>{c.name}</span><span className="p" style={{ display: 'block' }}>{c.members} members · ${usd(c.nav, 0)} NAV</span></span>
+            <span className="meta"><span className={`badge badge-ret ${r < 0 ? 'neg' : ''}`}>{r >= 0 ? '+' : ''}{r.toFixed(2)}%</span></span>
+          </a>
+        </li>;
+      })}
+    </ul>
+  );
 }
 
 function CrewRoom({ crew, crews }: { crew: Address; crews: Awaited<ReturnType<typeof readCrews>> }) {
@@ -70,18 +98,8 @@ function CrewRoom({ crew, crews }: { crew: Address; crews: Awaited<ReturnType<ty
 
   const list = <aside className="pane list" aria-label="Crews">
     <div className="list-head"><div className="row-between"><h2>Crews</h2><Link to="/markets" className="chip chip-butter"><Ic name="book" size={13} />Markets</Link></div></div>
-    <ul className="crew-list">
-      {(crews.length ? crews : DEPLOYMENT.crews.map(c => ({ address: c.address as Address, name: c.name, nav: 0n, members: 0, totalShares: 0n }))).map(c => {
-        const r = c.totalShares > 0n ? Number(c.nav * 10n ** 18n / c.totalShares - 1_000_000n) / 10_000 : 0;
-        return <li key={c.address}>
-          <a href={`/room?crew=${c.address}`} className={`crew-item tone-${crewTone(c.address)}`} aria-current={c.address.toLowerCase() === crew.toLowerCase() ? 'page' : undefined} onClick={e => { e.preventDefault(); navigate(`/room?crew=${c.address}`); }}>
-            <CrewAvatar address={c.address} name={c.name} />
-            <span style={{ minWidth: 0 }}><span className="n" style={{ display: 'block' }}>{c.name}</span><span className="p" style={{ display: 'block' }}>{c.members} members · ${usd(c.nav, 0)} NAV</span></span>
-            <span className="meta"><span className={`badge badge-ret ${r < 0 ? 'neg' : ''}`}>{r >= 0 ? '+' : ''}{r.toFixed(2)}%</span></span>
-          </a>
-        </li>;
-      })}
-    </ul>
+    <CrewList crews={crews} current={crew} />
+    <PublicChats />
     <div className="list-foot">
       {st.data && <FirstRun st={st.data} props={props.data ?? {}} onChip={() => setSheet('chip')} onPitch={() => pitch('/long AVAX 3x 20%')} />}
       <MarketsMini markets={mk.data} />

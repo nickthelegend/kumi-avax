@@ -102,7 +102,7 @@
 .trade-spark path { fill: none; stroke: var(--coral); stroke-width: 2.5; vector-effect: non-scaling-stroke; }
 .mk-trades td { padding: 8px 12px; font-size: 13.5px; }
 .ladder { display: grid; gap: 2px; font-size: 13px; }
-.lvl { position: relative; display: grid; grid-template-columns: 1fr 1fr 52px; gap: 8px; padding: 5px 10px; border-radius: 8px; overflow: hidden; }
+.lvl { position: relative; display: grid; grid-template-columns: 1fr 1fr 64px; gap: 8px; padding: 5px 10px; border-radius: 8px; overflow: hidden; }
 .lvl > i { position: absolute; top: 0; bottom: 0; right: 0; border-radius: 8px; }
 .lvl.bid > i { background: rgba(61, 220, 151, .18); }
 .lvl.ask > i { background: rgba(255, 143, 199, .2); }
@@ -159,3 +159,30 @@
 }
 @media (max-width: 1020px) { .thread-tabs { display: inline-flex; } }
 .txs .faint.mono { font-size: 11px; margin-left: auto; }
+
+/* v2: price candles (real exchange candles + Chainlink + Kumi fills), in the markets page's own palette */
+.cndl { display: grid; gap: 10px; }
+.cndl-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.cndl-iv { grid-template-columns: repeat(4, auto); }
+.cndl-iv button { min-height: 34px; padding: 0 14px; font-family: var(--display); }
+.cndl-ohlc { font-size: 12px; color: var(--ink-2); }
+.cndl-svg { width: 100%; height: auto; display: block; cursor: crosshair; }
+.c-grid { stroke: var(--line); stroke-width: 1; }
+.c-up .c-body { fill: var(--mint); stroke: var(--mint-ink); stroke-width: 1; } .c-up .c-wick { stroke: var(--mint-ink); stroke-width: 1.3; } .c-up .c-vol { fill: var(--mint-soft); }
+.c-down .c-body { fill: var(--pink); stroke: var(--pink-ink); stroke-width: 1; } .c-down .c-wick { stroke: var(--pink-ink); stroke-width: 1.3; } .c-down .c-vol { fill: var(--pink-soft); }
+.c-tag { fill: var(--plum); } .c-tag-t { font: 700 11px var(--mono); fill: #fff; }
+.c-mk-buy { fill: var(--mint); stroke: var(--plum); stroke-width: 1.5; } .c-mk-sell { fill: var(--pink); stroke: var(--plum); stroke-width: 1.5; }
+.c-cross { stroke: var(--ink-3); stroke-dasharray: 2 3; }
+.cndl-legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--ink-3); font-weight: 600; }
+.cndl-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.cndl-legend i { display: inline-block; }
+.lg-c { width: 10px; height: 10px; border-radius: 2px; background: var(--mint); box-shadow: inset 0 0 0 1px var(--mint-ink); }
+.lg-o { width: 16px; border-top: 2px dashed var(--plum); }
+.lg-m { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-bottom: 9px solid var(--mint); }
+/* v2: the book's bars show cumulative depth; a level that changes flashes once */
+.lvl.flash::after { content: ''; position: absolute; inset: 0; border-radius: inherit; animation: lvlflash .8s var(--ease); pointer-events: none; }
+.lvl.bid.flash::after { background: var(--mint-soft); } .lvl.ask.flash::after { background: var(--pink-soft); }
+@keyframes lvlflash { from { opacity: 1; } to { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .lvl.flash::after { animation: none; } }
+.last-row { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 2px 4px 6px; font-size: 12px; }
+.last-row b { font-family: var(--mono); font-size: 15px; }
