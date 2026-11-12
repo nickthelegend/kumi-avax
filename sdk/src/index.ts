@@ -5,3 +5,6 @@ export * from './parse.ts';
 export * from './format.ts';
 export * from './enums.ts';
 export * from './deployment.ts';
+export * from './orders.ts';
+export * from './candles.ts';
+export * from './chat.ts';

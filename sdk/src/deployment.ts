@@ -4,10 +4,38 @@ export const DEPLOYMENT = {
   "perps": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
   "factory": "0x7be7c269acf2e0d0b7074e9a0bdc7dfb730b778c",
   "crewImplementation": "0x39d12adf89cb16756a4d5e775efbc0e97f68a2ef",
+  "lobby": "0x86c916ab60f186a43ab6b31603d91641dc228e7a",
+  "lobbyChannels": {
+    "avaxpit": 0,
+    "btcdesk": 1,
+    "newbies": 2
+  },
+  "testAccounts": [
+    "0x856ca6cd84bde22b1e40e9ef5e704d37a029c380",
+    "0x857429f6d1304b8ef42de42a0696f52a5fbe3acf",
+    "0x4a4bb8edc2415841e67fc52bf00cf98267577125",
+    "0x9b1d8f9cb095a9dcb80adc394561609a819b4363",
+    "0x232a67f57752b06e1d847aa37d8abf10de3d70d8",
+    "0xcb1268aa3fe4fe543e234e53daa2c3e17de23c5d",
+    "0x477d91ac189080ec0b40af4f9ae4246d331ebf5b",
+    "0xfa64a68213d008d36e63d284d0f560beb3f9d2a5"
+  ],
   "crews": [
     {
       "name": "Night Owls",
       "address": "0x1c11A95bfBfaA989afC1222d614A8FbD24f75677"
+    },
+    {
+      "name": "Sunrise Scalpers",
+      "address": "0x16E639793291E35dB63fC411fFe97dA76F35eb2b"
+    },
+    {
+      "name": "Slow BTC Club",
+      "address": "0x4d598Fe9Dfb41Aa95F2F320f11A95d93ACb26c22"
+    },
+    {
+      "name": "Frog Pond",
+      "address": "0x84949AEab9a9BfC2e05d5bB43583d00805598Bb7"
     }
   ],
   "names": {
@@ -16,15 +44,14 @@ export const DEPLOYMENT = {
     "0x857429f6d1304b8ef42de42a0696f52a5fbe3acf": "mika",
     "0x4a4bb8edc2415841e67fc52bf00cf98267577125": "bo",
     "0x9b1d8f9cb095a9dcb80adc394561609a819b4363": "ren",
-    "0x1c11a95bfbfaa989afc1222d614a8fbd24f75677": "Night Owls vault"
+    "0x232a67f57752b06e1d847aa37d8abf10de3d70d8": "jun",
+    "0xcb1268aa3fe4fe543e234e53daa2c3e17de23c5d": "sora",
+    "0x477d91ac189080ec0b40af4f9ae4246d331ebf5b": "tae",
+    "0xfa64a68213d008d36e63d284d0f560beb3f9d2a5": "lia",
+    "0x1c11a95bfbfaa989afc1222d614a8fbd24f75677": "Night Owls vault",
+    "0x16e639793291e35db63fc411ffe97da76f35eb2b": "Sunrise Scalpers vault",
+    "0x4d598fe9dfb41aa95f2f320f11a95d93acb26c22": "Slow BTC Club vault",
+    "0x84949aeab9a9bfc2e05d5bb43583d00805598bb7": "Frog Pond vault"
   },
-  "deployTxs": {
-    "deploy_TestUSDC": "0x2c641336d5e16c0a44bbbc2b532c62d8a6599f043cf14835e3a09718a14a54bc",
-    "deploy_KumiPerps": "0x69140d86347ea5e44e9916a1ffbef9b87b3013e9f62a46c043ebe9c44fae0c17",
-    "list_AVAX-USD": "0xd6be4f137a7d0252127fb440e1ba6a6ac9c35a1d94ab7775da93d008e96bafd5",
-    "list_BTC-USD": "0x8c87a9dc0180642bb7074804697e14ed9f740376883ae5430ec2f830611223ca",
-    "deploy_KumiCrew_implementation": "0xaf19b7602ffae6db231e84bce357048f05c2deab346f3864f441190486ed3b74",
-    "deploy_KumiCrewFactory": "0x5177a48405f2a8519d505a2cb632fb779b80d7ae7cd1d27e6a31ce23c6f11a13",
-    "create_crew_night_owls": "0x82cf5d3c08bf69f366c89d7c0ff14510364c9f7de70760de6a78871f18f628f1"
-  }
+  "deployTxs": {}
 } as const;
