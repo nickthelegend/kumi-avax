@@ -228,7 +228,7 @@ function FirstRun({ st, props, onChip, onPitch }: { st: CrewState; props: Record
   const step = steps[now]!;
   return <section className="steps" aria-label="Getting started">
     <h3>Get into the crew</h3>
-    <p>{done} of {steps.length} done · each step is a Fuji transaction</p>
+    <p>{done} of {steps.length} done</p>
     <div className="bar"><i style={{ width: `${(done / steps.length) * 100}%` }} /></div>
     <ol>{steps.map((s, i) => <li key={s.label} className={s.done ? 'done' : i === now ? 'now' : ''}><span className="n">{s.done ? '✓' : i + 1}</span>{s.label}</li>)}</ol>
     {step.act && <button className="btn btn-butter btn-block" onClick={step.act}>{step.cta} <Ic name="arrow" size={16} /></button>}

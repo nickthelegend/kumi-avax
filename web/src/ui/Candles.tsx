@@ -38,7 +38,7 @@ export function Candles({ symbol, dp, trades, oracle }: { symbol: string; dp: nu
     {!live.data && !live.error && <div className="skeleton" style={{ height: 300 }} />}
     {candles.length > 0 && <svg className="cndl-svg" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`${symbol} ${iv} candles from ${live.data!.source.name}`}
       onMouseMove={e => { const r = e.currentTarget.getBoundingClientRect(); const x = ((e.clientX - r.left) / r.width) * W; setHover(x < plotW ? Math.min(candles.length - 1, Math.max(0, Math.floor(x / step))) : null); }} onMouseLeave={() => setHover(null)}>
-      {priceTicks(min, max, 5).map(t => <g key={t}><line x1={0} x2={plotW} y1={y(t)} y2={y(t)} className="c-grid" /><text x={plotW + 8} y={y(t) + 4} className="d-axis">{fmt(t, dp)}</text></g>)}
+      {priceTicks(min, max, 5).map(t => <g key={t}><line x1={0} x2={plotW} y1={y(t)} y2={y(t)} className="c-grid" />{(oracle === undefined || Math.abs(y(t) - y(oracle)) > 18) && <text x={plotW + 8} y={y(t) + 4} className="d-axis">{fmt(t, dp)}</text>}</g>)}
       {candles.map((c, i) => {
         const x = i * step + step / 2, up = c.c >= c.o, vh = (c.v / vmax) * (volH - 6);
         return <g key={c.t} className={up ? 'c-up' : 'c-down'} opacity={hover !== null && hover !== i ? 0.55 : 1}>
@@ -48,7 +48,7 @@ export function Candles({ symbol, dp, trades, oracle }: { symbol: string; dp: nu
         </g>;
       })}
       {oracle !== undefined && oracle >= min && oracle <= max && <g><line x1={0} x2={plotW} y1={y(oracle)} y2={y(oracle)} className="d-oracle" /><rect x={plotW + 2} y={y(oracle) - 10} width={axis - 4} height={20} rx={7} className="c-tag" /><text x={plotW + 8} y={y(oracle) + 4} className="c-tag-t">{fmt(oracle, dp)}</text></g>}
-      {marks.map((m, i) => { const x = xOf(m.t); if (x < 0) return null; const yy = y(m.price); return <path key={i} d={m.takerBuy ? `M${x} ${yy - 8} l7 11 h-14z` : `M${x} ${yy + 8} l7 -11 h-14z`} className={m.takerBuy ? 'c-mk-buy' : 'c-mk-sell'}><title>{`Kumi fill: ${m.takerBuy ? 'buy' : 'sell'} ${m.size} ${symbol} at ${m.price}`}</title></path>; })}
+      {marks.map((m, i) => { const x0 = xOf(m.t); if (x0 < 0) return null; const x = Math.min(plotW - 8, Math.max(8, x0)); const yy = y(m.price); return <path key={i} d={m.takerBuy ? `M${x} ${yy - 8} l7 11 h-14z` : `M${x} ${yy + 8} l7 -11 h-14z`} className={m.takerBuy ? 'c-mk-buy' : 'c-mk-sell'}><title>{`Kumi fill: ${m.takerBuy ? 'buy' : 'sell'} ${m.size} ${symbol} at ${m.price}`}</title></path>; })}
       {hover !== null && <line x1={hover * step + step / 2} x2={hover * step + step / 2} y1={top} y2={H - bottom} className="c-cross" />}
       <text x={2} y={H - 5} className="d-axis">{new Date(candles[0]!.t * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</text>
       <text x={plotW - 2} y={H - 5} className="d-axis" textAnchor="end">{new Date(candles[candles.length - 1]!.t * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</text>
@@ -56,7 +56,7 @@ export function Candles({ symbol, dp, trades, oracle }: { symbol: string; dp: nu
     <div className="cndl-legend">
       <span><i className="lg-c" />{live.data ? <a className="hash" href={live.data.source.url} target="_blank" rel="noreferrer">{live.data.source.name} {live.data.source.pair}</a> : 'Exchange'} candles</span>
       <span><i className="lg-o" />Chainlink on Fuji</span>
-      <span><i className="lg-m" />{marks.length} Kumi fills on KumiPerps</span>
+      <span><i className="lg-m" />{live.data ? `${marks.length} ` : ''}Kumi fills on KumiPerps</span>
     </div>
   </div>;
 }

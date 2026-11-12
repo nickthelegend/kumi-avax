@@ -38,7 +38,7 @@ export function PrivateCard({ hash, author }: { hash: Hex; author: Address }) {
       <div className="pcard-amt">
         {!c.data ? <span className="skeleton" style={{ height: 34, flex: 1, opacity: .25 }} />
           : c.data.amount !== null ? <><b className="mono">{toMe ? '+' : ''}{fmt(c.data.amount)}</b><span>tUSDC. Only you, {toMe ? nameOf(author) : nameOf(s!.to)} and Kumi's auditor can read this.</span></>
-          : <><span className="pcard-lock"><Ic name="lock" size={16} /></span><span><b>Amount hidden.</b> Snowtrace shows a zk proof and ciphertexts, not a number.</span>
+          : <><span className="pcard-lock"><Ic name="lock" size={16} /></span><span><b>Amount hidden</b> on-chain.</span>
             {party && who && <button className="btn btn-sm pcard-reveal" onClick={() => { setErr(null); privateKey(who.address).catch(e => setErr((e as Error).message)); }}>Show amount</button>}</>}
       </div>
       {err && <Notice error>{err}</Notice>}

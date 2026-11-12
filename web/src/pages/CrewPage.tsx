@@ -46,10 +46,10 @@ export function CrewPage({ address }: { address?: string }) {
         </section>
 
         <section className="card" aria-label="Trade history">
-          <div className="card-head"><h3>Every pitch</h3><span className="label">{trades.length} trades voted on-chain</span></div>
+          <div className="card-head"><h3>Every pitch</h3><span className="label">{trades.length} {trades.length === 1 ? 'trade' : 'trades'} voted on-chain</span></div>
           {props.data && trades.length === 0 && <MiniEmpty obj="vote">No trades pitched yet.</MiniEmpty>}
           {!props.data && n > 0 && <div className="skeleton" style={{ height: 160 }} />}
-          {trades.length > 0 && <div className="table-wrap"><table className="table">
+          {trades.length > 0 && <div className="table-wrap"><table className="table pitch-table">
             <thead><tr><th>#</th><th>Trade</th><th>By</th><th className="num">Yes</th><th className="num">Fill</th><th className="num">Result</th></tr></thead>
             <tbody>{trades.map(p => {
               const m = MARKETS[p.market]!;
