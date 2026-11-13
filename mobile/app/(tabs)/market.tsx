@@ -4,6 +4,7 @@ import { MARKETS, initialMargin, parseDecimal, sizeFor, notionalOf, price as fmt
 import { Text, TextInput } from '../../components/T';
 import { Screen } from '../../components/Screen';
 import { Candles } from '../../components/Candles';
+import { CountUp, LiveDot } from '../../components/Live';
 import { OrderBook, Tape } from '../../components/OrderBook';
 import { Btn, Card, Chip, Notice, Skeleton, TokenLogo, TxLink, st, tap, useBusy } from '../../components/ui';
 import { readAccount, readBook, useLive } from '../../lib/chain';
@@ -60,11 +61,16 @@ export default function Market() {
       {b && (
         <>
           {b.stale && <Notice error>Chainlink's {m.pair} price is older than the venue accepts, so new orders revert until it updates. Cancels still work.</Notice>}
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
-            <Stat k="Chainlink" v={`$${fmtPrice(b.oracle, m.priceDp + 1)}`} sub={`updated ${Math.max(0, Math.round((Date.now() / 1000 - b.oracleAt) / 60))} min ago`} />
-            <Stat k="Bid / ask" v={`${fmtPrice(b.bestBid, m.priceDp)} / ${fmtPrice(b.bestAsk, m.priceDp)}`} sub="on-chain book" />
-            <Stat k="Last fill" v={b.lastPrice ? `$${fmtPrice(b.lastPrice, m.priceDp)}` : '–'} sub={`${b.tradeCount.toString()} fills on Fuji`} />
-            <Stat k="Open interest" v={`${fmtSize(b.openInterest, m.sizeDp)}`} sub={m.symbol} />
+          <View style={{ borderRadius: 28, backgroundColor: C.plumEdge, paddingBottom: 6 }}>
+            <View style={{ borderRadius: 28, backgroundColor: C.plum, padding: 16, gap: 4 }}>
+              <View style={st.between}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}><LiveDot size={7} /><Text style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.75)', fontWeight: '700' }}>{m.pair} · Chainlink on Fuji</Text></View>
+                <Chip text={`${b.tradeCount.toString()} fills on Kumi`} tone="mint" />
+              </View>
+              <CountUp value={Number(b.oracle) / 1e8} format={n => `$${n.toLocaleString('en-US', { minimumFractionDigits: m.priceDp + 1, maximumFractionDigits: m.priceDp + 1 })}`} style={{ fontFamily: F.display, fontSize: 42, lineHeight: 48, color: '#fff' }} />
+              <Text style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)' }}>Book {fmtPrice(b.bestBid, m.priceDp)} / {fmtPrice(b.bestAsk, m.priceDp)} · last fill {b.lastPrice ? `$${fmtPrice(b.lastPrice, m.priceDp)}` : '–'}</Text>
+              <Text style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)' }}>Chainlink updated {Math.max(0, Math.round((Date.now() / 1000 - b.oracleAt) / 60))} min ago · open interest {fmtSize(b.openInterest, m.sizeDp)} {m.symbol}</Text>
+            </View>
           </View>
 
           <Card pad={14}>

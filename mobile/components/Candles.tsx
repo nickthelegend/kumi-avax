@@ -21,7 +21,16 @@ export function Candles({ symbol, priceDp, trades, oracle, height = 230 }: { sym
   const [hover, setHover] = useState<number | null>(null);
   const live = useLive(() => fetchCandles(symbol, iv, 72), [symbol, iv], 20_000);
   const sec = INTERVALS[iv];
-  const candles = live.data?.candles ?? [];
+  // The exchange's newest candle can trail the chain by a few minutes. Empty slots up to now keep the x axis at the
+  // present, so a fill that just landed on KumiPerps still gets its marker (in an empty slot, never on a made-up candle).
+  const candles = useMemo(() => {
+    const cs: (Candle & { empty?: boolean })[] = [...(live.data?.candles ?? [])];
+    const last = cs[cs.length - 1];
+    if (!last) return cs;
+    const now = Math.floor(Date.now() / 1000 / sec) * sec;
+    for (let t = last.t + sec, k = 0; t <= now && k < 8; t += sec, k++) cs.push({ t, o: last.c, h: last.c, l: last.c, c: last.c, v: 0, empty: true });
+    return cs;
+  }, [live.data, sec]);
   const fills = useMemo(() => trades.map(t => ({ ts: t.ts, price: Number(t.price) / 1e8, size: Number(t.size) / 1e18, takerBuy: t.takerBuy })), [trades]);
   const marks = useMemo(() => markersFor(candles, fills, sec), [candles, fills, sec]);
   const axisW = 54, volH = 30, top = 10, bottom = 20;
@@ -33,8 +42,9 @@ export function Candles({ symbol, priceDp, trades, oracle, height = 230 }: { sym
   const body = Math.max(2, step * 0.62);
   const vmax = Math.max(1, ...candles.map(c => c.v));
   const ticks = priceTicks(min, max, 4);
-  const last = candles[candles.length - 1];
-  const sel: Candle | undefined = hover !== null ? candles[hover] : last;
+  const lastIdx = candles.map(c => !c.empty).lastIndexOf(true);
+  const last = lastIdx >= 0 ? candles[lastIdx] : undefined;
+  const sel: Candle | undefined = hover !== null ? candles[hover] : [...candles].reverse().find(c => !c.empty);
   const xOf = (t: number) => { const i = candles.findIndex(c => c.t === t); return i < 0 ? -1 : i * step + step / 2; };
   const onTouch = (e: GestureResponderEvent) => { if (!step) return; const i = Math.min(candles.length - 1, Math.max(0, Math.floor(e.nativeEvent.locationX / step))); setHover(i); };
 
@@ -68,6 +78,7 @@ export function Candles({ symbol, priceDp, trades, oracle, height = 230 }: { sym
               </G>
             ))}
             {candles.map((c, i) => {
+              if (c.empty) return null;
               const x = i * step + step / 2;
               const up = c.c >= c.o;
               const col = up ? C.mintInk : C.pinkInk;
@@ -98,9 +109,9 @@ export function Candles({ symbol, priceDp, trades, oracle, height = 230 }: { sym
               return <Path key={i} d={d} fill={m.takerBuy ? C.mint : C.pink} stroke={C.plum} strokeWidth={1.4} />;
             })}
             {hover !== null && <Line x1={hover * step + step / 2} x2={hover * step + step / 2} y1={top} y2={height - bottom} stroke={C.ink3} strokeDasharray="2 3" />}
-            {last && <Circle cx={(candles.length - 1) * step + step / 2} cy={y(last.c)} r={3} fill={C.coral} />}
+            {last && <Circle cx={lastIdx * step + step / 2} cy={y(last.c)} r={3} fill={C.coral} />}
             <SvgText x={2} y={height - 4} fontSize={9.5} fill={C.ink3} fontFamily={F.mono}>{new Date(candles[0]!.t * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</SvgText>
-            <SvgText x={plotW - 2} y={height - 4} fontSize={9.5} fill={C.ink3} textAnchor="end" fontFamily={F.mono}>{new Date(last!.t * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</SvgText>
+            <SvgText x={plotW - 2} y={height - 4} fontSize={9.5} fill={C.ink3} textAnchor="end" fontFamily={F.mono}>{new Date(candles[candles.length - 1]!.t * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</SvgText>
           </Svg>
         )}
       </View>
