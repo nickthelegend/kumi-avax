@@ -118,19 +118,20 @@ export function CopyPill({ m, me }: { m: ChatItem; me?: string | null }) {
 /** A crew pitch: the trade card with the share-weighted vote bar, read live from the crew vault. */
 export function PitchCard({ crew, m, me, isMember, onVote, busy }: { crew: Address; m: ChatItem; me?: string | null; isMember: boolean; onVote: (id: number, yes: boolean) => void; busy?: boolean }) {
   const p = useLive(async () => {
-    const [prop, tally] = await Promise.all([
+    const [prop, tally, totalShares] = await Promise.all([
       pub.readContract({ address: crew, abi: crewAbi, functionName: 'getProposal', args: [BigInt(m.ref)] }),
       pub.readContract({ address: crew, abi: crewAbi, functionName: 'tally', args: [BigInt(m.ref)] }),
+      pub.readContract({ address: crew, abi: crewAbi, functionName: 'totalShares' }),
     ]);
     const mine = me ? await pub.readContract({ address: crew, abi: crewAbi, functionName: 'voteOf', args: [BigInt(m.ref), me as Address] }) : 0;
-    return { prop, yes: tally[0], no: tally[1], needed: tally[2], mine: Number(mine) };
+    return { prop, yes: tally[0], no: tally[1], needed: tally[2], totalShares, mine: Number(mine) };
   }, [crew, m.ref, me], 8000);
   const d = p.data;
   const pr = d?.prop;
   const kind = pr ? Number(pr.kind) : 0;
   const mk = MARKETS[pr?.market ?? 0]!;
-  const total = d ? d.yes + d.no + 1n : 1n;
-  const yesPct = d && d.needed ? Math.min(100, Number((d.yes * 10000n) / ((d.needed * 10000n) / 5001n || 1n)) / 100) : 0;
+  // Yes and no are shares of the whole crew (not of the votes cast): a pitch passes when yes passes the threshold of all shares.
+  const total = d && d.totalShares > 0n ? d.totalShares : 1n;
   const status = !pr ? null : pr.executed ? (pr.filled > 0n || kind > 1 ? ['Opened', 'mint'] : ['Not filled', 'pink']) : Date.now() / 1000 > Number(pr.deadline) ? ['Expired', 'grey'] : ['Voting', 'butter'];
   const title = !pr ? m.text : kind === 0 ? `${pr.isLong ? 'LONG' : 'SHORT'} ${mk.symbol} ${pr.leverage}X` : kind === 1 ? `CLOSE ${mk.symbol}` : kind === 3 ? 'ADD A MEMBER' : 'NEW CAPTAIN';
   return (
@@ -150,8 +151,8 @@ export function PitchCard({ crew, m, me, isMember, onVote, busy }: { crew: Addre
           {!d ? <View style={{ height: 54, borderRadius: 16, backgroundColor: C.panel3 }} /> : (
             <View style={{ padding: 12, borderRadius: 18, backgroundColor: C.butterSoft, gap: 8 }}>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={{ fontSize: 13, color: C.ink }}><Text style={{ fontFamily: F.monoBold }}>{(Number((d.yes * 10000n) / total) / 100).toFixed(1)}%</Text> yes</Text>
-                <Text style={{ fontSize: 12.5, color: C.ink2 }}>needs 50.01% of shares</Text>
+                <Text style={{ fontSize: 13, color: C.ink }}><Text style={{ fontFamily: F.monoBold }}>{(Number((d.yes * 10000n) / total) / 100).toFixed(1)}%</Text> of shares yes</Text>
+                <Text style={{ fontSize: 12.5, color: C.ink2 }}>needs {(Number((d.needed * 10000n) / total) / 100).toFixed(2)}%</Text>
               </View>
               <View style={{ height: 12, borderRadius: 6, backgroundColor: '#e8dcc6', overflow: 'hidden' }}>
                 <View style={{ width: `${Math.min(100, Number((d.yes * 10000n) / total) / 100)}%`, height: '100%', backgroundColor: C.coral, borderRadius: 6 }} />

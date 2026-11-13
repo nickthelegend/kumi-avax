@@ -49,12 +49,13 @@ export default function ChatRoom() {
         pub.readContract({ address: crew, abi: crewAbi, functionName: 'policy' }),
         pub.readContract({ address: crew, abi: crewAbi, functionName: 'nav' }).catch(() => 0n),
       ]);
-      return { items, name, members: members.length, memberList: [...members] as Address[], joined: isMember, topic: `Crew vault · NAV $${fmtUsd(nav, 2)}`, maxLev: Number(policy[2]), market: undefined as number | undefined };
+      const totalShares = await pub.readContract({ address: crew, abi: crewAbi, functionName: 'totalShares' }).catch(() => 0n);
+      return { items, name, totalShares, members: members.length, memberList: [...members] as Address[], joined: isMember, topic: `Crew vault · NAV $${fmtUsd(nav, 2)}`, maxLev: Number(policy[2]), market: undefined as number | undefined };
     }
     const [items, chans] = await Promise.all([readChannelMessages(pub as any, LOBBY, channel, 120), readChannels(pub as any, LOBBY, address ?? undefined)]);
     const c = chans[channel];
     if (!c) throw Error(`No channel #${channel} in the Kumi lobby`);
-    return { items, name: c.name, members: c.memberCount, memberList: [] as Address[], joined: c.joined, topic: c.topic, maxLev: 10, market: c.market };
+    return { items, name: c.name, totalShares: 0n, members: c.memberCount, memberList: [] as Address[], joined: c.joined, topic: c.topic, maxLev: 10, market: c.market };
   }, [chat, address], 4000);
 
   const d = live.data;
@@ -65,6 +66,16 @@ export default function ChatRoom() {
     for (const it of items) if (it.kind === 'copy') m.set(it.ref, [...(m.get(it.ref) ?? []), it]);
     return m;
   }, [items]);
+  // A yes vote that landed in the same block as its pitch's trade is the one that carried it over the threshold.
+  const decidedBy = useMemo(() => {
+    const out = new Set<string>();
+    for (const it of items) if (it.kind === 'executed') {
+      const v = [...items].reverse().find(x => x.kind === 'vote-yes' && x.ref === it.ref && x.block === it.block && x.index < it.index);
+      if (v) out.add(v.key);
+    }
+    return out;
+  }, [items]);
+  const sharePct = (shares: bigint) => (d && d.totalShares > 0n && shares > 0n ? ` · ${(Number((shares * 1000n) / d.totalShares) / 10).toFixed(0)}% of shares` : '');
   const asked = askOf(text);
   const parsed = isCrew && asked === null ? parseCommand(text, d?.maxLev ?? 5) : null;
   const statOf = (who: string) => (board.data ? callerOf(board.data, who, isCrew ? undefined : channel) ?? callerOf(board.data, who) : null);
@@ -123,9 +134,10 @@ export default function ChatRoom() {
       case 'pitch': return <PitchCard crew={crew} m={m} me={address} isMember={!!d?.joined} busy={act.busy !== null} onVote={(pid, yes) => act.run('Voting', async () => { const tx = await voteInCrew(crew, pid, yes); record([tx]); setLastTxs([tx]); live.reload(); })} />;
       case 'join': return <EventPill m={m} me={address} tone="mint" icon="plus" text="joined the chat" />;
       case 'leave': return <EventPill m={m} me={address} tone="pink" icon="exit" text="left the chat" />;
-      case 'vote-yes': return <EventPill m={m} me={address} tone="butter" icon="thumb" text={`voted yes on #${m.ref}`} />;
-      case 'vote-no': return <EventPill m={m} me={address} tone="pink" icon="thumbDown" text={`voted no on #${m.ref}`} />;
-      case 'executed': return <EventPill m={m} me={address} tone="coral" icon="bolt" text={m.text || `cast the deciding vote: #${m.ref} traded on the book`} />;
+      case 'vote-yes': return <EventPill m={m} me={address} tone="butter" icon="thumb" text={`${decidedBy.has(m.key) ? 'cast the deciding vote' : 'voted yes'} on #${m.ref}${sharePct(m.amount)}`} />;
+      case 'vote-no': return <EventPill m={m} me={address} tone="pink" icon="thumbDown" text={`voted no on #${m.ref}${sharePct(m.amount)}`} />;
+      // The feed credits a trade to the pitch's author; the vote that triggered it is marked on that vote's own line.
+      case 'executed': return <EventPill m={m} me={address} tone="coral" icon="bolt" text={m.text || `· pitch #${m.ref} traded on the book`} />;
       case 'failed': return <EventPill m={m} me={address} tone="pink" icon="x" text={`#${m.ref} passed but did not fill`} />;
       case 'deposit': return <EventPill m={m} me={address} tone="butter" icon="coin" text={<>chipped in <Text style={{ fontFamily: F.monoBold }}>{fmtUsd(m.amount)}</Text> tUSDC</>} />;
       case 'ragequit': return <EventPill m={m} me={address} tone="pink" icon="exit" text={<>ragequit with <Text style={{ fontFamily: F.monoBold }}>{fmtUsd(m.amount)}</Text> tUSDC</>} />;
