@@ -13,7 +13,7 @@ export default function Backup() {
   const [err, setErr] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   return (
-    <Screen>
+    <Screen modal>
       <SheetHeader title="Back up your wallet" sub="Anyone with this key controls the wallet." />
       <Card pad={16}>
         <View style={{ gap: 12 }}>
