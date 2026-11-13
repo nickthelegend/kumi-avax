@@ -4,10 +4,14 @@
  *   node fuji/crew-act.ts <member> pitch <crew> "/long AVAX 2x 10%"
  *   node fuji/crew-act.ts <member> vote <crew> <id> yes|no
  *   node fuji/crew-act.ts - state <crew>           shares, NAV and the last pitch with its tally
+ *   node fuji/crew-act.ts <member> joincode <crew>   prints the member's join code (kumi://invite/<crew>/<address>, public)
+ *   node fuji/crew-act.ts <member> chipin <crew> <tUSDC>        approve once + deposit into the crew vault
+ *   node fuji/crew-act.ts <member> copy <channel> <call index> <margin tUSDC>   copy a lobby call: margin into
+ *        KumiPerps, an IOC order on the live book, then KumiLobby.copy (the lobby checks the position)
  * <member> is a test account name (lia, sora, …); <crew> is a crew address or a slug from deployments/fuji.json.
  */
-import { formatUnits, type Address } from 'viem';
-import { crewAbi, parseCommand, describe } from '@kumi-avax/sdk';
+import { formatUnits, parseUnits, type Address } from 'viem';
+import { MARKETS, crewAbi, encodeOrder, initialMargin, lobbyAbi, parseCommand, perpsAbi, describe, sizeFor, usdcAbi } from '@kumi-avax/sdk';
 import { account, type Role } from './env.ts';
 import { load, pub, send } from './tx.ts';
 
@@ -15,7 +19,7 @@ const [who, verb, crewArg, ...rest] = process.argv.slice(2);
 if (!who || !verb || !crewArg) throw Error('usage: crew-act.ts <member|-> pitch|vote|state <crew> …');
 const d = load();
 const crews: any[] = d.contracts.crews;
-const crew = (crewArg.startsWith('0x') ? crewArg : crews.find(c => c.slug === crewArg || c.name.toLowerCase().replace(/\s+/g, '') === crewArg)?.address) as Address;
+const crew = (verb === 'copy' ? '0x0000000000000000000000000000000000000000' : crewArg.startsWith('0x') ? crewArg : crews.find(c => c.slug === crewArg || c.name.toLowerCase().replace(/\s+/g, '') === crewArg)?.address) as Address;
 if (!crew) throw Error(`No crew ${crewArg} in deployments/fuji.json`);
 const names: Record<string, string> = Object.fromEntries(Object.entries(d.accounts).map(([k, v]) => [(v as string).toLowerCase(), k]));
 
@@ -35,8 +39,48 @@ async function state() {
   }
 }
 
+const MAX = 2n ** 256n - 1n;
 if (verb === 'state') await state();
-else {
+else if (verb === 'joincode') {
+  const acct = account(`KUMI_${who.toUpperCase()}_KEY` as Role);
+  console.log(`kumi://invite/${crew}/${acct.address}`);
+} else if (verb === 'chipin') {
+  const acct = account(`KUMI_${who.toUpperCase()}_KEY` as Role);
+  const amount = parseUnits(rest[0] ?? '0', 6);
+  if (amount <= 0n) throw Error('chipin needs an amount in tUSDC');
+  const usdc = d.contracts.usdc as Address;
+  const allowance = await pub.readContract({ address: usdc, abi: usdcAbi, functionName: 'allowance', args: [acct.address, crew] }) as bigint;
+  if (allowance < amount) await send(acct, `${who} approve tUSDC for ${crew}`, usdc, usdcAbi as any, 'approve', [crew, MAX], 'crewActs');
+  await send(acct, `${who} chip in ${rest[0]} tUSDC`, crew, crewAbi as any, 'deposit', [amount], 'crewActs');
+  await state();
+} else if (verb === 'copy') {
+  const acct = account(`KUMI_${who.toUpperCase()}_KEY` as Role);
+  const channel = BigInt(crewArg);
+  const index = BigInt(rest[0] ?? '-1');
+  const margin = parseUnits(rest[1] ?? '25', 6);
+  const lobby = d.contracts.lobby as Address, perps = d.contracts.perps as Address, usdc = d.contracts.usdc as Address;
+  const msg = await pub.readContract({ address: lobby, abi: lobbyAbi, functionName: 'getMessage', args: [channel, index] }) as any;
+  const m = MARKETS[Number(msg.market)]!;
+  const [info, oracle] = await Promise.all([
+    pub.readContract({ address: perps, abi: perpsAbi, functionName: 'getMarket', args: [m.id] }) as Promise<any>,
+    pub.readContract({ address: perps, abi: perpsAbi, functionName: 'oraclePrice', args: [m.id] }) as Promise<readonly [bigint, bigint]>,
+  ]);
+  const touch = msg.isLong ? info.bestAsk : info.bestBid;
+  const size = sizeFor(m, margin, Number(msg.leverage), touch || oracle[0]);
+  const im = initialMargin(size, touch || oracle[0]);
+  const need = margin > im + im / 5n ? margin : im + im / 5n;
+  const [eq, req] = await pub.readContract({ address: perps, abi: perpsAbi, functionName: 'health', args: [acct.address] }).catch(() => [0n, 0n, 0n]) as readonly [bigint, bigint, bigint];
+  const free = eq - BigInt(req);
+  if (free < need) {
+    const gap = need - (free > 0n ? free : 0n);
+    const allowance = await pub.readContract({ address: usdc, abi: usdcAbi, functionName: 'allowance', args: [acct.address, perps] }) as bigint;
+    if (allowance < gap) await send(acct, `${who} approve tUSDC for KumiPerps`, usdc, usdcAbi as any, 'approve', [perps, MAX], 'crewActs');
+    await send(acct, `${who} margin ${formatUnits(gap, 6)} tUSDC`, perps, perpsAbi as any, 'deposit', [gap], 'crewActs');
+  }
+  const args = encodeOrder({ market: m.id, isBuy: !!msg.isLong, kind: 'market', size }, { touch, oracle: oracle[0] });
+  const r = await send(acct, `${who} copy order ${msg.isLong ? 'long' : 'short'} ${formatUnits(size, 18)} ${m.symbol}`, perps, perpsAbi as any, 'placeOrder', [...args], 'crewActs');
+  await send(acct, `${who} copy #${index} in channel ${channel}`, lobby, lobbyAbi as any, 'copy', [channel, index, r.transactionHash], 'crewActs');
+} else {
   const acct = account(`KUMI_${who.toUpperCase()}_KEY` as Role);
   const section = 'crewActs';
   if (verb === 'pitch') {
