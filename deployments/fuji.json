@@ -2446,6 +2446,149 @@
       "gasUsed": 263877,
       "confirmMs": 3696,
       "at": "2026-11-12T23:49:26.723Z"
+    },
+    {
+      "label": "maker_cancel_AVAX_12",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x8ba56c75163b97cb147b1bddb10021d1beabd505cd54067056e95279e3485e51",
+      "status": "success",
+      "block": 60983175,
+      "gasUsed": 416846,
+      "confirmMs": 2756,
+      "at": "2026-11-13T04:07:58.943Z"
+    },
+    {
+      "label": "maker_AVAX_bid_1",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xdd099163f1e30e42d61a05581cd080a2d0a63e792ff5f6b1b77d8860c9218319",
+      "status": "success",
+      "block": 60983176,
+      "gasUsed": 241728,
+      "confirmMs": 3477,
+      "at": "2026-11-13T04:08:02.720Z"
+    },
+    {
+      "label": "maker_AVAX_ask_1",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xbdcb21cbea6c8f1853ac8fbfb44bd1b05444f9d83b96dd75509fb7b32ad4528a",
+      "status": "success",
+      "block": 60983181,
+      "gasUsed": 241985,
+      "confirmMs": 3153,
+      "at": "2026-11-13T04:08:06.541Z"
+    },
+    {
+      "label": "maker_AVAX_bid_2",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x2a8ea6e4a94ff2ff0e3e4a11a0ec643130d3350b513c05cd26c1ce5d776dc546",
+      "status": "success",
+      "block": 60983184,
+      "gasUsed": 253893,
+      "confirmMs": 2322,
+      "at": "2026-11-13T04:08:09.154Z"
+    },
+    {
+      "label": "maker_AVAX_ask_2",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x4402ef59f420e058d64252de2304d34c4dc69fea28f605f227606b8f413482ab",
+      "status": "success",
+      "block": 60983187,
+      "gasUsed": 253993,
+      "confirmMs": 3480,
+      "at": "2026-11-13T04:08:12.936Z"
+    },
+    {
+      "label": "maker_AVAX_bid_3",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x67e68eeea19e3246a648abfe28c45a47db8a3c45427f2b9d3289d6523141a0f7",
+      "status": "success",
+      "block": 60983188,
+      "gasUsed": 256363,
+      "confirmMs": 2671,
+      "at": "2026-11-13T04:08:15.914Z"
+    },
+    {
+      "label": "maker_AVAX_ask_3",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x6e5697b211c1c23c9599b94cec1bee70c130d21bb287b6ac4a9f28253bfccbd2",
+      "status": "success",
+      "block": 60983192,
+      "gasUsed": 256464,
+      "confirmMs": 3445,
+      "at": "2026-11-13T04:08:19.650Z"
+    },
+    {
+      "label": "maker_AVAX_bid_4",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xa1a86fc26ee8cc3ad28274a15e01a7ba9a7723da18b4a1e7029fdd70c038bbef",
+      "status": "success",
+      "block": 60983195,
+      "gasUsed": 258833,
+      "confirmMs": 2728,
+      "at": "2026-11-13T04:08:22.672Z"
+    },
+    {
+      "label": "maker_AVAX_ask_4",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xccbddbbf53dcdbe584ee32034b153934a008babc2e04e5abe2170ae588a9d0d1",
+      "status": "success",
+      "block": 60983198,
+      "gasUsed": 258935,
+      "confirmMs": 3121,
+      "at": "2026-11-13T04:08:26.090Z"
+    },
+    {
+      "label": "maker_AVAX_bid_5",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xc2195b57aaa77691e156fe4580d37daa8654ecc260597c9f1a966d2887dedea1",
+      "status": "success",
+      "block": 60983202,
+      "gasUsed": 261303,
+      "confirmMs": 3159,
+      "at": "2026-11-13T04:08:29.672Z"
+    },
+    {
+      "label": "maker_AVAX_ask_5",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x7ade74715e763ea9110acf0dea38e0f92498a5356eba8bf9eca34388f97ccd4b",
+      "status": "success",
+      "block": 60983205,
+      "gasUsed": 261406,
+      "confirmMs": 2709,
+      "at": "2026-11-13T04:08:32.683Z"
+    },
+    {
+      "label": "maker_AVAX_bid_6",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x87cc4ff66f87412f28dd8530c385374a920b4102a89c84f53026b1f3c6b61fa0",
+      "status": "success",
+      "block": 60983209,
+      "gasUsed": 263773,
+      "confirmMs": 3161,
+      "at": "2026-11-13T04:08:36.133Z"
+    },
+    {
+      "label": "maker_AVAX_ask_6",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xb78e7914084b8c2f476c3f507a521bf3749debed2aa136cd202782bf8e20c8cd",
+      "status": "success",
+      "block": 60983213,
+      "gasUsed": 263877,
+      "confirmMs": 3315,
+      "at": "2026-11-13T04:08:39.739Z"
     }
   ],
   "superseded": [
@@ -4671,5 +4814,47 @@
       "hash": "0x06996f58ae578449e1daedd549be8f3ec11b19c4504641a2ebb3a27b4d3b0802",
       "by": "Kumi AI drafted Short AVAX 2x, 25 tUSDC; the ios-sim wallet reviewed it in the call sheet and signed KumiLobby.call"
     }
+  },
+  "crewActs": [
+    {
+      "label": "lia pitch /long AVAX 2x 10%",
+      "from": "0xfA64A68213d008D36e63d284D0f560bEB3f9d2A5",
+      "to": "0x84949AEab9a9BfC2e05d5bB43583d00805598Bb7",
+      "hash": "0x5f276944d3a129abd972e14e2902ebff08cd074f42bf9ef1f5a1d68f5f237aa8",
+      "status": "success",
+      "block": 60983222,
+      "gasUsed": 361757,
+      "confirmMs": 2710,
+      "at": "2026-11-13T04:08:58.389Z"
+    },
+    {
+      "label": "sora vote yes #1",
+      "from": "0xcb1268Aa3FE4fe543e234E53daA2c3e17DE23C5d",
+      "to": "0x84949AEab9a9BfC2e05d5bB43583d00805598Bb7",
+      "hash": "0xaf43df9fe71cd5e4d9fc9c9f39b6251c7f16232af49b49bbac86fc76a611454d",
+      "status": "success",
+      "block": 60983226,
+      "gasUsed": 181837,
+      "confirmMs": 3166,
+      "at": "2026-11-13T04:09:17.304Z"
+    }
+  ],
+  "filmV5": {
+    "note": "Demo film v5-v7 session, Nov 13 2026. Phone = the standalone iOS Simulator build from the landing (SHA-256 064cbcf3\u2026748e) holding Jun's Kumi test key (imported via 'I have a Fuji key'); crewActs are the script-sent pitch and vote; the rest was signed on the phone.",
+    "juneDecidingVote": "0x5839207b38530e537576f983f91e209aa4598f4427afdbbd6d6ecc12eb8005bc",
+    "junCopyOrder": "0x6ff5fed31b064be4a3b2d50617de1a337c9563cf462418d4c2eccfee3244639c",
+    "junPrivateSendToSora": "0x0e6a6c2047768429d995424ed9bcea310fb75f1d05f46011898f0dba267cb759",
+    "newWalletDrip": {
+      "wallet": "0x39C714a14DaA82fb5BB2528ee31Dc4b0c173D9cF",
+      "tx": "0x27594bbe5a7c2eb6bfce7cf554aa58846392cf72062bdd32e1b9246576fdce75"
+    },
+    "sourceVerified": [
+      "perps",
+      "lobby",
+      "crewImplementation",
+      "factory",
+      "gasStation",
+      "usdc"
+    ]
   }
 }
