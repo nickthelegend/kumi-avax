@@ -114,8 +114,11 @@ candles, the maker bot and the Primit work are new.
 
 ## Demo video
 
-Not recorded yet: Nick records the ≤3 min walkthrough. The flow to film, with every tx already on Fuji, is in the
-README's "The live demo" section.
+**Film (2:58):** `grokbot/videos/kumi-avax/kumi-avax-film.mp4` (1080p) · share copy `kumi-avax-film-share.mp4` (720p,
+< 10 MB) · upload link: _TBD (Nick uploads)_. The standalone iPhone build on the iOS Simulator, filmed live on Fuji: a new
+wallet funded by KumiGasStation, join the AVAX pit, Kumi AI, a copy signed on the phone and its fill on Snowtrace, a
+private eERC tip (hidden on Snowtrace, read by the receiver on the web), Top callers, then the crew vote that trades the
+vault (web, recorded Nov 12). Every tx is listed in `videos/kumi-avax/film/work/sim/txs.json`.
 
 ## Slides
 
