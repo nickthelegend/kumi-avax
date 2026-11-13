@@ -103,6 +103,21 @@ export function Landing() {
       </div>
     </section>
 
+    <section className="l-sec" aria-labelledby="vs">
+      <div className="l-head"><h2 id="vs">Why not just a trading group?</h2><p>How friends pool money today, next to Kumi.</p></div>
+      <div className="vs-wrap card">
+        <table className="vs">
+          <thead><tr><th /><th>Trading group chat</th><th>Copy-trading app</th><th className="vs-kumi">Kumi</th></tr></thead>
+          <tbody>
+            <tr><th>Who holds the money</th><td>One friend's wallet</td><td>The platform</td><td className="vs-kumi">A vault contract on Avalanche</td></tr>
+            <tr><th>Who decides a trade</th><td>Whoever holds it</td><td>One lead trader</td><td className="vs-kumi">The crew's vote, weighted by shares</td></tr>
+            <tr><th>Can you check it</th><td>Screenshots</td><td>The platform's report</td><td className="vs-kumi">Every vote and fill on Snowtrace</td></tr>
+            <tr><th>Leaving</th><td>Ask for it back</td><td>Platform withdrawal</td><td className="vs-kumi">Your exact share, any time, no one's approval</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
     <section className="l-sec" aria-labelledby="pp">
       <div className="l-head"><h2 id="pp">Private where it counts</h2><p>Tips stay between friends. Everything else is on the record.</p></div>
       <div className="pp-grid">

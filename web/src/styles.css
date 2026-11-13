@@ -781,3 +781,15 @@ h1, h2, h3, h4, .brand, .trade-title b, .big, .v, .bal3 b, .boxes3 b { font-fami
 .pbal b span { font-size: 13px; color: var(--plum-3); font-family: var(--sans); }
 .pbal-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
 .pcard .grow, .pbal .grow { flex: 1; }
+
+/* Landing: Kumi next to how friends pool money today */
+.vs-wrap { padding: 8px; overflow-x: auto; }
+.vs { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 16px; min-width: 640px; }
+.vs th, .vs td { text-align: left; padding: 16px 18px; border-bottom: 1px solid var(--line); vertical-align: top; line-height: 1.4; }
+.vs thead th { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); font-weight: 800; }
+.vs tbody th { font-weight: 800; color: var(--ink); width: 22%; }
+.vs td { color: var(--ink-2); }
+.vs tbody tr:last-child th, .vs tbody tr:last-child td { border-bottom: 0; }
+.vs .vs-kumi { background: var(--butter-soft); color: var(--plum); font-weight: 700; }
+.vs thead .vs-kumi { color: var(--coral-ink); border-radius: 16px 16px 0 0; }
+.vs tbody tr:last-child .vs-kumi { border-radius: 0 0 16px 16px; }
