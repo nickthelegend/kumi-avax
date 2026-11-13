@@ -107,18 +107,21 @@ candles, the maker bot and the Primit work are new.
 - **A call drafted by Kumi AI and signed on the iOS Simulator:** https://testnet.snowtrace.io/tx/0x06996f58ae578449e1daedd549be8f3ec11b19c4504641a2ebb3a27b4d3b0802
 - **Kumi API:** https://kumi-avax-api.vercel.app/api/health
 - **Get the app (landing):** https://kumi-avax-web.vercel.app/#get-app
-- **iOS Simulator download (standalone Release build):** https://kumi-avax-web.vercel.app/download/Kumi-iOS-Simulator.zip (SHA-256 `cafab634fd3e4265581d81c9db29670ac166ab0f277f0556cd84736ed52c0965`; install with `xcrun simctl install booted Kumi.app`)
+- **iOS Simulator download (standalone Release build):** https://kumi-avax-web.vercel.app/download/Kumi-iOS-Simulator.zip (SHA-256 `064cbcf307aeb14c4c5ecca4dcf413b88e63d9d800d1a23cb78402cb9f00748e`; install with `xcrun simctl install booted Kumi.app`)
 - **Phone app (Expo web build):** https://kumi-avax-app.vercel.app
 - **Web app:** https://kumi-avax-web.vercel.app
 - **Phone on a device:** `cd mobile && npm install && npx expo start`, scan with Expo Go (SDK 58)
 
 ## Demo video
 
-**Film (2:58):** `grokbot/videos/kumi-avax/kumi-avax-film.mp4` (1080p) · share copy `kumi-avax-film-share.mp4` (720p,
-< 10 MB) · upload link: _TBD (Nick uploads)_. The standalone iPhone build on the iOS Simulator, filmed live on Fuji: a new
-wallet funded by KumiGasStation, join the AVAX pit, Kumi AI, a copy signed on the phone and its fill on Snowtrace, a
-private eERC tip (hidden on Snowtrace, read by the receiver on the web), Top callers, then the crew vote that trades the
-vault (web, recorded Nov 12). Every tx is listed in `videos/kumi-avax/film/work/sim/txs.json`.
+**Film (2:53):** `grokbot/videos/kumi-avax/kumi-avax-film.mp4` (1080p) · share copy `kumi-avax-film-share.mp4` (720p,
+< 10 MB) · upload link: _TBD (Nick uploads)_. All filmed live on Fuji on Nov 13 (04:05-04:16 UTC), on the standalone build
+from the landing's download, running on the iOS Simulator. It opens on the crew vote: the phone holds Jun's Kumi test key
+(imported off camera through "I have a Fuji key"); Lia's pitch and Sora's vote arrive live from Kumi test accounts
+(`scripts/fuji/crew-act.ts`), and Jun's tap is the deciding vote that trades the Frog Pond vault on KumiPerps in the same
+transaction (decoded on Snowtrace, since the contracts are now source-verified). Then Kumi AI, a copy and its fill on
+Snowtrace, a private eERC send (hidden on Snowtrace, read by the receiver on the web), Top callers, the download and a
+brand-new wallet's gas-free start. Hashes: `grokbot/videos/kumi-avax/film/v5/work/judge-v7/onchain.md`.
 
 ## Slides
 
