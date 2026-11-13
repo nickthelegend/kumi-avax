@@ -75,7 +75,7 @@ export default function Chats() {
       {live.data && (
         <Card pad={6}>
           {mine.length === 0 ? (
-            <Empty scene={art.scene.joinCrew} alt="A frog and a fox welcoming a bunny into a chat bubble" title="No chats yet" body="Join a public chat below and copy calls with one tap." />
+            <Empty scene={art.scene.joinCrew} alt="A frog and a fox welcoming a bunny into a chat bubble" title="No chats yet" body="Start a crew with your friends, or join a public chat below and copy calls." action={<Btn testID="start-crew-empty" title="Start a crew" tone="coral" size="sm" icon="plus" onPress={() => router.push('/crew/new')} />} />
           ) : mine.map((r, i) => <ChatRow key={r.chat} r={r} me={address} first={i === 0} onPress={() => router.push(`/chat/${r.chat}`)} />)}
         </Card>
       )}

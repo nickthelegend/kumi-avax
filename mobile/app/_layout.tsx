@@ -28,6 +28,8 @@ function Gate() {
       <Stack.Screen name="chat/[id]" options={{ gestureEnabled: true }} />
       <Stack.Screen name="scan" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
       <Stack.Screen name="invite" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
+      <Stack.Screen name="crew/index" options={{ animation: 'slide_from_bottom' }} />
+      <Stack.Screen name="crew/new" options={{ animation: 'slide_from_right' }} />
       <Stack.Screen name="backup" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
     </Stack>
   );

@@ -14,7 +14,8 @@ import { askAi } from '../../lib/kumiApi';
 import { useBoard } from '../../lib/board';
 import { Btn, Chip, CrewAvatar, Empty, Ic, Notice, Skeleton, TokenLogo, TxLink, st, tap, useBusy } from '../../components/ui';
 import { LOBBY, crewAbi, nameOf, pub, useLive, PERPS, perpsAbi } from '../../lib/chain';
-import { callInChannel, copyCall, joinChannel, leaveChannel, pitchInCrew, sayInChannel, sayInCrew, voteInCrew } from '../../lib/actions';
+import { callInChannel, copyCall, joinChannel, leaveChannel, pitchInCrew, sayInChannel, sayInCrew, shareAsCall, voteInCrew } from '../../lib/actions';
+import { ChipInSheet, CrewStart, CrewStrip, type Member } from '../../components/CrewStrip';
 import { useApp } from '../../lib/store';
 import { C, F, art } from '../../lib/theme';
 import { Image } from 'expo-image';
@@ -36,7 +37,7 @@ export default function ChatRoom() {
   const insets = useSafeAreaInsets();
   const act = useBusy();
   const [text, setText] = useState(typeof draft === 'string' ? draft : '');
-  const [sheet, setSheet] = useState<null | 'call' | 'private' | { copy: ChatItem } | { tip: ChatItem } | { draft: AiDraft }>(null);
+  const [sheet, setSheet] = useState<null | 'call' | 'private' | 'chip' | { copy: ChatItem } | { tip: ChatItem } | { draft: AiDraft }>(null);
   const [lastTxs, setLastTxs] = useState<{ hash: string; label: string }[]>([]);
 
   const live = useLive(async () => {
@@ -49,13 +50,17 @@ export default function ChatRoom() {
         pub.readContract({ address: crew, abi: crewAbi, functionName: 'policy' }),
         pub.readContract({ address: crew, abi: crewAbi, functionName: 'nav' }).catch(() => 0n),
       ]);
-      const totalShares = await pub.readContract({ address: crew, abi: crewAbi, functionName: 'totalShares' }).catch(() => 0n);
-      return { items, name, totalShares, members: members.length, memberList: [...members] as Address[], joined: isMember, topic: `Crew vault · NAV $${fmtUsd(nav, 2)}`, maxLev: Number(policy[2]), market: undefined as number | undefined };
+      const [totalShares, shares] = await Promise.all([
+        pub.readContract({ address: crew, abi: crewAbi, functionName: 'totalShares' }).catch(() => 0n),
+        Promise.all(members.map(a => pub.readContract({ address: crew, abi: crewAbi, functionName: 'shares', args: [a] }).catch(() => 0n))),
+      ]);
+      const holders: Member[] = members.map((a, i) => ({ address: a as Address, shares: shares[i]! }));
+      return { items, name, totalShares, nav: nav as bigint, holders, members: members.length, memberList: [...members] as Address[], joined: isMember, topic: `Crew vault · NAV $${fmtUsd(nav, 2)}`, maxLev: Number(policy[2]), market: undefined as number | undefined };
     }
     const [items, chans] = await Promise.all([readChannelMessages(pub as any, LOBBY, channel, 120), readChannels(pub as any, LOBBY, address ?? undefined)]);
     const c = chans[channel];
     if (!c) throw Error(`No channel #${channel} in the Kumi lobby`);
-    return { items, name: c.name, totalShares: 0n, members: c.memberCount, memberList: [] as Address[], joined: c.joined, topic: c.topic, maxLev: 10, market: c.market };
+    return { items, name: c.name, totalShares: 0n, nav: 0n, holders: [] as Member[], members: c.memberCount, memberList: [] as Address[], joined: c.joined, topic: c.topic, maxLev: 10, market: c.market };
   }, [chat, address], 4000);
 
   const d = live.data;
@@ -88,8 +93,12 @@ export default function ChatRoom() {
     const local: Row[] = [];
     for (const a of mineAi) { local.push({ kind: 'ask', key: `ask:${a.id}`, q: a.question, who: '', ts: a.at / 1000 - 0.001 }, { kind: 'ai', key: a.id, a, who: '', ts: a.at / 1000 }); }
     if (asking) local.push({ kind: 'ask', key: 'ask:pending', q: asking.q, who: '', ts: asking.at / 1000 }, { kind: 'ai-pending', key: 'ai:pending', who: '', ts: asking.at / 1000 + 0.001 });
+    // An /invite that already passed reads as one line ("lia was voted into the crew"): its pitch card, the yes vote
+    // and the execution row fold into the member line, so a crew filling up doesn't bury the chat.
+    const passedInvites = new Set(items.filter(x => x.kind === 'pitch' && x.text.startsWith('/invite') && items.some(e => e.kind === 'executed' && e.ref === x.ref)).map(x => x.ref));
     let li = 0;
     for (const it of items) {
+      if (passedInvites.has(it.ref) && (it.kind === 'pitch' || it.kind === 'vote-yes' || it.kind === 'vote-no' || it.kind === 'executed')) continue;
       while (li < local.length && local[li]!.ts < it.ts) rows.push(local[li++]!);
       const last = rows[rows.length - 1];
       if (it.kind === 'join' || it.kind === 'leave') {
@@ -131,7 +140,8 @@ export default function ChatRoom() {
       case 'private': return <PrivateCard m={m} me={address} />;
       case 'call': return <CallCard m={m} me={address} stat={statOf(m.who)} copies={copiesOf.get(m.index) ?? []} canCopy={!!d?.joined} busy={act.busy !== null && sheet !== null} onCopy={() => setSheet({ copy: m })} onTip={() => setSheet({ tip: m })} />;
       case 'copy': return <CopyPill m={m} me={address} />;
-      case 'pitch': return <PitchCard crew={crew} m={m} me={address} isMember={!!d?.joined} busy={act.busy !== null} onVote={(pid, yes) => act.run('Voting', async () => { const tx = await voteInCrew(crew, pid, yes); record([tx]); setLastTxs([tx]); live.reload(); })} />;
+      case 'pitch': return <PitchCard crew={crew} m={m} me={address} isMember={!!d?.joined} busy={act.busy !== null} onVote={(pid, yes) => act.run('Voting', async () => { const tx = await voteInCrew(crew, pid, yes); record([tx]); setLastTxs([tx]); live.reload(); })}
+        onShare={(mk, isLong, lev) => act.run('Sharing', async step => { const r = await shareAsCall(mk, isLong, lev, 25_000_000n, `${d?.name ?? 'My crew'} voted this in`, step); record(r.txs); router.push(`/chat/l-${r.channel}`); })} />;
       case 'join': return <EventPill m={m} me={address} tone="mint" icon="plus" text="joined the chat" />;
       case 'leave': return <EventPill m={m} me={address} tone="pink" icon="exit" text="left the chat" />;
       case 'vote-yes': return <EventPill m={m} me={address} tone="butter" icon="thumb" text={`${decidedBy.has(m.key) ? 'cast the deciding vote' : 'voted yes'} on #${m.ref}${sharePct(m.amount)}`} />;
@@ -142,7 +152,7 @@ export default function ChatRoom() {
       case 'deposit': return <EventPill m={m} me={address} tone="butter" icon="coin" text={<>chipped in <Text style={{ fontFamily: F.monoBold }}>{fmtUsd(m.amount)}</Text> tUSDC</>} />;
       case 'ragequit': return <EventPill m={m} me={address} tone="pink" icon="exit" text={<>ragequit with <Text style={{ fontFamily: F.monoBold }}>{fmtUsd(m.amount)}</Text> tUSDC</>} />;
       case 'captain': return <EventPill m={m} me={address} tone="coral" icon="bolt" text={m.text || 'traded in the captain lane'} />;
-      case 'member': return <EventPill m={m} me={address} tone="mint" icon="plus" text="was voted into the crew" />;
+      case 'member': return <EventPill m={m} me={address} tone="mint" icon="plus" text={<>was voted into the crew <Text style={{ fontFamily: F.mono, fontSize: 12, color: C.ink3 }}>#{m.ref}</Text></>} />;
       default: return <EventPill m={m} me={address} tone="butter" icon="clock" text={`pitch #${m.ref} expired`} />;
     }
   };
@@ -161,13 +171,15 @@ export default function ChatRoom() {
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
             <View style={{ width: 7, height: 7, borderRadius: 4, backgroundColor: C.mint }} />
             <Text numberOfLines={1} style={{ fontSize: 12.5, color: C.mintInk, fontWeight: '700' }}>Live on Fuji</Text>
-            <Text numberOfLines={1} style={{ fontSize: 12.5, color: C.ink2, flexShrink: 1 }}>· {d ? `${d.members} members` : ''}</Text>
+            <Text numberOfLines={1} style={{ fontSize: 12.5, color: C.ink2, flexShrink: 1 }}>· {d ? `${d.members} ${d.members === 1 ? 'member' : 'members'}` : ''}</Text>
           </View>
         </View>
         <Pressable testID="invite" accessibilityRole="button" accessibilityLabel="Invite people" onPress={() => { tap(); router.push({ pathname: '/invite', params: { chat, name: d?.name ?? '' } }); }} hitSlop={10} style={{ height: 38, paddingHorizontal: 12, borderRadius: 19, flexDirection: 'row', alignItems: 'center', gap: 5, backgroundColor: C.plum }}>
           <Ic name="qr" size={15} color="#fff" /><Text style={{ color: '#fff', fontWeight: '700', fontSize: 13 }}>Invite</Text>
         </Pressable>
       </View>
+
+      {isCrew && d && d.joined && <CrewStrip nav={d.nav} members={d.holders} totalShares={d.totalShares} me={address} onChip={() => setSheet('chip')} />}
 
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         {live.error && !d && <View style={{ padding: 16 }}><Empty scene={art.scene.offline} alt="A worried penguin holding an unplugged cable" title="Can't reach Fuji" body={`Could not read this chat: ${live.error}`} action={<Btn title="Try again" tone="plum" size="sm" onPress={live.reload} />} /></View>}
@@ -180,10 +192,14 @@ export default function ChatRoom() {
             renderItem={renderItem}
             contentContainerStyle={{ padding: 14, gap: 12 }}
             ListFooterComponent={<View style={{ alignItems: 'center', gap: 8, paddingVertical: 10 }}>
+              {isCrew && d.joined && !items.some(x => x.kind === 'pitch' && x.text && !x.text.startsWith('/invite')) && (
+                <CrewStart chipped={d.holders.some(h => !!address && h.address.toLowerCase() === address.toLowerCase() && h.shares > 0n)} members={d.members}
+                  onChip={() => setSheet('chip')} onInvite={() => router.push({ pathname: '/invite', params: { chat, name: d.name } })} />
+              )}
               <Text style={{ fontSize: 13, color: C.ink2, textAlign: 'center' }}>{d.topic}</Text>
               <Text style={{ fontSize: 11.5, color: C.ink3, textAlign: 'center' }}>{isCrew ? 'On-chain chat in the crew vault' : `KumiLobby channel #${channel}`} · {items.length} messages shown</Text>
             </View>}
-            ListEmptyComponent={<Empty scene={art.scene.emptyChat} alt="A cat asleep on a chat bubble" title="Quiet in here" body={isCrew ? 'Chip in, then pitch a perp with /long AVAX 3x 20%.' : 'Say hi, or post the first trade call.'} />}
+            ListEmptyComponent={isCrew && d.joined ? undefined : <Empty scene={art.scene.emptyChat} alt="A cat asleep on a chat bubble" title="Quiet in here" body={isCrew ? 'Members chip in, then pitch a perp with /long AVAX 3x 20%.' : 'Say hi, or post the first trade call.'} />}
           />
         )}
 
@@ -210,7 +226,7 @@ export default function ChatRoom() {
                 </ScrollView>
               )}
               {asked !== null && <Text testID="ask-hint" style={{ fontSize: 12.5, color: C.plum3, fontWeight: '700' }}>Kumi AI · only you see the answer</Text>}
-              {parsed && <Text style={{ fontSize: 12.5, color: parsed.ok ? C.coralInk : C.pinkInk, fontWeight: '600' }}>{parsed.ok ? `Pitch: ${describe(parsed.cmd)}. Your shares vote yes; it trades when yes passes 50%.` : parsed.error}</Text>}
+              {parsed && <Text style={{ fontSize: 12.5, color: parsed.ok ? C.coralInk : C.pinkInk, fontWeight: '600' }}>{parsed.ok ? (parsed.cmd.kind === 'invite' ? `Invite ${nameOf(parsed.cmd.address, address)} by join code. Your shares vote yes; they're in when yes passes 50%.` : `Pitch: ${describe(parsed.cmd)}. Your shares vote yes; it trades when yes passes 50%.`) : parsed.error}</Text>}
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
                 {isCrew && (
                   <Pressable testID="send-private" accessibilityRole="button" accessibilityLabel="Send a crewmate tUSDC privately" onPress={() => { tap(); setSheet('private'); }} style={{ width: 48, height: 48, borderRadius: 24, backgroundColor: C.plum, alignItems: 'center', justifyContent: 'center', borderBottomWidth: 4, borderColor: C.plumEdge }}>
@@ -241,6 +257,7 @@ export default function ChatRoom() {
         </View>
       </KeyboardAvoidingView>
 
+      {sheet === 'chip' && address && <ChipInSheet crew={crew} me={address} name={d?.name ?? 'the crew'} onClose={() => setSheet(null)} onDone={txs => { record(txs); setLastTxs(txs); live.reload(); }} />}
       {sheet === 'call' && <CallSheet channel={channel} defaultMarket={d?.market ?? 0} onClose={() => setSheet(null)} onDone={txs => { record(txs); setLastTxs(txs); live.reload(); }} />}
       {sheet && typeof sheet === 'object' && 'draft' in sheet && <CallSheet channel={channel} defaultMarket={d?.market ?? 0} init={sheet.draft} onClose={() => setSheet(null)} onDone={txs => { record(txs); setLastTxs(txs); live.reload(); }} />}
       {sheet === 'private' && address && <PrivateSendSheet me={address} choices={(d?.memberList ?? []).filter(a => a.toLowerCase() !== address.toLowerCase())} where={{ kind: 'send', crew }} title="Send privately" onClose={() => setSheet(null)} onDone={txs => { record(txs); setLastTxs(txs); live.reload(); }} />}

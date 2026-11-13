@@ -3,9 +3,9 @@
  * (lib/wallet.ts) and sent through lib/chain.ts `send`. `step` reports progress ("Approving tUSDC", "Placing the
  * order") so the UI can show which transaction is in flight.
  */
-import type { Address, Hex } from 'viem';
-import { Kind, MARKETS, describe, encodeOrder, initialMargin, sizeFor, type Command, type ChatItem } from '@kumi-avax/sdk';
-import { LOBBY, PERPS, USDC, crewAbi, lobbyAbi, perpsAbi, pub, send, usdcAbi, type Sent } from './chain';
+import { parseEventLogs, type Address, type Hex } from 'viem';
+import { Kind, MARKETS, describe, encodeOrder, factoryAbi, initialMargin, readChannels, sizeFor, type Command, type ChatItem } from '@kumi-avax/sdk';
+import { FACTORY, LOBBY, PERPS, USDC, crewAbi, lobbyAbi, perpsAbi, pub, send, usdcAbi, type Sent } from './chain';
 import { signer } from './wallet';
 
 type Step = (label: string) => void;
@@ -121,3 +121,35 @@ export async function chipIn(crew: Address, amount: bigint, step: Step = noop): 
 }
 
 export const ragequit = (crew: Address, shares: bigint) => send(crew, crewAbi as any, 'ragequit', [shares], 'Ragequit');
+
+/** A new crew's rules: a pitch passes at a majority of all shares within a day, 5x crew-wide cap, 1% slippage. No captain. */
+export const CREW_POLICY = { thresholdBps: 5001, votingPeriod: 86400, maxLeverage: 5, maxSlippageBps: 100, captainMaxLeverage: 2, captainMaxBps: 1000, captainTradesPerDay: 2 } as const;
+
+/** Starts a crew with this phone as its first member (KumiCrewFactory.createCrew); returns the new vault's address. */
+export async function createCrew(name: string): Promise<{ tx: Sent; crew: Address }> {
+  const me = signer().address;
+  const tx = await send(FACTORY, factoryAbi as any, 'createCrew', [name, [me], ZERO, CREW_POLICY], `Start ${name}`);
+  const r = await pub.getTransactionReceipt({ hash: tx.hash });
+  const ev = parseEventLogs({ abi: factoryAbi, logs: r.logs, eventName: 'CrewCreated' })[0];
+  if (!ev) throw Error(`The crew was created but its address was not in the receipt (${tx.hash}).`);
+  return { tx, crew: ev.args.crew };
+}
+
+/** Adds someone by their join code: an /invite pitch; with a majority of shares behind it, it passes in the same transaction. */
+export const inviteToCrew = (crew: Address, who: Address) => pitchInCrew(crew, { kind: 'invite', address: who } as Command);
+
+/**
+ * Shares a crew trade as a call in the public lobby channel for its market (joining it first if needed), so people
+ * outside the crew can copy it with their own money. Returns the channel id.
+ */
+export async function shareAsCall(market: number, isLong: boolean, leverage: number, margin: bigint, note: string, step: Step = noop): Promise<{ txs: Sent[]; channel: number }> {
+  const me = signer().address;
+  const chans = await readChannels(pub as any, LOBBY, me);
+  const ch = chans.find(c => c.market === market) ?? chans[0];
+  if (!ch) throw Error('No public lobby channel to share the call in.');
+  const txs: Sent[] = [];
+  if (!ch.joined) { step(`Joining ${ch.name}`); txs.push(await joinChannel(ch.id)); }
+  step(`Posting the call in ${ch.name}`);
+  txs.push(await callInChannel(ch.id, market, isLong, leverage, margin, note));
+  return { txs, channel: ch.id };
+}

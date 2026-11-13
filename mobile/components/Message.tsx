@@ -116,7 +116,7 @@ export function CopyPill({ m, me }: { m: ChatItem; me?: string | null }) {
 }
 
 /** A crew pitch: the trade card with the share-weighted vote bar, read live from the crew vault. */
-export function PitchCard({ crew, m, me, isMember, onVote, busy }: { crew: Address; m: ChatItem; me?: string | null; isMember: boolean; onVote: (id: number, yes: boolean) => void; busy?: boolean }) {
+export function PitchCard({ crew, m, me, isMember, onVote, onShare, busy }: { crew: Address; m: ChatItem; me?: string | null; isMember: boolean; onVote: (id: number, yes: boolean) => void; onShare?: (market: number, isLong: boolean, leverage: number) => void; busy?: boolean }) {
   const p = useLive(async () => {
     const [prop, tally, totalShares] = await Promise.all([
       pub.readContract({ address: crew, abi: crewAbi, functionName: 'getProposal', args: [BigInt(m.ref)] }),
@@ -132,8 +132,8 @@ export function PitchCard({ crew, m, me, isMember, onVote, busy }: { crew: Addre
   const mk = MARKETS[pr?.market ?? 0]!;
   // Yes and no are shares of the whole crew (not of the votes cast): a pitch passes when yes passes the threshold of all shares.
   const total = d && d.totalShares > 0n ? d.totalShares : 1n;
-  const status = !pr ? null : pr.executed ? (pr.filled > 0n || kind > 1 ? ['Opened', 'mint'] : ['Not filled', 'pink']) : Date.now() / 1000 > Number(pr.deadline) ? ['Expired', 'grey'] : ['Voting', 'butter'];
-  const title = !pr ? m.text : kind === 0 ? `${pr.isLong ? 'LONG' : 'SHORT'} ${mk.symbol} ${pr.leverage}X` : kind === 1 ? `CLOSE ${mk.symbol}` : kind === 3 ? 'ADD A MEMBER' : 'NEW CAPTAIN';
+  const status = !pr ? null : pr.executed ? (kind > 1 ? ['Passed', 'mint'] : pr.filled > 0n ? [kind === 1 ? 'Closed' : 'Opened', 'mint'] : ['Not filled', 'pink']) : Date.now() / 1000 > Number(pr.deadline) ? ['Expired', 'grey'] : ['Voting', 'butter'];
+  const title = !pr ? m.text : kind === 0 ? `${pr.isLong ? 'LONG' : 'SHORT'} ${mk.symbol} ${pr.leverage}X` : kind === 1 ? `CLOSE ${mk.symbol}` : kind === 3 ? `ADD ${nameOf(pr.target, me).toUpperCase()}` : 'NEW CAPTAIN';
   return (
     <Animated.View entering={enter} style={{ alignSelf: 'stretch', borderRadius: 28, backgroundColor: C.edge, paddingBottom: 7 }}>
       <View style={{ borderRadius: 28, borderWidth: 3, borderColor: '#fff', backgroundColor: C.panel, overflow: 'hidden' }}>
@@ -144,6 +144,7 @@ export function PitchCard({ crew, m, me, isMember, onVote, busy }: { crew: Addre
             <Text style={{ fontFamily: F.mono, fontSize: 10.5, letterSpacing: 1, color: kind === 1 ? C.plum3 : 'rgba(255,255,255,0.85)' }}>{nameOf(m.who, me).toUpperCase()} PITCHED · #{m.ref}</Text>
             <Text style={{ fontFamily: F.display, fontSize: 24, lineHeight: 29, color: kind === 1 ? C.plum2 : '#fff' }}>{title}</Text>
             {pr && kind === 0 && <Text style={{ fontSize: 13, color: 'rgba(255,255,255,0.9)' }}>{pr.sizeBps / 100}% of the fund</Text>}
+            {pr && kind === 3 && <Text style={{ fontSize: 13, color: 'rgba(255,255,255,0.9)' }}>by join code · {pr.target.slice(0, 6)}…{pr.target.slice(-4)}</Text>}
           </View>
           {status && <View style={{ paddingHorizontal: 10, height: 26, borderRadius: 999, backgroundColor: '#fff', justifyContent: 'center' }}><Text style={{ fontSize: 11.5, fontWeight: '800', color: status[1] === 'mint' ? C.mintInk : status[1] === 'pink' ? C.pinkInk : C.plum }}>{status[0]}</Text></View>}
         </LinearGradient>
@@ -174,6 +175,9 @@ export function PitchCard({ crew, m, me, isMember, onVote, busy }: { crew: Addre
             </View>
           )}
           {d && d.mine !== 0 && <Chip text={d.mine > 0 ? 'You voted yes' : 'You voted no'} tone={d.mine > 0 ? 'mint' : 'pink'} dot />}
+          {pr && pr.executed && kind === 0 && pr.filled > 0n && isMember && onShare && (
+            <Btn testID={`share-${m.ref}`} title="Share as a call so others can copy" tone="white" icon="send" size="sm" busy={busy} onPress={() => onShare(pr.market, pr.isLong, pr.leverage)} />
+          )}
         </View>
       </View>
     </Animated.View>
