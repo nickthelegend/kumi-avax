@@ -1,10 +1,10 @@
 {
   "ios": {
     "file": "Kumi-iOS-Simulator.zip",
-    "bytes": 23363489,
-    "sha256": "5158d1e3b25dbcaa174a93a0def462b78306216ed9fe93db3813a0e30f213377",
+    "bytes": 23363592,
+    "sha256": "d05bb539d1dc6d02ee6f27ec4bfa72d846d1551b5210db48dafec59139894a4d",
     "version": "0.2.0",
-    "built": "2026-11-13",
+    "built": "2026-11-14",
     "bundleId": "xyz.kumi.avax",
     "build": "Release, iphonesimulator arm64 (Apple silicon Macs), ad-hoc signed"
   },
