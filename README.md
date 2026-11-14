@@ -5,7 +5,7 @@ the crew fund trades it on an order book on Avalanche. Leave anytime with your e
 
 | Get Kumi | How |
 |---|---|
-| **iOS Simulator** (standalone build, its own icon and splash) | [Kumi-iOS-Simulator.zip](https://kumi-avax-web.vercel.app/download/Kumi-iOS-Simulator.zip) (22.3 MB, SHA-256 `d05bb539d1dc6d02ee6f27ec4bfa72d846d1551b5210db48dafec59139894a4d`). Unzip, open a simulator, then `xcrun simctl install booted Kumi.app && xcrun simctl launch booted xyz.kumi.avax`. Release build for Apple-silicon Macs. |
+| **iOS Simulator** (standalone build, its own icon and splash) | [Kumi-iOS-Simulator.zip](https://kumi-avax-web.vercel.app/download/Kumi-iOS-Simulator.zip) (22.3 MB, SHA-256 `322007cfad16849f85c410aaff4816399042935b7f4e03fe01b0a9dc6a223b44`). Unzip, open a simulator, then `xcrun simctl install booted Kumi.app && xcrun simctl launch booted xyz.kumi.avax`. Release build for Apple-silicon Macs. |
 | **Expo Go** | Setup required: the Expo account login is Nick's step; then `mobile/scripts/publish-expo.sh` publishes and puts the QR on the landing. Until then: `cd mobile && npm install && npx expo start`. |
 | **In the browser** | Phone build: https://kumi-avax-app.vercel.app · Web app: https://kumi-avax-web.vercel.app |
 
