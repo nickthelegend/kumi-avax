@@ -114,14 +114,18 @@ candles, the maker bot and the Primit work are new.
 
 ## Demo video
 
-**Film (2:53):** `grokbot/videos/kumi-avax/kumi-avax-film.mp4` (1080p) · share copy `kumi-avax-film-share.mp4` (720p,
-< 10 MB) · upload link: _TBD (Nick uploads)_. All filmed live on Fuji on Nov 13 (04:05-04:16 UTC), on the standalone build
-from the landing's download, running on the iOS Simulator. It opens on the crew vote: the phone holds Jun's Kumi test key
-(imported off camera through "I have a Fuji key"); Lia's pitch and Sora's vote arrive live from Kumi test accounts
-(`scripts/fuji/crew-act.ts`), and Jun's tap is the deciding vote that trades the Frog Pond vault on KumiPerps in the same
-transaction (decoded on Snowtrace, since the contracts are now source-verified). Then Kumi AI, a copy and its fill on
-Snowtrace, a private eERC send (hidden on Snowtrace, read by the receiver on the web), Top callers, the download and a
-brand-new wallet's gas-free start. Hashes: `grokbot/videos/kumi-avax/film/v5/work/judge-v7/onchain.md`.
+**Film (≤ 3:00, no subtitles):** `grokbot/videos/kumi-avax/kumi-avax-film.mp4` (1080p) · share copy
+`kumi-avax-film-share.mp4` (720p, < 10 MB) · upload link: _TBD (Nick uploads)_. The whole workflow, filmed live on Fuji on
+Nov 14 (00:18-00:43 UTC, plus the copy lines and Snowtrace proof at 01:22 UTC after a copy-line fix) on the standalone
+build from the landing's download, running on the iOS Simulator. It opens on the landing, then: a brand-new wallet (gas
+from KumiGasStation, 1,000 tUSDC) → **Start a crew** "Pond Club" (`createCrew`, vault `0x3401…f74f`) → chip in 200 →
+**Invite** (crew QR; Lia, Sora and Jun's join codes pasted, each `/invite` passes in its own tx) → their chip-ins
+(Kumi test accounts, `scripts/fuji/crew-act.ts`) → Lia pitches `/long AVAX 2x 10%`, Sora votes yes (45.5%) → the
+phone's **deciding vote** fills the vault 13.35 AVAX at $8.244 on KumiPerps in the same tx (`0xf5caab81…29bc`, decoded on
+Snowtrace) → the **Market** tab (Chainlink header, candles with fills, the on-chain book) → **share as a call** in the AVAX
+pit → Tae and Ren copy it with their own money (6.06 AVAX each, Ren's order decoded on Snowtrace) → the Wallet tab's list
+of every tx the phone signed (crew creation decoded) → why not a trading group → Get the app. Session log:
+`grokbot/videos/kumi-avax/film/v8/work/notes.txt`; every scripted tx is under `crewActs` in `deployments/fuji.json`.
 
 ## Slides
 
