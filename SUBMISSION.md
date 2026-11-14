@@ -114,8 +114,10 @@ candles, the maker bot and the Primit work are new.
 
 ## Demo video
 
-**Film (4:14, no subtitles; v10):** `grokbot/videos/kumi-avax/kumi-avax-film.mp4` (1080p) · share copy
-`kumi-avax-film-share.mp4` (720p, < 10 MB) · upload link: _TBD (Nick uploads)_. The whole workflow, filmed live on Fuji on
+**Submission cut (2:56, ≤ 3:00 as the form asks, no subtitles; v11):** `grokbot/videos/kumi-avax/kumi-avax-film.mp4` (1080p) · share copy
+`kumi-avax-film-share.mp4` (720p, < 10 MB) · upload link: _TBD (Nick uploads)_. Same takes as the walkthrough, cut to: landing → start a crew + chip in → invite → vote + fill → Snowtrace → new charts → copy → seven coins → ETH trade → get the app (the wallet set-up, Wallet-tab proof, web Markets and "why" scenes are dropped; waits sped up and badged).
+
+**Full walkthrough (4:14, v10):** `grokbot/videos/kumi-avax/kumi-avax-walkthrough.mp4` · share copy `kumi-avax-walkthrough-share.mp4`. The whole workflow, filmed live on Fuji on
 Nov 14 (00:18-00:43 UTC, plus the copy lines and Snowtrace proof at 01:22 UTC after a copy-line fix) on the standalone
 build from the landing's download, running on the iOS Simulator. It opens on the landing, then: a brand-new wallet (gas
 from KumiGasStation, 1,000 tUSDC) → **Start a crew** "Pond Club" (`createCrew`, vault `0x3401…f74f`) → chip in 200 →
