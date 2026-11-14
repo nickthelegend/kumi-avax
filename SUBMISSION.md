@@ -107,7 +107,7 @@ candles, the maker bot and the Primit work are new.
 - **A call drafted by Kumi AI and signed on the iOS Simulator:** https://testnet.snowtrace.io/tx/0x06996f58ae578449e1daedd549be8f3ec11b19c4504641a2ebb3a27b4d3b0802
 - **Kumi API:** https://kumi-avax-api.vercel.app/api/health
 - **Get the app (landing):** https://kumi-avax-web.vercel.app/#get-app
-- **iOS Simulator download (standalone Release build):** https://kumi-avax-web.vercel.app/download/Kumi-iOS-Simulator.zip (SHA-256 `322007cfad16849f85c410aaff4816399042935b7f4e03fe01b0a9dc6a223b44`; install with `xcrun simctl install booted Kumi.app`)
+- **iOS Simulator download (standalone Release build):** https://kumi-avax-web.vercel.app/download/Kumi-iOS-Simulator.zip (SHA-256 `112f3f9c011fe85b96591f03334ce4f212023e14c9b7a5e74ca772f41bda2618`; install with `xcrun simctl install booted Kumi.app`)
 - **Phone app (Expo web build):** https://kumi-avax-app.vercel.app
 - **Web app:** https://kumi-avax-web.vercel.app
 - **Phone on a device:** `cd mobile && npm install && npx expo start`, scan with Expo Go (SDK 58)

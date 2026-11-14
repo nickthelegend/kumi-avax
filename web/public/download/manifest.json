@@ -1,8 +1,8 @@
 {
   "ios": {
     "file": "Kumi-iOS-Simulator.zip",
-    "bytes": 23364237,
-    "sha256": "322007cfad16849f85c410aaff4816399042935b7f4e03fe01b0a9dc6a223b44",
+    "bytes": 23364875,
+    "sha256": "112f3f9c011fe85b96591f03334ce4f212023e14c9b7a5e74ca772f41bda2618",
     "version": "0.2.0",
     "built": "2026-11-14",
     "bundleId": "xyz.kumi.avax",
