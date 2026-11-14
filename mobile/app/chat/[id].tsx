@@ -174,7 +174,7 @@ export default function ChatRoom() {
             <Text numberOfLines={1} style={{ fontSize: 12.5, color: C.ink2, flexShrink: 1 }}>· {d ? `${d.members} ${d.members === 1 ? 'member' : 'members'}` : ''}</Text>
           </View>
         </View>
-        <Pressable testID="invite" accessibilityRole="button" accessibilityLabel="Invite people" onPress={() => { tap(); router.push({ pathname: '/invite', params: { chat, name: d?.name ?? '' } }); }} hitSlop={10} style={{ height: 38, paddingHorizontal: 12, borderRadius: 19, flexDirection: 'row', alignItems: 'center', gap: 5, backgroundColor: C.plum }}>
+        <Pressable testID="invite" accessibilityRole="button" accessibilityLabel="Invite people" onPress={() => { tap(); router.push({ pathname: '/share', params: { chat, name: d?.name ?? '' } }); }} hitSlop={10} style={{ height: 38, paddingHorizontal: 12, borderRadius: 19, flexDirection: 'row', alignItems: 'center', gap: 5, backgroundColor: C.plum }}>
           <Ic name="qr" size={15} color="#fff" /><Text style={{ color: '#fff', fontWeight: '700', fontSize: 13 }}>Invite</Text>
         </Pressable>
       </View>
@@ -194,7 +194,7 @@ export default function ChatRoom() {
             ListFooterComponent={<View style={{ alignItems: 'center', gap: 8, paddingVertical: 10 }}>
               {isCrew && d.joined && !items.some(x => x.kind === 'pitch' && x.text && !x.text.startsWith('/invite')) && (
                 <CrewStart chipped={d.holders.some(h => !!address && h.address.toLowerCase() === address.toLowerCase() && h.shares > 0n)} members={d.members}
-                  onChip={() => setSheet('chip')} onInvite={() => router.push({ pathname: '/invite', params: { chat, name: d.name } })} />
+                  onChip={() => setSheet('chip')} onInvite={() => router.push({ pathname: '/share', params: { chat, name: d.name } })} />
               )}
               <Text style={{ fontSize: 13, color: C.ink2, textAlign: 'center' }}>{d.topic}</Text>
               <Text style={{ fontSize: 11.5, color: C.ink3, textAlign: 'center' }}>{isCrew ? 'On-chain chat in the crew vault' : `KumiLobby channel #${channel}`} · {items.length} messages shown</Text>
@@ -213,7 +213,7 @@ export default function ChatRoom() {
               <View style={{ gap: 8 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}><Image source={art.scene.joinCrew} accessibilityLabel="A frog and a fox welcoming a bunny into the crew" style={{ width: 64, height: 64 }} contentFit="contain" />
                 <Text style={{ flex: 1, fontSize: 13.5, color: C.ink2 }}><Text style={{ fontWeight: '800', color: C.ink }}>Invite-only.</Text> Members vote new people in. Show a member your code; they scan it and pitch /invite.</Text></View>
-                <Btn title="Show my join code" tone="plum" icon="qr" onPress={() => router.push({ pathname: '/invite', params: { chat, name: d.name, request: '1' } })} />
+                <Btn title="Show my join code" tone="plum" icon="qr" onPress={() => router.push({ pathname: '/share', params: { chat, name: d.name, request: '1' } })} />
               </View>
             ) : (
               <Btn testID="join-chat" title={`Join ${d.name}`} tone="mint" icon="plus" busy={act.busy !== null} onPress={() => act.run('Joining', async () => { const tx = await joinChannel(channel); record([tx]); setLastTxs([tx]); live.reload(); })} />
