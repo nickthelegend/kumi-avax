@@ -114,7 +114,7 @@ candles, the maker bot and the Primit work are new.
 
 ## Demo video
 
-**Film (≤ 3:00, no subtitles):** `grokbot/videos/kumi-avax/kumi-avax-film.mp4` (1080p) · share copy
+**Film (4:14, no subtitles; v10):** `grokbot/videos/kumi-avax/kumi-avax-film.mp4` (1080p) · share copy
 `kumi-avax-film-share.mp4` (720p, < 10 MB) · upload link: _TBD (Nick uploads)_. The whole workflow, filmed live on Fuji on
 Nov 14 (00:18-00:43 UTC, plus the copy lines and Snowtrace proof at 01:22 UTC after a copy-line fix) on the standalone
 build from the landing's download, running on the iOS Simulator. It opens on the landing, then: a brand-new wallet (gas
@@ -124,7 +124,11 @@ from KumiGasStation, 1,000 tUSDC) → **Start a crew** "Pond Club" (`createCrew`
 phone's **deciding vote** fills the vault 13.35 AVAX at $8.244 on KumiPerps in the same tx (`0xf5caab81…29bc`, decoded on
 Snowtrace) → the **Market** tab (Chainlink header, candles with fills, the on-chain book) → **share as a call** in the AVAX
 pit → Tae and Ren copy it with their own money (6.06 AVAX each, Ren's order decoded on Snowtrace) → the Wallet tab's list
-of every tx the phone signed (crew creation decoded) → why not a trading group → Get the app. Session log:
+of every tx the phone signed (crew creation decoded) → **seven coins** (ETH and LINK listed on KumiPerps; SOL, DOGE, SUI
+watch-only) → an **ETH 3x long** from the phone (Nov 14 08:30 UTC, filled 0.039 ETH at $1,897.51,
+[`0x8dd2f6fe…f73a`](https://testnet.snowtrace.io/tx/0x8dd2f6fe202664d2f58654fd8f81543766b80cbe723640b53be69a49da1ef73a), decoded on
+Snowtrace) → the web Markets page → why not a trading group → Get the app. The Market tab scene and the coins/ETH scenes
+are a second take (Nov 14 08:29-08:32 UTC) on the rebuilt app with the new charts. Session log:
 `grokbot/videos/kumi-avax/film/v8/work/notes.txt`; every scripted tx is under `crewActs` in `deployments/fuji.json`.
 
 ## Slides

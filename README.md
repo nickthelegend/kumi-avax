@@ -83,6 +83,10 @@ on-chain data only, and their rank shows next to their name in every chat. [How 
 Markets were listed in [AVAX-USD](https://testnet.snowtrace.io/tx/0xd6be4f137a7d0252127fb440e1ba6a6ac9c35a1d94ab7775da93d008e96bafd5) and
 [BTC-USD](https://testnet.snowtrace.io/tx/0x8c87a9dc0180642bb7074804697e14ed9f740376883ae5430ec2f830611223ca), and the insurance fund was
 seeded with 5,000 tUSDC in [this tx](https://testnet.snowtrace.io/tx/0x1e429a9158fe9767b1792a5f3d288af5bedf96bea9493a7ad187102ad308f264).
+On Nov 14 [ETH-USD](https://testnet.snowtrace.io/tx/0x10d6e1d616676ef4f26fbfbf0ca72828849f9104b715d26892e43cc3ea74a220) (market 2) and
+[LINK-USD](https://testnet.snowtrace.io/tx/0x5e64133ce36e142e686a4962ea7a77c14fb2ff1894c3213836b3ea6c5d7f866a) (market 3) were listed on their
+Chainlink Fuji feeds (`scripts/fuji/list-markets.ts`) and the maker quotes them. SOL, DOGE and SUI are shown as **watch-only**
+coins with Coinbase prices and charts: Chainlink has no Fuji feed for them, and KumiPerps marks every position at Chainlink.
 
 **A first crew implementation was replaced before anyone deposited.** It lacked the deciding-vote gas floor
 described below; it is recorded under `superseded` in the deployment file.
@@ -172,9 +176,12 @@ Expo Go on the iOS Simulator).
 | Kumi AI (v2.2) | ✨ or `/ask` in any chat: answers from live Fuji reads with the tools it used shown, and drafts calls you sign yourself. |
 | Wallet | AVAX, tUSDC and venue margin; deposit QR; **Get 1,000 test USDC**; **Get gas from Kumi** when the wallet has no AVAX (v2.2); the Fuji faucet link; positions; crew vault shares; every tx this phone signed, with Snowtrace links. |
 
-**Candles are real data only.** Coinbase Exchange public candles for AVAX-USD / BTC-USD (Binance as a fallback),
+**Candles are real data only.** Coinbase Exchange public candles for all seven coins (AVAX, BTC, ETH, LINK, SOL, DOGE, SUI; Binance as a fallback),
 labelled with their source on the chart; Chainlink's Fuji price as the dashed line; Kumi's own KumiPerps fills as
-triangles on the candle they landed in. Same code (`sdk/src/candles.ts`) on the phone and the web.
+triangles on the candle they landed in. Same code (`sdk/src/candles.ts`) on the phone and the web. The chart: full-width
+candles with a volume row, a right price axis with Chainlink and last-price chips, 1M to 1D (the old candles stay, stepped
+back, while the next load), a left-to-right reveal, and a crosshair (hover on the web; hold then drag on the phone) that
+reads each candle's open, high, low, close and volume.
 
 **Kumi test accounts.** mika, bo and ren (v1) and jun, sora, tae and lia (v2) are Kumi's own test wallets, seeded by
 `scripts/fuji/seed-v2.ts` (keys in the gitignored `.env`). They chat, call, copy and vote for real on Fuji, and the
