@@ -87,7 +87,7 @@ candles, the maker bot and the Primit work are new.
 
 ## Live links
 
-- Repo: this folder (`grokbot/avax/kumi-avax`). It is not pushed; Nick pushes.
+- Repo: https://github.com/nickthelegend/kumi-avax
 - **KumiPerps venue:** https://testnet.snowtrace.io/address/0x6a6c0d74862edb85f2f0534381857347d5ae09a3
 - **Night Owls crew vault:** https://testnet.snowtrace.io/address/0x1c11A95bfBfaA989afC1222d614A8FbD24f75677
 - **KumiCrewFactory:** https://testnet.snowtrace.io/address/0x7be7c269acf2e0d0b7074e9a0bdc7dfb730b778c
