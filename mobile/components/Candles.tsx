@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Linking, Platform, Pressable, View, type GestureResponderEvent } from 'react-native';
-import Animated, { Easing, useAnimatedProps, useSharedValue, withTiming } from 'react-native-reanimated';
-import Svg, { Circle, ClipPath, Defs, FeDropShadow, Filter, G, Line, LinearGradient, Path, Rect, Stop, Text as SvgText } from 'react-native-svg';
+import { Animated, Easing, Linking, Pressable, View, type GestureResponderEvent } from 'react-native';
+import Svg, { Circle, Defs, G, Line, LinearGradient, Path, Rect, Stop, Text as SvgText } from 'react-native-svg';
 import { INTERVALS, fetchCandles, markersFor, priceTicks, rangeOf, type Candle, type CandleSource, type Interval } from '@kumi-avax/sdk';
 import { Text } from './T';
 import { C, F } from '../lib/theme';
 import { useLive } from '../lib/chain';
 import { Notice, Skeleton, tap } from './ui';
+import { useScrollLock } from './Screen';
 
 type Trade = { price: bigint; size: bigint; takerBuy: boolean; ts: number };
 type Slot = Candle & { empty?: boolean };
@@ -17,7 +17,6 @@ const AXIS_W = 58;
 const VOL_H = 36;
 const TIME_H = 18;
 const GAP = 1.6;
-const AnimatedRect = Animated.createAnimatedComponent(Rect);
 
 const fmt = (v: number, dp: number) => v.toLocaleString('en-US', { minimumFractionDigits: dp, maximumFractionDigits: dp });
 const vol = (v: number) => (v >= 1e6 ? `${(v / 1e6).toFixed(1)}M` : v >= 1e3 ? `${(v / 1e3).toFixed(1)}K` : v.toFixed(v >= 10 ? 0 : 2));
@@ -82,24 +81,47 @@ export function Candles({ symbol, priceDp, trades = [], oracle, height = 268 }: 
   const lastChip = yLast !== undefined && (yOracle === undefined || Math.abs(yLast - yOracle) > 19);
   const timeIdx = candles.length ? [0, 1, 2, 3].map(k => Math.round((k * (candles.length - 1)) / 3)) : [];
 
-  // Left-to-right reveal when a chart first has candles, again for another coin or timeframe.
-  const reveal = useSharedValue(0);
+  // Left-to-right reveal when a chart first has candles, again for another coin or timeframe: a card-coloured cover
+  // slides off the plot on the native driver. (An animated SVG clip re-rasterised every candle on every frame on iOS and
+  // starved the UI thread: the reveal crawled and taps were dropped.)
+  const cover = useRef(new Animated.Value(0)).current;
   const revealKey = shown?.key ?? '';
   useEffect(() => {
     if (!revealKey || !plotW) return;
-    reveal.value = 0;
-    reveal.value = withTiming(1, { duration: 650, easing: Easing.out(Easing.cubic) });
+    cover.setValue(0);
+    Animated.timing(cover, { toValue: 1, duration: 650, easing: Easing.out(Easing.cubic), useNativeDriver: true }).start();
   }, [revealKey, plotW > 0]); // eslint-disable-line react-hooks/exhaustive-deps
-  const clipProps = useAnimatedProps(() => ({ width: Math.min(1, Math.max(0, reveal.value)) * (plotW + 2) }));
 
+  // Hold, then drag (like XORR's pro chart): a plain swipe over the chart scrolls the page; a finger that rests 220 ms
+  // pauses the page scroll and reads candle after candle under it, with a tick on each new one. A quick tap reads one.
+  const lockScroll = useScrollLock();
   const lastHover = useRef<number | null>(null);
-  const onTouch = (e: GestureResponderEvent) => {
+  const hold = useRef<{ timer?: ReturnType<typeof setTimeout>; x0: number; y0: number; on: boolean }>({ x0: 0, y0: 0, on: false });
+  const readAt = (x: number) => {
     if (!pitch || pending) return;
-    const i = Math.min(candles.length - 1, Math.max(0, Math.floor(e.nativeEvent.locationX / pitch)));
+    const i = Math.min(candles.length - 1, Math.max(0, Math.floor(x / pitch)));
     if (i !== lastHover.current) { lastHover.current = i; tap(); }
     setHover(i);
   };
-  const endTouch = () => { lastHover.current = null; setHover(null); };
+  const touchStart = (e: GestureResponderEvent) => {
+    const { locationX: x, pageX, pageY } = e.nativeEvent;
+    clearTimeout(hold.current.timer);
+    hold.current = { x0: pageX, y0: pageY, on: false, timer: setTimeout(() => { hold.current.on = true; lockScroll(true); readAt(x); }, 220) };
+  };
+  const touchMove = (e: GestureResponderEvent) => {
+    const h = hold.current;
+    if (h.on) { readAt(e.nativeEvent.locationX); return; }
+    if (Math.abs(e.nativeEvent.pageX - h.x0) > 8 || Math.abs(e.nativeEvent.pageY - h.y0) > 8) clearTimeout(h.timer); // a swipe: let the page scroll
+  };
+  const touchEnd = (e: GestureResponderEvent, tapped: boolean) => {
+    const h = hold.current; clearTimeout(h.timer);
+    if (h.on) { lockScroll(false); h.on = false; lastHover.current = null; setHover(null); return; }
+    if (tapped && Math.abs(e.nativeEvent.pageX - h.x0) < 8 && Math.abs(e.nativeEvent.pageY - h.y0) < 8) {
+      const i = pitch ? Math.min(candles.length - 1, Math.max(0, Math.floor(e.nativeEvent.locationX / pitch))) : null;
+      setHover(cur => (cur === i ? null : i)); if (i !== null) tap();
+    }
+  };
+  useEffect(() => () => { clearTimeout(hold.current.timer); lockScroll(false); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <View>
@@ -133,16 +155,15 @@ export function Candles({ symbol, priceDp, trades = [], oracle, height = 268 }: 
         ))}
       </View>
 
-      <View onLayout={e => setW(e.nativeEvent.layout.width)} style={{ height }} onStartShouldSetResponder={() => true} onResponderGrant={onTouch} onResponderMove={onTouch} onResponderRelease={endTouch} onResponderTerminate={endTouch} onResponderTerminationRequest={() => true}>
+      <View onLayout={e => setW(e.nativeEvent.layout.width)} style={{ height, overflow: 'hidden' }} onTouchStart={touchStart} onTouchMove={touchMove} onTouchEnd={e => touchEnd(e, true)} onTouchCancel={e => touchEnd(e, false)}>
         {!shown && !live.error && <Skeleton rows={1} height={height} />}
         {live.error && !shown && <Notice error>Candles unavailable: {live.error}.{oracle !== undefined ? ' The order book and fills below are still live from Fuji.' : ''}</Notice>}
         {w > 0 && candles.length > 0 && (
-          <Svg width={w} height={height}>
+          // The SVG never takes touches itself: on iOS its hit test reached past its box (the glow filters), so taps on the
+          // timeframe buttons above it went to the chart instead. The box above owns the crosshair touches.
+          <Svg width={w} height={height} pointerEvents="none">
             <Defs>
-              <Filter id="kumi-up" x="-60%" y="-30%" width="220%" height="160%"><FeDropShadow dx={0} dy={0} stdDeviation={3} floodColor={C.mint} floodOpacity={0.45} /></Filter>
-              <Filter id="kumi-down" x="-60%" y="-30%" width="220%" height="160%"><FeDropShadow dx={0} dy={0} stdDeviation={3} floodColor={C.pink} floodOpacity={0.45} /></Filter>
               <LinearGradient id="kumi-plot" x1="0" y1="0" x2="0" y2="1"><Stop offset="0" stopColor={C.panel2} stopOpacity={0} /><Stop offset="1" stopColor={C.cream2} stopOpacity={0.5} /></LinearGradient>
-              <ClipPath id="kumi-reveal"><AnimatedRect x={0} y={0} height={height} animatedProps={clipProps} /></ClipPath>
             </Defs>
             <Rect x={0} y={top} width={plotW} height={plotH} rx={10} fill="url(#kumi-plot)" />
             {ticks.map(t => (
@@ -154,7 +175,7 @@ export function Candles({ symbol, priceDp, trades = [], oracle, height = 268 }: 
             ))}
             <Line x1={0} x2={plotW} y1={volTop - 3} y2={volTop - 3} stroke={C.line} strokeWidth={1} />
 
-            <G clipPath={Platform.OS === 'android' ? undefined : 'url(#kumi-reveal)'} opacity={pending ? 0.4 : 1}>
+            <G opacity={pending ? 0.4 : 1}>
               {candles.map((c, i) => {
                 if (c.empty) return null;
                 const up = c.c >= c.o;
@@ -166,7 +187,8 @@ export function Candles({ symbol, priceDp, trades = [], oracle, height = 268 }: 
                   <G key={c.t} opacity={dim ? 0.38 : 1}>
                     <Rect x={x - body / 2} y={volTop + VOL_H - 4 - vh} width={body} height={vh} rx={Math.min(1.5, body / 3)} fill={up ? C.mint : C.pink} opacity={0.35} />
                     <Rect x={x - 0.8} y={y(c.h)} width={1.6} height={Math.max(1, y(c.l) - y(c.h))} rx={0.8} fill={up ? C.mintInk : C.pinkInk} opacity={0.8} />
-                    <Rect x={x - body / 2} y={Math.min(yo, yc)} width={body} height={Math.max(1.6, Math.abs(yc - yo))} rx={Math.min(2.5, body / 2.6)} fill={up ? C.mint : C.pink} filter={dim ? undefined : `url(#kumi-${up ? 'up' : 'down'})`} />
+                    {!dim && <Rect x={x - body / 2 - 1.6} y={Math.min(yo, yc) - 1.6} width={body + 3.2} height={Math.max(1.6, Math.abs(yc - yo)) + 3.2} rx={Math.min(4, body / 2)} fill={up ? C.mint : C.pink} opacity={0.28} />}
+                    <Rect x={x - body / 2} y={Math.min(yo, yc)} width={body} height={Math.max(1.6, Math.abs(yc - yo))} rx={Math.min(2.5, body / 2.6)} fill={up ? C.mint : C.pink} />
                     <Rect x={x - body / 2} y={Math.min(yo, yc)} width={body} height={Math.max(1.6, Math.abs(yc - yo))} rx={Math.min(2.5, body / 2.6)} fill="none" stroke={up ? C.mintInk : C.pinkInk} strokeWidth={0.8} strokeOpacity={0.55} />
                   </G>
                 );
@@ -218,6 +240,9 @@ export function Candles({ symbol, priceDp, trades = [], oracle, height = 268 }: 
               <SvgText key={k} x={k === 0 ? 1 : k === 3 ? plotW - 1 : cx(i)} y={height - 5} fontSize={9.5} fill={C.ink3} fontFamily={F.mono} textAnchor={k === 0 ? 'start' : k === 3 ? 'end' : 'middle'}>{clock(candles[i]!.t, sec)}</SvgText>
             ))}
           </Svg>
+        )}
+        {w > 0 && candles.length > 0 && (
+          <Animated.View pointerEvents="none" style={{ position: 'absolute', left: 0, top: 0, width: plotW + 2, height, backgroundColor: C.panel, transformOrigin: 'right center', transform: [{ scaleX: cover.interpolate({ inputRange: [0, 1], outputRange: [1, 0.001] }) }] }} />
         )}
       </View>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', columnGap: 12, rowGap: 6, marginTop: 10 }}>

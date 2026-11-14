@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { createContext, useContext, useState, type ReactNode } from 'react';
 import { Pressable, ScrollView, View, type StyleProp, type ViewStyle } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -13,15 +13,22 @@ export function Backdrop() {
   return <LinearGradient colors={['#ffe3a3', '#fff0cf', C.cream]} locations={[0, 0.3, 0.7]} style={{ position: 'absolute', left: 0, right: 0, top: 0, height: 760 }} pointerEvents="none" />;
 }
 
+/** Lets a child pause the page scroll while it owns a drag (the price chart's hold-then-drag crosshair). */
+const ScrollLock = createContext<(locked: boolean) => void>(() => {});
+export const useScrollLock = () => useContext(ScrollLock);
+
 export function Screen({ children, scroll = true, tabs, modal, pad = 16, style }: { children: ReactNode; scroll?: boolean; tabs?: boolean; modal?: boolean; pad?: number; style?: StyleProp<ViewStyle> }) {
   const insets = useSafeAreaInsets();
+  const [locked, setLocked] = useState(false);
   // An iOS page sheet already sits below the status bar: no inset (it left a tall empty band above the title).
   const top = modal ? 22 : insets.top + 8;
   const body = { paddingTop: top, paddingHorizontal: pad, paddingBottom: (tabs ? TAB_SPACE : 24) + insets.bottom, gap: 16 };
   return (
     <View style={{ flex: 1, backgroundColor: C.cream }}>
       <Backdrop />
-      {scroll ? <ScrollView contentContainerStyle={[body, style]} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>{children}</ScrollView> : <View style={[{ flex: 1 }, body, style]}>{children}</View>}
+      <ScrollLock.Provider value={setLocked}>
+        {scroll ? <ScrollView scrollEnabled={!locked} contentContainerStyle={[body, style]} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>{children}</ScrollView> : <View style={[{ flex: 1 }, body, style]}>{children}</View>}
+      </ScrollLock.Provider>
       {/* Status-bar scrim: scrolled content never runs under the clock or the Dynamic Island (same cream as the chat header). */}
       {!modal && insets.top > 0 && <View pointerEvents="none" style={{ position: 'absolute', left: 0, right: 0, top: 0, height: insets.top, backgroundColor: 'rgba(255,240,207,0.96)' }} />}
     </View>
