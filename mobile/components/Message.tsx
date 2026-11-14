@@ -1,13 +1,13 @@
 import { View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInDown, ReduceMotion } from 'react-native-reanimated';
-import type { Address } from 'viem';
+import { parseEventLogs, type Address } from 'viem';
 import { MARKETS, price as fmtPrice, size as fmtSize, usd as fmtUsd, signedUsd, type CallerStat, type ChatItem } from '@kumi-avax/sdk';
 import { Text } from './T';
 import { Avatar, Btn, CallerBadge, Chip, Ic, TestTag, TokenLogo, TxLink, ago } from './ui';
 import { Image } from 'expo-image';
 import { C, F, TONE, art, type Tone } from '../lib/theme';
-import { crewAbi, nameOf, pub, useLive } from '../lib/chain';
+import { crewAbi, nameOf, perpsAbi, pub, useLive } from '../lib/chain';
 
 const enter = FadeInDown.duration(260).reduceMotion(ReduceMotion.System);
 
@@ -104,12 +104,30 @@ function Stat({ k, v }: { k: string; v: string }) {
   );
 }
 
-/** A verified copy: the size and entry come from KumiPerps (the lobby read them from the venue). */
+/**
+ * What one copy order filled: the KumiPerps `Filled` events in its receipt where the copier is the taker (size and
+ * size-weighted price). The lobby's own record is the copier's whole position after the copy, which includes any
+ * earlier position in that market; this is the copy itself. Null until read (or when the receipt has no fill).
+ */
+function useOrderFill(orderTx?: string, who?: string) {
+  return useLive(async () => {
+    if (!orderTx || !who) return null;
+    const r = await pub.getTransactionReceipt({ hash: orderTx as `0x${string}` });
+    const fills = parseEventLogs({ abi: perpsAbi, logs: r.logs, eventName: 'Filled' }).filter(l => (l.args as any).taker?.toLowerCase() === who.toLowerCase());
+    let size = 0n, notional = 0n;
+    for (const f of fills) { const a = f.args as any; size += a.size; notional += a.size * BigInt(a.price); }
+    return size > 0n ? { size, price: notional / size } : null;
+  }, [orderTx, who], 0);
+}
+
+/** A verified copy: the lobby checked the position on KumiPerps; the line shows that copy order's own fill. */
 export function CopyPill({ m, me }: { m: ChatItem; me?: string | null }) {
   const mk = MARKETS[m.market ?? 0]!;
+  const own = useOrderFill(m.orderTx, m.who).data;
+  const size = own ? own.size : m.size ?? 0n, px = own ? own.price : m.price ?? 0n;
   return (
     <Animated.View entering={enter} style={{ alignSelf: 'center', alignItems: 'center', gap: 3 }}>
-      <EventPill m={m} me={me} tone="mint" icon="check" text={<>copied #{m.ref}: {m.isLong ? 'long' : 'short'} <Text style={{ fontFamily: F.monoBold }}>{fmtSize(m.size ?? 0n, mk.sizeDp)} {mk.symbol}</Text> at <Text style={{ fontFamily: F.monoBold }}>${fmtPrice(m.price ?? 0n, mk.priceDp)}</Text></>} />
+      <EventPill m={m} me={me} tone="mint" icon="check" text={<>copied #{m.ref}: {m.isLong ? 'long' : 'short'} <Text style={{ fontFamily: F.monoBold }}>{fmtSize(size, mk.sizeDp)} {mk.symbol}</Text> at <Text style={{ fontFamily: F.monoBold }}>${fmtPrice(px, mk.priceDp)}</Text>{own ? '' : ' · position'}</>} />
       {m.orderTx && <TxLink hash={m.orderTx} label="order on Snowtrace" color={C.mintInk} />}
     </Animated.View>
   );
