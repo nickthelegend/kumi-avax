@@ -1,5 +1,5 @@
 import { useMemo, useRef } from 'react';
-import { MARKETS, price as fmtPrice, size as fmtSize, usd, PX_SIZE, addressUrl } from '@kumi-avax/sdk';
+import { COINS, MARKETS, WATCH, fetchStats, price as fmtPrice, size as fmtSize, usd, PX_SIZE, addressUrl, type Stats } from '@kumi-avax/sdk';
 import { PERPS, readBook, readMarkets, recentFills, useLive, type MarketState } from '../lib/chain';
 import { nameOf } from '../lib/signer';
 import { Addr, Ic, Link, MiniEmpty, Notice, Tx, ago } from '../ui/bits';
@@ -8,18 +8,61 @@ import { Candles } from '../ui/Candles';
 
 /** Hyperliquid-style market view: stats strip, depth and trades on the left, the order book on the right. */
 export function Markets({ sym }: { sym?: string }) {
+  const w = WATCH.find(x => x.symbol === (sym ?? '').toUpperCase());
+  const stats = useLive(() => Promise.all(COINS.map(x => fetchStats(x.symbol).catch(() => null))), [], 30_000);
+  if (w) return <WatchMarket w={w} stats={stats.data} error={stats.error} />;
+  return <PerpMarket sym={sym} stats={stats.data} />;
+}
+
+/** Every coin Kumi charts: the four KumiPerps markets (Chainlink price) and the watch-only coins (Coinbase price). */
+function CoinTabs({ current, stats, oracles }: { current: string; stats?: (Stats | null)[]; oracles?: MarketState[] }) {
+  return <div className="mk-tabs" role="tablist" aria-label="Markets">
+    {COINS.map((x, i) => {
+      const s = stats?.[i];
+      const o = x.market !== undefined ? oracles?.[x.market] : undefined;
+      const px = o ? `$${fmtPrice(o.oracle, x.priceDp)}` : s ? `$${s.last.toLocaleString('en-US', { minimumFractionDigits: x.priceDp, maximumFractionDigits: x.priceDp })}` : '';
+      return <Link key={x.symbol} to={`/markets/${x.symbol}`} className="mk-tab" aria-current={x.symbol === current ? 'page' : undefined}>
+        <TokenLogo sym={x.symbol} size={24} />{x.symbol}
+        <span className={`mk-kind ${x.market === undefined ? 'watch' : 'perp'}`}>{x.market === undefined ? 'Watch' : 'Perp'}</span>
+        <span className="mono">{px}</span>
+        {s && <span className={`mono mk-chg ${s.changePct >= 0 ? 'up' : 'down'}`}>{s.changePct >= 0 ? '+' : ''}{s.changePct.toFixed(1)}%</span>}
+      </Link>;
+    })}
+  </div>;
+}
+
+function WatchMarket({ w, stats, error }: { w: (typeof WATCH)[number]; stats?: (Stats | null)[]; error?: string }) {
+  const s = stats?.[COINS.findIndex(c => c.symbol === w.symbol)] ?? null;
+  const f = (v: number) => `$${v.toLocaleString('en-US', { minimumFractionDigits: w.priceDp, maximumFractionDigits: w.priceDp })}`;
+  return <div className="markets">
+    <CoinTabs current={w.symbol} stats={stats} />
+    {error && !stats && <Notice error>Could not read Coinbase prices: {error}</Notice>}
+    <section className="mk-strip" aria-label={`${w.pair} stats`}>
+      <div className="mk-id"><TokenLogo sym={w.symbol} size={44} /><div><h1>{w.pair}</h1><span className="faint">Watch only · price from Coinbase</span></div></div>
+      <Stat label="Coinbase last" v={s ? f(s.last) : '…'} sub={s ? `${s.changePct >= 0 ? '+' : ''}${s.changePct.toFixed(2)}% in 24 h` : ''} />
+      <Stat label="24 h high" v={s ? f(s.high) : '…'} sub={s ? `low ${f(s.low)}` : ''} />
+      <Stat label="24 h volume" v={s ? `${Math.round(s.volume).toLocaleString('en-US')} ${w.symbol}` : '…'} />
+      <Stat label="On KumiPerps" v="Not listed" sub="no Chainlink feed on Fuji" />
+    </section>
+    <section className="card" aria-label="Price">
+      <div className="card-head"><h3>{w.symbol} price</h3><span className="label">real Coinbase candles</span></div>
+      <Candles symbol={w.symbol} dp={w.priceDp} />
+    </section>
+    <Notice>KumiPerps marks every position at a Chainlink price, and Chainlink publishes no {w.symbol}/USD feed on Avalanche Fuji, so {w.symbol} is chart and price only. Trade {MARKETS.map(m => m.symbol).join(', ')}: <Link to="/markets/AVAX">open a perp market</Link>.</Notice>
+  </div>;
+}
+
+function PerpMarket({ sym, stats }: { sym?: string; stats?: (Stats | null)[] }) {
   const m = MARKETS.find(x => x.symbol === (sym ?? 'AVAX').toUpperCase()) ?? MARKETS[0];
   const mk = useLive(() => readMarkets(), [], 5000);
   const book = useLive(() => readBook(m.id, 12), [m.id], 3000);
   const fills = useLive(() => recentFills(4000n), [], 15_000);
   const s = mk.data?.[m.id];
-  const dp = m.id === 1 ? 0 : 3;
+  const dp = m.priceDp;
   const sdp = m.sizeDp;
 
   return <div className="markets">
-    <div className="mk-tabs" role="tablist" aria-label="Markets">
-      {MARKETS.map(x => <Link key={x.id} to={`/markets/${x.symbol}`} className="mk-tab" aria-current={x.id === m.id ? 'page' : undefined}><TokenLogo sym={x.symbol} size={24} />{x.pair}<span className="mono">{mk.data ? `$${fmtPrice(mk.data[x.id]!.oracle, x.id === 1 ? 0 : 3)}` : ''}</span></Link>)}
-    </div>
+    <CoinTabs current={m.symbol} stats={stats} oracles={mk.data} />
     {mk.error && !mk.data && <Notice error>Could not read the venue on Fuji: {mk.error}</Notice>}
     <section className="mk-strip" aria-label={`${m.pair} stats`}>
       <div className="mk-id"><TokenLogo sym={m.symbol} size={44} /><div><h1>{m.pair}</h1><span className="faint">Perpetual · margin in tUSDC</span></div></div>
@@ -32,7 +75,7 @@ export function Markets({ sym }: { sym?: string }) {
 
     <div className="mk-grid">
       <section className="card mk-depth" aria-label="Price and depth">
-        <div className="card-head"><h3>Price</h3><span className="label">real candles, Chainlink mark and Kumi's own fills</span></div>
+        <div className="card-head"><h3>{m.symbol} price</h3><span className="label">real candles, Chainlink mark and Kumi's own fills</span></div>
         {book.data ? <Candles symbol={m.symbol} dp={dp} trades={book.data.trades} oracle={s ? Number(s.oracle) / 1e8 : undefined} /> : <div className="skeleton" style={{ height: 300 }} />}
         <div className="card-head" style={{ marginTop: 18 }}><h3>Depth</h3><span className="label">cumulative size around the Chainlink price</span></div>
         {book.data ? <DepthChart bids={book.data.bids} asks={book.data.asks} oracle={s?.oracle ?? 0n} /> : <div className="skeleton" style={{ height: 220 }} />}
@@ -70,7 +113,7 @@ export function Markets({ sym }: { sym?: string }) {
           <li>Orders must sit within <b>{s ? s.bandBps / 100 : 5}%</b> of Chainlink, so the book can't be pushed far from the oracle.</li>
           <li>Initial margin <b>{s ? s.imBps / 100 : 10}%</b> (10x max), maintenance <b>{s ? s.mmBps / 100 : 5}%</b>; below it anyone can liquidate through the book for a 1% fee.</li>
           <li>Funding: book mid vs Chainlink, capped at ±1%, paid over 8 h, accrued every second.</li>
-          <li>Tick ${m.id === 1 ? '1' : '0.001'}, lot {m.id === 1 ? '0.00001 BTC' : '0.01 AVAX'}. Price-time priority, self-trades cancel the resting order.</li>
+          <li>Tick ${Number(m.tick) / 1e8}, lot {Number(m.lot) / 1e18} {m.symbol}. Price-time priority, self-trades cancel the resting order.</li>
         </ul>
         <p className="fine">Venue <Addr a={PERPS} label="KumiPerps" /> · liquidity from Kumi's maker bot account</p>
       </section>

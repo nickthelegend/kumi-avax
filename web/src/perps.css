@@ -83,6 +83,11 @@
 .mk-tab .mono { font-size: 13px; color: var(--ink-2); }
 .mk-tab[aria-current='page'] { background: var(--plum); border-color: var(--plum); color: #fff; box-shadow: 0 4px 0 #1f0e29; }
 .mk-tab[aria-current='page'] .mono { color: var(--butter); }
+.mk-kind { font: 800 10px var(--sans); letter-spacing: .05em; text-transform: uppercase; padding: 2px 6px; border-radius: 6px; }
+.mk-kind.perp { background: var(--butter-soft); color: var(--butter-ink); } .mk-kind.watch { background: var(--panel-3); color: var(--ink-3); }
+.mk-tab[aria-current='page'] .mk-kind.perp { background: var(--butter); color: var(--plum-2); } .mk-tab[aria-current='page'] .mk-kind.watch { background: rgba(255,255,255,.16); color: rgba(255,255,255,.8); }
+.mk-chg { font-size: 12px !important; } .mk-chg.up { color: var(--mint-ink) !important; } .mk-chg.down { color: var(--pink-ink) !important; }
+.mk-tab[aria-current='page'] .mk-chg.up { color: var(--mint) !important; } .mk-tab[aria-current='page'] .mk-chg.down { color: var(--pink) !important; }
 .mk-strip { display: grid; grid-template-columns: minmax(200px, 1.2fr) repeat(5, minmax(0, 1fr)); gap: 10px; align-items: stretch; padding: 14px; border-radius: 28px; background: #fff; box-shadow: 0 6px 0 var(--edge), 0 22px 36px -24px rgba(59, 31, 74, .35); }
 .mk-id { display: flex; align-items: center; gap: 12px; }
 .mk-id h1 { margin: 0; font-size: 26px; line-height: 1; color: var(--plum); }
@@ -161,24 +166,38 @@
 .txs .faint.mono { font-size: 11px; margin-left: auto; }
 
 /* v2: price candles (real exchange candles + Chainlink + Kumi fills), in the markets page's own palette */
-.cndl { display: grid; gap: 10px; }
-.cndl-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-.cndl-iv { grid-template-columns: repeat(4, auto); }
-.cndl-iv button { min-height: 34px; padding: 0 14px; font-family: var(--display); }
-.cndl-ohlc { font-size: 12px; color: var(--ink-2); }
-.cndl-svg { width: 100%; height: auto; display: block; cursor: crosshair; }
-.c-grid { stroke: var(--line); stroke-width: 1; }
-.c-up .c-body { fill: var(--mint); stroke: var(--mint-ink); stroke-width: 1; } .c-up .c-wick { stroke: var(--mint-ink); stroke-width: 1.3; } .c-up .c-vol { fill: var(--mint-soft); }
-.c-down .c-body { fill: var(--pink); stroke: var(--pink-ink); stroke-width: 1; } .c-down .c-wick { stroke: var(--pink-ink); stroke-width: 1.3; } .c-down .c-vol { fill: var(--pink-soft); }
-.c-tag { fill: var(--plum); } .c-tag-t { font: 700 11px var(--mono); fill: #fff; }
-.c-mk-buy { fill: var(--mint); stroke: var(--plum); stroke-width: 1.5; } .c-mk-sell { fill: var(--pink); stroke: var(--plum); stroke-width: 1.5; }
-.c-cross { stroke: var(--ink-3); stroke-dasharray: 2 3; }
-.cndl-legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--ink-3); font-weight: 600; }
+.cndl { display: grid; gap: 12px; min-width: 0; }
+.cndl-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.cndl-price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; min-width: 0; }
+.cndl-price > b { font-size: 26px; letter-spacing: -.02em; color: var(--ink); }
+.cndl-chg { font-size: 12.5px; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
+.cndl-chg.up { background: var(--mint-soft); color: var(--mint-ink); } .cndl-chg.down { background: var(--pink-soft); color: var(--pink-ink); }
+.cndl-ohlc { flex-basis: 100%; font-size: 12px; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cndl-ohlc b.up { color: var(--mint-ink); } .cndl-ohlc b.down { color: var(--pink-ink); }
+.cndl-iv { grid-template-columns: repeat(6, auto); }
+.cndl-iv button { min-height: 32px; padding: 0 12px; font-family: var(--display); font-size: 13px; }
+.cndl-box { position: relative; width: 100%; min-width: 0; }
+.cndl-svg { display: block; cursor: crosshair; user-select: none; }
+.c-grid { stroke: var(--line-2); stroke-width: 1; stroke-dasharray: 2 5; } .c-vgrid { stroke: var(--line); }
+.c-sep { stroke: var(--line); stroke-width: 1; }
+.c-series { animation: cndl-reveal .7s var(--ease) both; transition: opacity .25s var(--ease); }
+.c-series.pending { opacity: .4; }
+@keyframes cndl-reveal { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@media (prefers-reduced-motion: reduce) { .c-series { animation: none; } }
+.c-up .c-body { fill: var(--mint); } .c-up .c-wick { fill: var(--mint-ink); opacity: .8; } .c-up .c-vol { fill: var(--mint); opacity: .32; }
+.c-down .c-body { fill: var(--pink); } .c-down .c-wick { fill: var(--pink-ink); opacity: .8; } .c-down .c-vol { fill: var(--pink); opacity: .32; }
+.c-mk { fill: var(--plum); stroke: #fff; stroke-width: 1.5; stroke-linejoin: round; }
+.c-last line { stroke: var(--coral); stroke-width: 1; stroke-dasharray: 1 3; }
+.c-last-halo { fill: var(--coral); opacity: .2; } .c-last-dot { fill: var(--coral); stroke: #fff; stroke-width: 1.5; }
+.c-chip rect { fill: var(--plum); } .c-chip text { font: 700 11px var(--mono); fill: #fff; }
+.c-chip-last rect { fill: var(--coral); } .c-chip-ink rect { fill: var(--ink); }
+.c-cross line { stroke: var(--ink); stroke-width: 1; stroke-dasharray: 3 3; opacity: .55; }
+.cndl-legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 12px; color: var(--ink-3); font-weight: 600; }
 .cndl-legend span { display: inline-flex; align-items: center; gap: 6px; }
 .cndl-legend i { display: inline-block; }
-.lg-c { width: 10px; height: 10px; border-radius: 2px; background: var(--mint); box-shadow: inset 0 0 0 1px var(--mint-ink); }
+.lg-c { width: 12px; height: 10px; border-radius: 2px; background: linear-gradient(90deg, var(--mint) 0 45%, transparent 45% 55%, var(--pink) 55%); }
 .lg-o { width: 16px; border-top: 2px dashed var(--plum); }
-.lg-m { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-bottom: 9px solid var(--mint); }
+.lg-m { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-bottom: 9px solid var(--plum); }
 /* v2: the book's bars show cumulative depth; a level that changes flashes once */
 .lvl.flash::after { content: ''; position: absolute; inset: 0; border-radius: inherit; animation: lvlflash .8s var(--ease); pointer-events: none; }
 .lvl.bid.flash::after { background: var(--mint-soft); } .lvl.ask.flash::after { background: var(--pink-soft); }

@@ -160,7 +160,7 @@ export function Landing() {
           {DEPLOYMENT.gasStation && <li><span className="what"><Obj name="coins" size={34} still /><span><b>First gas</b> KumiGasStation</span></span><Addr a={DEPLOYMENT.gasStation} /></li>}
         </ul></div>
         <div className="card"><div className="card-head"><h3>Latest fills</h3><span className="chip chip-mint chip-live"><span className="dot" />Live</span></div><ul className="txlist">
-          {(fills.data ?? []).map(f => <li key={`${f.hash}${f.makerOrderId}`}><span className="what"><i className={`ic ${f.takerBuy ? 'tone-mint' : 'tone-pink'}`} /><span><b>{nameOf(f.taker!)}</b> {f.takerBuy ? 'bought' : 'sold'} {fmtSize(f.size!, MARKETS[f.market!]!.sizeDp)} {MARKETS[f.market!]!.symbol} at ${fmtPrice(BigInt(f.price!), f.market === 1 ? 0 : 3)}</span></span><Tx hash={f.hash} /></li>)}
+          {(fills.data ?? []).map(f => <li key={`${f.hash}${f.makerOrderId}`}><span className="what"><i className={`ic ${f.takerBuy ? 'tone-mint' : 'tone-pink'}`} /><span><b>{nameOf(f.taker!)}</b> {f.takerBuy ? 'bought' : 'sold'} {fmtSize(f.size!, MARKETS[f.market!]!.sizeDp)} {MARKETS[f.market!]!.symbol} at ${fmtPrice(BigInt(f.price!), MARKETS[f.market!]!.priceDp)}</span></span><Tx hash={f.hash} /></li>)}
           {fills.data && fills.data.length === 0 && <li><span className="faint">No fills in the last 24 hours. The book is open on the markets page.</span></li>}
           {fills.error && !fills.data && <li><Notice error>Could not read fills: {fills.error}</Notice></li>}
           {!fills.data && !fills.error && <li><span className="skeleton" style={{ height: 40, width: '100%' }} /></li>}

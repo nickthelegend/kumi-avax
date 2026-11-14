@@ -203,7 +203,7 @@ function CommandPreview({ cmd, st, markets }: { cmd: NonNullable<ReturnType<type
 
 function MarketsMini({ markets }: { markets?: MarketState[] }) {
   return <Link to="/markets" className="mk-mini" aria-label="Markets">
-    {(markets ?? []).map(m => <span key={m.id} className="mk-row"><TokenLogo sym={m.symbol} size={26} /><b>{m.pair}</b><span className="mono">${fmtPrice(m.oracle, m.id === 1 ? 0 : 3)}</span><small className={m.stale ? 'down' : 'faint'}>{m.stale ? 'stale' : 'Chainlink'}</small></span>)}
+    {(markets ?? []).map(m => <span key={m.id} className="mk-row"><TokenLogo sym={m.symbol} size={26} /><b>{m.pair}</b><span className="mono">${fmtPrice(m.oracle, MARKETS[m.id]?.priceDp ?? 3)}</span><small className={m.stale ? 'down' : 'faint'}>{m.stale ? 'stale' : 'Chainlink'}</small></span>)}
     {!markets && <span className="skeleton" style={{ height: 60, display: 'block' }} />}
     <span className="mk-foot">Order book, trades and funding <Ic name="arrow" size={14} /></span>
   </Link>;

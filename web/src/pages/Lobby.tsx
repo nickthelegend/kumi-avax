@@ -196,7 +196,7 @@ function CallSheet({ channel, market, init, onClose, onDone }: { channel: number
   const [err, setErr] = useState<string | null>(null);
   return <div className="scrim" onClick={onClose}><div className="sheet" role="dialog" aria-label="Post a trade call" onClick={e => e.stopPropagation()}>
     <div className="row-between"><h3>Post a call</h3><button className="btn btn-ghost btn-sm" onClick={onClose} aria-label="Close"><Ic name="x" /></button></div>
-    <div className="seg">{MARKETS.map(m => <button key={m.id} aria-pressed={mkt === m.id} onClick={() => setMkt(m.id)}>{m.pair}</button>)}</div>
+    <div className="seg">{MARKETS.map(m => <button key={m.id} aria-pressed={mkt === m.id} onClick={() => setMkt(m.id)}>{m.symbol}</button>)}</div>
     <div className="seg3"><button aria-pressed={long} onClick={() => setLong(true)}>Long</button><button aria-pressed={!long} onClick={() => setLong(false)}>Short</button></div>
     <div className="seg seg4" style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>{[1, 2, 3, 5, 10].map(l => <button key={l} aria-pressed={lev === l} onClick={() => setLev(l)}>{l}x</button>)}</div>
     <label className="field"><span className="label">Suggested margin (tUSDC)</span><input className="input mono" value={margin} onChange={e => setMargin(e.target.value)} inputMode="decimal" /></label>
