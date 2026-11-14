@@ -290,7 +290,7 @@ function CallSheet({ channel, defaultMarket, init, onClose, onDone }: { channel:
   const mk = MARKETS[market]!;
   return (
     <Sheet title="Post a trade call" onClose={onClose}>
-      <Seg value={market} onChange={setMarket} options={MARKETS.map(m => ({ v: m.id, label: m.pair }))} />
+      <Seg value={market} onChange={setMarket} options={MARKETS.map(m => ({ v: m.id, label: m.symbol }))} />
       <Seg value={long ? 'l' : 's'} onChange={v => setLong(v === 'l')} options={[{ v: 'l', label: 'Long', tone: C.coral }, { v: 's', label: 'Short', tone: C.plum }]} />
       <View style={{ gap: 6 }}>
         <Text style={st.k}>Leverage</Text>

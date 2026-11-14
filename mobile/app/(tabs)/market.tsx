@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Pressable, View } from 'react-native';
-import { MARKETS, initialMargin, parseDecimal, sizeFor, notionalOf, price as fmtPrice, size as fmtSize, usd as fmtUsd, signedUsd } from '@kumi-avax/sdk';
+import { Pressable, ScrollView, View } from 'react-native';
+import { COINS, MARKETS, fetchStats, initialMargin, parseDecimal, sizeFor, notionalOf, price as fmtPrice, size as fmtSize, usd as fmtUsd, signedUsd } from '@kumi-avax/sdk';
 import { Text, TextInput } from '../../components/T';
 import { Screen } from '../../components/Screen';
 import { Candles } from '../../components/Candles';
@@ -14,12 +14,16 @@ import { C, F } from '../../lib/theme';
 
 /** Market: live on-chain book, real candles, a ticket that signs on this phone, and your position from KumiPerps. */
 export default function Market() {
-  const [mid, setMid] = useState(0);
+  const [coin, setCoin] = useState('AVAX');
+  const c = COINS.find(x => x.symbol === coin) ?? COINS[0]!;
+  const watch = c.market === undefined;
+  const mid = c.market ?? 0;
   const m = MARKETS[mid]!;
   const { address, record } = useApp();
-  const book = useLive(() => readBook(mid, 10), [mid], 3000);
+  const stats = useLive(() => Promise.all(COINS.map(x => fetchStats(x.symbol).catch(() => null))), [], 30_000);
+  const book = useLive(() => (watch ? Promise.resolve(null) : readBook(mid, 10)), [mid, watch], 3000);
   const acct = useLive(() => (address ? readAccount(address) : Promise.resolve(null)), [address], 6000);
-  const b = book.data;
+  const b = watch ? null : book.data;
   const [side, setSide] = useState<'buy' | 'sell'>('buy');
   const [kind, setKind] = useState<'market' | 'limit'>('market');
   const [px, setPx] = useState('');
@@ -38,26 +42,65 @@ export default function Market() {
   const pos = acct.data?.positions.find(p => Number(p.market) === mid);
   const myOrders = acct.data?.orders.filter(o => o.market === mid) ?? [];
   const oracleNum = b ? Number(b.oracle) / 1e8 : undefined;
+  const st0 = stats.data?.[COINS.indexOf(c)] ?? null;
 
   return (
     <Screen tabs>
-      <View style={{ flexDirection: 'row', gap: 10 }}>
-        {MARKETS.map(x => {
-          const on = x.id === mid;
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginHorizontal: -16, flexGrow: 0 }} contentContainerStyle={{ gap: 8, paddingHorizontal: 16, paddingBottom: 2 }}>
+        {COINS.map((x, i) => {
+          const on = x.symbol === coin;
+          const s = stats.data?.[i];
           return (
-            <Pressable key={x.id} testID={`market-${x.symbol}`} accessibilityRole="button" accessibilityState={{ selected: on }} onPress={() => { tap(); setMid(x.id); setPx(''); }}
-              style={{ flex: 1, borderRadius: 22, backgroundColor: on ? C.plumEdge : C.edge, paddingBottom: 4 }}>
-              <View style={{ height: 50, borderRadius: 22, flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 10, backgroundColor: on ? C.plum : '#fff' }}>
+            <Pressable key={x.symbol} testID={`market-${x.symbol}`} accessibilityRole="button" accessibilityState={{ selected: on }} accessibilityLabel={`${x.pair}${x.market === undefined ? ', watch only' : ', trade on KumiPerps'}`}
+              onPress={() => { tap(); setCoin(x.symbol); setPx(''); }}
+              style={{ borderRadius: 20, backgroundColor: on ? C.plumEdge : C.edge, paddingBottom: 4 }}>
+              <View style={{ height: 58, minWidth: 112, borderRadius: 20, flexDirection: 'row', alignItems: 'center', gap: 8, paddingLeft: 9, paddingRight: 12, backgroundColor: on ? C.plum : '#fff' }}>
                 <TokenLogo sym={x.symbol} size={28} />
-                <Text style={{ fontWeight: '800', fontSize: 15, color: on ? '#fff' : C.ink }}>{x.pair}</Text>
+                <View style={{ gap: 1 }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+                    <Text style={{ fontWeight: '800', fontSize: 14.5, color: on ? '#fff' : C.ink }}>{x.symbol}</Text>
+                    <View style={{ paddingHorizontal: 5, height: 15, borderRadius: 5, justifyContent: 'center', backgroundColor: x.market === undefined ? (on ? 'rgba(255,255,255,0.16)' : C.panel3) : (on ? C.butter : C.butterSoft) }}>
+                      <Text style={{ fontSize: 8.5, fontWeight: '800', letterSpacing: 0.4, color: x.market === undefined ? (on ? 'rgba(255,255,255,0.8)' : C.ink3) : C.butterInk }}>{x.market === undefined ? 'WATCH' : 'PERP'}</Text>
+                    </View>
+                  </View>
+                  <Text style={{ fontFamily: F.mono, fontSize: 11, color: on ? 'rgba(255,255,255,0.85)' : C.ink2 }}>
+                    {s ? `$${fmtNum(s.last, x.priceDp)}` : stats.error ? 'no price' : '…'}
+                    {s && <Text style={{ fontFamily: F.monoBold, color: s.changePct >= 0 ? (on ? C.mint : C.mintInk) : (on ? C.pink : C.pinkInk) }}>{` ${s.changePct >= 0 ? '+' : ''}${s.changePct.toFixed(1)}%`}</Text>}
+                  </Text>
+                </View>
               </View>
             </Pressable>
           );
         })}
-      </View>
+      </ScrollView>
 
-      {book.error && !b && <Notice error>Could not read the {m.pair} book from Fuji: {book.error}</Notice>}
-      {!b && !book.error && <Skeleton rows={3} height={90} />}
+      {watch && (
+        <>
+          <View style={{ borderRadius: 28, backgroundColor: C.plumEdge, paddingBottom: 6 }}>
+            <View style={{ borderRadius: 28, backgroundColor: C.plum, padding: 16, gap: 4 }}>
+              <View style={st.between}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}><LiveDot size={7} /><Text style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.75)', fontWeight: '700' }}>{c.pair} · Coinbase</Text></View>
+                <Chip text="watch only" tone="butter" />
+              </View>
+              {st0 ? <CountUp value={st0.last} format={n => `$${fmtNum(n, c.priceDp)}`} style={{ fontFamily: F.display, fontSize: 42, lineHeight: 48, color: '#fff' }} />
+                : <Text style={{ fontFamily: F.display, fontSize: 42, lineHeight: 48, color: 'rgba(255,255,255,0.5)' }}>{stats.error ? 'no price' : '…'}</Text>}
+              {st0 && <Text style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)' }}>24h {st0.changePct >= 0 ? '+' : ''}{st0.changePct.toFixed(2)}% · high {fmtNum(st0.high, c.priceDp)} · low {fmtNum(st0.low, c.priceDp)}</Text>}
+              <Text style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)' }}>Chainlink has no {c.symbol}/USD feed on Avalanche Fuji, so KumiPerps can't list {c.symbol}: chart and price only, no trading.</Text>
+            </View>
+          </View>
+          <Card pad={14}>
+            <View style={[st.between, { marginBottom: 10 }]}>
+              <Text style={st.h2}>{c.symbol} price</Text>
+              <Chip text="real data" tone="mint" dot />
+            </View>
+            <Candles symbol={c.symbol} priceDp={c.priceDp} />
+          </Card>
+          <Notice>Trading is on AVAX, BTC, ETH and LINK: KumiPerps lists those four on their live Chainlink feeds on Fuji.</Notice>
+        </>
+      )}
+
+      {!watch && book.error && !b && <Notice error>Could not read the {m.pair} book from Fuji: {book.error}</Notice>}
+      {!watch && !b && !book.error && <Skeleton rows={3} height={90} />}
       {b && (
         <>
           {b.stale && <Notice error>Chainlink's {m.pair} price is older than the venue accepts, so new orders revert until it updates. Cancels still work.</Notice>}
@@ -75,7 +118,7 @@ export default function Market() {
 
           <Card pad={14}>
             <View style={[st.between, { marginBottom: 10 }]}>
-              <Text style={st.h2}>Price</Text>
+              <Text style={st.h2}>{m.symbol} price</Text>
               <Chip text="real data" tone="mint" dot />
             </View>
             <Candles symbol={m.symbol} priceDp={m.priceDp} trades={b.trades} oracle={oracleNum} />
@@ -177,6 +220,7 @@ export default function Market() {
   );
 }
 
+const fmtNum = (v: number, dp: number) => v.toLocaleString('en-US', { minimumFractionDigits: dp, maximumFractionDigits: dp });
 const inp = { height: 50, borderRadius: 16, backgroundColor: '#fff', borderWidth: 2, borderColor: C.edge, paddingHorizontal: 14, fontSize: 16, color: C.ink, fontFamily: F.mono, outlineStyle: 'none' } as any;
 function Stat({ k, v, sub }: { k: string; v: string; sub: string }) {
   return (

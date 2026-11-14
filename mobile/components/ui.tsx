@@ -167,9 +167,19 @@ export function CallerBadge({ rank, winRate, light }: { rank: number; winRate: n
 }
 
 /** "Kumi test account" tag next to the names of Kumi's own seeded accounts. */
-export function TestTag({ address }: { address: string }) {
+export function TestTag({ address, onDark }: { address: string; onDark?: boolean }) {
   if (!isTestAccount(address)) return null;
-  return <View style={{ paddingHorizontal: 5, height: 16, borderRadius: 5, backgroundColor: C.plumSoft, justifyContent: 'center' }}><Text style={{ fontSize: 9.5, fontWeight: '700', color: C.plum3 }}>test acct</Text></View>;
+  // A butter pill with a little flask: reads as "Kumi's own test account" at a glance, on cream cards and on plum.
+  const ink = onDark ? C.plum2 : C.butterInk;
+  return (
+    <View testID="test-tag" accessibilityLabel="Kumi test account" style={{ flexDirection: 'row', alignItems: 'center', gap: 3, paddingLeft: 4, paddingRight: 6, height: 17, borderRadius: 8.5, backgroundColor: onDark ? C.butter : C.butterSoft, borderWidth: 1, borderColor: onDark ? C.butterEdge : 'rgba(224,169,47,0.45)' }}>
+      <Svg width={10} height={10} viewBox="0 0 24 24" fill="none">
+        <Path d="M9 3h6M10 3v6.2L4.6 18.4A1.8 1.8 0 0 0 6.2 21h11.6a1.8 1.8 0 0 0 1.6-2.6L14 9.2V3" stroke={ink} strokeWidth={2.6} strokeLinecap="round" strokeLinejoin="round" />
+        <Path d="M7.2 15h9.6" stroke={ink} strokeWidth={2.6} strokeLinecap="round" />
+      </Svg>
+      <Text style={{ fontSize: 9.5, fontWeight: '800', letterSpacing: 0.2, color: ink }}>Test account</Text>
+    </View>
+  );
 }
 
 export function TxLink({ hash, label, color = C.ink2 }: { hash: string; label?: string; color?: string }) {

@@ -54,7 +54,7 @@ export function CrewStrip({ nav, members, totalShares, me, onChip }: { nav: bigi
                 <Avatar address={m.address} size={24} />
                 <View style={{ flex: 1, gap: 3 }}>
                   <View style={st.between}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}><Text style={{ fontSize: 13, fontWeight: '700', color: '#fff' }}>{nameOf(m.address, me)}</Text>{!(me && m.address.toLowerCase() === me.toLowerCase()) && <TestTag address={m.address} />}</View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}><Text style={{ fontSize: 13, fontWeight: '700', color: '#fff' }}>{nameOf(m.address, me)}</Text>{!(me && m.address.toLowerCase() === me.toLowerCase()) && <TestTag address={m.address} onDark />}</View>
                     <Text style={{ fontFamily: F.monoBold, fontSize: 12, color: m.shares > 0n ? C.butter : 'rgba(255,255,255,0.5)' }}>{m.shares > 0n ? `${pct(m.shares).toFixed(1)}% of the vote` : 'not chipped in'}</Text>
                   </View>
                   <View style={{ height: 5, borderRadius: 3, backgroundColor: 'rgba(255,255,255,0.14)' }}><View style={{ width: `${pct(m.shares)}%`, height: '100%', borderRadius: 3, backgroundColor: me && m.address.toLowerCase() === me.toLowerCase() ? C.coral : C.butter }} /></View>

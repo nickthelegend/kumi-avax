@@ -80,7 +80,7 @@ function Hero({ s, me }: { s: CallerStat; me?: string | null }) {
             <Text style={{ fontSize: 12.5, fontWeight: '700', color: 'rgba(255,255,255,0.7)' }}>#1 caller</Text>
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
               <Text numberOfLines={1} style={{ fontFamily: F.display, fontSize: 26, lineHeight: 31, color: '#fff' }}>{nameOf(s.who, me)}</Text>
-              <TestTag address={s.who} />
+              <TestTag address={s.who} onDark />
             </View>
           </View>
         </View>
