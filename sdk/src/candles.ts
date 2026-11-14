@@ -8,8 +8,9 @@
  */
 import type { PublicClient } from 'viem';
 
-export type Interval = '1m' | '5m' | '15m' | '1h';
-export const INTERVALS: Record<Interval, number> = { '1m': 60, '5m': 300, '15m': 900, '1h': 3600 };
+export type Interval = '1m' | '5m' | '15m' | '1h' | '6h' | '1d';
+/** Candle lengths both sources serve (Coinbase granularities 60/300/900/3600/21600/86400, Binance klines intervals). */
+export const INTERVALS: Record<Interval, number> = { '1m': 60, '5m': 300, '15m': 900, '1h': 3600, '6h': 21600, '1d': 86400 };
 
 export type Candle = { t: number; o: number; h: number; l: number; c: number; v: number };
 export type CandleSource = { name: 'Coinbase' | 'Binance'; pair: string; url: string };
@@ -17,8 +18,24 @@ export type Fill = { ts: number; price: number; size: number; takerBuy: boolean 
 export type Marker = Fill & { t: number };
 export type Round = { roundId: bigint; ts: number; price: number };
 
-const COINBASE: Record<string, string> = { AVAX: 'AVAX-USD', BTC: 'BTC-USD' };
-const BINANCE: Record<string, string> = { AVAX: 'AVAXUSDT', BTC: 'BTCUSDT' };
+const SYMS = ['AVAX', 'BTC', 'ETH', 'LINK', 'SOL', 'DOGE', 'SUI'] as const;
+const COINBASE: Record<string, string> = Object.fromEntries(SYMS.map(s => [s, `${s}-USD`]));
+const BINANCE: Record<string, string> = Object.fromEntries(SYMS.map(s => [s, `${s}USDT`]));
+
+export type Stats = { symbol: string; last: number; open: number; high: number; low: number; volume: number; changePct: number; source: CandleSource };
+/** 24-hour stats of the underlying from Coinbase Exchange (last trade, 24 h open/high/low/volume). Throws if it does not answer. */
+export async function fetchStats(symbol: string, fetchImpl: typeof fetch = fetch): Promise<Stats> {
+  const sym = symbol.toUpperCase();
+  const pair = COINBASE[sym];
+  if (!pair) throw Error(`No price source for ${sym}`);
+  const url = `https://api.exchange.coinbase.com/products/${pair}/stats`;
+  const r = await fetchImpl(url, { headers: { Accept: 'application/json' } });
+  if (!r.ok) throw Error(`Coinbase ${pair} stats: HTTP ${r.status}`);
+  const j = (await r.json()) as Record<string, string>;
+  const [last, open, high, low, volume] = ['last', 'open', 'high', 'low', 'volume'].map(k => Number(j[k]));
+  if (!(last! > 0 && open! > 0)) throw Error(`Coinbase ${pair} stats: no price`);
+  return { symbol: sym, last: last!, open: open!, high: high!, low: low!, volume: volume!, changePct: ((last! - open!) / open!) * 100, source: { name: 'Coinbase', pair, url } };
+}
 
 /** Coinbase rows: [time, low, high, open, close, volume], newest first. */
 export function parseCoinbase(rows: unknown): Candle[] {

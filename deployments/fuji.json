@@ -34,6 +34,32 @@
         "mmBps": 500,
         "bandBps": 500,
         "liqFeeBps": 100
+      },
+      {
+        "id": 2,
+        "pair": "ETH-USD",
+        "chainlinkFeed": "0x86d67c3D38D2bCeE722E601025C25a575021c6EA",
+        "heartbeatS": 86400,
+        "maxAgeS": 93600,
+        "tick": "1000000",
+        "lot": "1000000000000000",
+        "imBps": 1000,
+        "mmBps": 500,
+        "bandBps": 500,
+        "liqFeeBps": 100
+      },
+      {
+        "id": 3,
+        "pair": "LINK-USD",
+        "chainlinkFeed": "0x34C4c526902d88a3Aa98DB8a9b802603EB1E3470",
+        "heartbeatS": 86400,
+        "maxAgeS": 93600,
+        "tick": "100000",
+        "lot": "10000000000000000",
+        "imBps": 1000,
+        "mmBps": 500,
+        "bandBps": 500,
+        "liqFeeBps": 100
       }
     ],
     "seeded": true,
@@ -440,6 +466,28 @@
       "gasUsed": 21000,
       "confirmMs": 2540,
       "at": "2026-11-12T11:16:20.402Z"
+    },
+    {
+      "label": "list_ETH-USD",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x10d6e1d616676ef4f26fbfbf0ca72828849f9104b715d26892e43cc3ea74a220",
+      "status": "success",
+      "block": 61049839,
+      "gasUsed": 131876,
+      "confirmMs": 4918,
+      "at": "2026-11-14T07:34:17.426Z"
+    },
+    {
+      "label": "list_LINK-USD",
+      "from": "0x39D6772249f27135Afdc123659eDB3a8D97be5Cf",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x5e64133ce36e142e686a4962ea7a77c14fb2ff1894c3213836b3ea6c5d7f866a",
+      "status": "success",
+      "block": 61049842,
+      "gasUsed": 131876,
+      "confirmMs": 3008,
+      "at": "2026-11-14T07:34:21.099Z"
     }
   ],
   "accounts": {
@@ -3249,6 +3297,270 @@
       "gasUsed": 247715,
       "confirmMs": 3290,
       "at": "2026-11-14T00:18:05.769Z"
+    },
+    {
+      "label": "maker_ETH_bid_1",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x446e5a1b2f372a44c075f5d6950e3b79199b6c281883a557288d2defd822426e",
+      "status": "success",
+      "block": 61049845,
+      "gasUsed": 287622,
+      "confirmMs": 3330,
+      "at": "2026-11-14T07:34:29.208Z"
+    },
+    {
+      "label": "maker_ETH_ask_1",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xbf2179bad161c54b67b8e3aa7664fb2e91b3971160353e216f81c4c2be7b1230",
+      "status": "success",
+      "block": 61049850,
+      "gasUsed": 270779,
+      "confirmMs": 3310,
+      "at": "2026-11-14T07:34:32.830Z"
+    },
+    {
+      "label": "maker_ETH_bid_2",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xe7c458ae540c02bfe698b8b768ca80e684fadb01d420f98ca6726b8180eb2d19",
+      "status": "success",
+      "block": 61049854,
+      "gasUsed": 277019,
+      "confirmMs": 2661,
+      "at": "2026-11-14T07:34:35.829Z"
+    },
+    {
+      "label": "maker_ETH_ask_2",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x9356fc3098d39d7cb68ac23bc10f994b94a743713eff691761519fa44889388a",
+      "status": "success",
+      "block": 61049856,
+      "gasUsed": 277143,
+      "confirmMs": 2130,
+      "at": "2026-11-14T07:34:38.274Z"
+    },
+    {
+      "label": "maker_ETH_bid_3",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x1d97554e5ff8fd4a1c2955a299ab2588e911c41e667dde4cfc96c906c20215f9",
+      "status": "success",
+      "block": 61049858,
+      "gasUsed": 279489,
+      "confirmMs": 2670,
+      "at": "2026-11-14T07:34:41.262Z"
+    },
+    {
+      "label": "maker_ETH_ask_3",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x9b6005f15426fb9e4c5eb53eb51529a0f175b200d82975e09562da46fc131c84",
+      "status": "success",
+      "block": 61049860,
+      "gasUsed": 279602,
+      "confirmMs": 2867,
+      "at": "2026-11-14T07:34:44.435Z"
+    },
+    {
+      "label": "maker_ETH_bid_4",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xecc186b9f05b68c91481f92ae05d1d8513083a7bedde099b01084908c36aa7c6",
+      "status": "success",
+      "block": 61049863,
+      "gasUsed": 281947,
+      "confirmMs": 2996,
+      "at": "2026-11-14T07:34:47.744Z"
+    },
+    {
+      "label": "maker_ETH_ask_4",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x152dc3fa62f810999a993bda006995dc8274ba4fad181f2bb7e7b88d728209c4",
+      "status": "success",
+      "block": 61049866,
+      "gasUsed": 282061,
+      "confirmMs": 2995,
+      "at": "2026-11-14T07:34:51.047Z"
+    },
+    {
+      "label": "maker_ETH_bid_5",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xca3ed8db9273d5b64a0991f501bc37d427b27b0bf360353d3fb9b16447e3f058",
+      "status": "success",
+      "block": 61049867,
+      "gasUsed": 284429,
+      "confirmMs": 2046,
+      "at": "2026-11-14T07:34:53.400Z"
+    },
+    {
+      "label": "maker_ETH_ask_5",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x21d3cc6807a12cce106245c302174d5bf4247135701fb26922e8c8aaad296ea4",
+      "status": "success",
+      "block": 61049869,
+      "gasUsed": 284556,
+      "confirmMs": 2036,
+      "at": "2026-11-14T07:34:55.740Z"
+    },
+    {
+      "label": "maker_ETH_bid_6",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xec29df9eb955db56350b1422a0eb1f8151790f5e7ebcada0f67e195d489b6844",
+      "status": "success",
+      "block": 61049871,
+      "gasUsed": 286899,
+      "confirmMs": 3290,
+      "at": "2026-11-14T07:34:59.370Z"
+    },
+    {
+      "label": "maker_ETH_ask_6",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xb93f1f60ce1d4634fc0745c52a7ede6ba93afe2824efac36502a08fef4be9658",
+      "status": "success",
+      "block": 61049874,
+      "gasUsed": 287003,
+      "confirmMs": 2479,
+      "at": "2026-11-14T07:35:02.159Z"
+    },
+    {
+      "label": "maker_LINK_bid_1",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x04f14cada9375b95efc8bdbc05b1529be82c7d9603e8d79d908185badf6c2b21",
+      "status": "success",
+      "block": 61049879,
+      "gasUsed": 287610,
+      "confirmMs": 4655,
+      "at": "2026-11-14T07:35:08.323Z"
+    },
+    {
+      "label": "maker_LINK_ask_1",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xa10471bbe8f541b90f51cd9d3ea612321971718d26208f826fad7a8883605fb8",
+      "status": "success",
+      "block": 61049884,
+      "gasUsed": 270779,
+      "confirmMs": 2862,
+      "at": "2026-11-14T07:35:11.511Z"
+    },
+    {
+      "label": "maker_LINK_bid_2",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x5fbe52ed26087a7734bdc5d1e82ee40c186be0ce30b0b82873bb05a8f1bf142b",
+      "status": "success",
+      "block": 61049887,
+      "gasUsed": 277019,
+      "confirmMs": 2995,
+      "at": "2026-11-14T07:35:14.814Z"
+    },
+    {
+      "label": "maker_LINK_ask_2",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x027b902a12dcb8ab1e9399421a6553b6b3388daed17926a539327ebac5857dbf",
+      "status": "success",
+      "block": 61049891,
+      "gasUsed": 277131,
+      "confirmMs": 2458,
+      "at": "2026-11-14T07:35:17.575Z"
+    },
+    {
+      "label": "maker_LINK_bid_3",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xe02d5f536055c9d1c5930903544a2072f8b35903aefb318a819a5bc661ba3a2e",
+      "status": "success",
+      "block": 61049893,
+      "gasUsed": 279477,
+      "confirmMs": 3006,
+      "at": "2026-11-14T07:35:20.889Z"
+    },
+    {
+      "label": "maker_LINK_ask_3",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xc0cae6a4c0e47f790b6be25db97a1dbc8784106bdb1fe8fc9d07541acee757f7",
+      "status": "success",
+      "block": 61049896,
+      "gasUsed": 279590,
+      "confirmMs": 2041,
+      "at": "2026-11-14T07:35:23.237Z"
+    },
+    {
+      "label": "maker_LINK_bid_4",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xc14941c54a1d56e862eb3dd28bbb39031919cc94771c454722162e258a0ad28e",
+      "status": "success",
+      "block": 61049899,
+      "gasUsed": 281959,
+      "confirmMs": 3118,
+      "at": "2026-11-14T07:35:26.661Z"
+    },
+    {
+      "label": "maker_LINK_ask_4",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xda4c6de8929615d7463353e114d8b41c5b36e8754e475308a945b023032b1733",
+      "status": "success",
+      "block": 61049901,
+      "gasUsed": 282073,
+      "confirmMs": 2054,
+      "at": "2026-11-14T07:35:29.025Z"
+    },
+    {
+      "label": "maker_LINK_bid_5",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x23e27f30a5f80e2bcba55ac50236841de878fd87dd86f251e938f291f08c2085",
+      "status": "success",
+      "block": 61049904,
+      "gasUsed": 284429,
+      "confirmMs": 3148,
+      "at": "2026-11-14T07:35:32.480Z"
+    },
+    {
+      "label": "maker_LINK_ask_5",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0x165c33067e1a173b7a0c0a8a9fa5f4432b746166663e2c7b5892c0ccf4523c5a",
+      "status": "success",
+      "block": 61049908,
+      "gasUsed": 284544,
+      "confirmMs": 2895,
+      "at": "2026-11-14T07:35:35.695Z"
+    },
+    {
+      "label": "maker_LINK_bid_6",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xfc2f86c42229b9efe1557431b49cb94cbdd15d7c6cb4c2b4025081db6d82c31e",
+      "status": "success",
+      "block": 61049911,
+      "gasUsed": 286899,
+      "confirmMs": 2054,
+      "at": "2026-11-14T07:35:38.068Z"
+    },
+    {
+      "label": "maker_LINK_ask_6",
+      "from": "0x856CA6Cd84BDE22B1e40e9eF5E704D37A029C380",
+      "to": "0x6a6c0d74862edb85f2f0534381857347d5ae09a3",
+      "hash": "0xaf8f65c02b27a4186bc2e0452747ae98d24b3e1bfd0dba3431dc62a043e2ffc5",
+      "status": "success",
+      "block": 61049913,
+      "gasUsed": 287015,
+      "confirmMs": 2871,
+      "at": "2026-11-14T07:35:41.258Z"
     }
   ],
   "superseded": [

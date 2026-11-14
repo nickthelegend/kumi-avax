@@ -4,7 +4,7 @@
  */
 import type { Address, PublicClient } from 'viem';
 import {
-  DEPLOYMENT, MARKETS, crewAbi, factoryAbi, lobbyAbi, perpsAbi, readChannelMessages, readCrewMessages, readLeaderboard, marketBySymbol,
+  DEPLOYMENT, MARKETS, type MarketSym, crewAbi, factoryAbi, lobbyAbi, perpsAbi, readChannelMessages, readCrewMessages, readLeaderboard, marketBySymbol,
   price as fmtPrice, size as fmtSize, usd as fmtUsd, type Leaderboard, type CallerStat,
 } from '@kumi-avax/sdk';
 
@@ -23,12 +23,12 @@ const addrOf = (who: string): Address | null => {
 const bps = (v: number | null) => (v === null ? null : `${v > 0 ? '+' : ''}${(v / 100).toFixed(2)}%`);
 
 export type Chat = { kind: 'lobby'; channel: number; name: string } | { kind: 'crew'; crew: Address; name: string };
-export type Draft = { market: 'AVAX' | 'BTC'; side: 'long' | 'short'; leverage: number; marginUsdc?: number; sizePct?: number; note?: string; command?: string };
+export type Draft = { market: MarketSym; side: 'long' | 'short'; leverage: number; marginUsdc?: number; sizePct?: number; note?: string; command?: string };
 export type Ctx = { pub: PublicClient; chat: Chat; me: Address; board: () => Promise<Leaderboard>; draft?: Draft };
 
 const market = (s: unknown) => {
   const m = marketBySymbol(String(s ?? 'AVAX'));
-  if (!m) throw Error(`Unknown market ${String(s)}: Kumi lists AVAX and BTC.`);
+  if (!m) throw Error(`Unknown market ${String(s)}: Kumi lists ${MARKETS.map(x => x.symbol).join(', ')} on KumiPerps.`);
   return m;
 };
 
@@ -53,9 +53,9 @@ const caller = (s: CallerStat) => ({
 
 export const TOOLS = [
   { name: 'order_book', description: 'The live KumiPerps on-chain order book for a market on Avalanche Fuji: best bid/ask, spread, top levels, the last fills, open interest and the Chainlink mark.',
-    input_schema: { type: 'object', properties: { market: { type: 'string', enum: ['AVAX', 'BTC'] } }, required: ['market'], additionalProperties: false } },
+    input_schema: { type: 'object', properties: { market: { type: 'string', enum: MARKETS.map(x => x.symbol) } }, required: ['market'], additionalProperties: false } },
   { name: 'chainlink_price', description: 'Chainlink\'s Fuji price feed for AVAX/USD or BTC/USD (the venue\'s mark): price, last update, age, and whether the venue treats it as stale.',
-    input_schema: { type: 'object', properties: { market: { type: 'string', enum: ['AVAX', 'BTC'] } }, required: ['market'], additionalProperties: false } },
+    input_schema: { type: 'object', properties: { market: { type: 'string', enum: MARKETS.map(x => x.symbol) } }, required: ['market'], additionalProperties: false } },
   { name: 'chat_activity', description: 'This chat on Fuji: recent messages, and every trade call (or crew pitch) with its Chainlink price at call time, its move since, and its copies with their PnL.',
     input_schema: { type: 'object', properties: {}, additionalProperties: false } },
   { name: 'caller_record', description: 'One caller\'s track record from on-chain data: calls, win rate, average leveraged move, copies, and copiers\' PnL, globally and in this chat, plus their latest calls. Accepts a name like "mika" or an address.',
@@ -66,7 +66,7 @@ export const TOOLS = [
     input_schema: { type: 'object', properties: {}, additionalProperties: false } },
   { name: 'draft_call', description: 'Drafts a trade call card for the asker to review and sign themselves. It sends nothing. Use only when the asker asks for a call or a trade idea. In a public chat give marginUsdc; in a crew give sizePct (share of the crew fund).',
     input_schema: { type: 'object', properties: {
-      market: { type: 'string', enum: ['AVAX', 'BTC'] }, side: { type: 'string', enum: ['long', 'short'] }, leverage: { type: 'integer', minimum: 1, maximum: 10 },
+      market: { type: 'string', enum: MARKETS.map(x => x.symbol) }, side: { type: 'string', enum: ['long', 'short'] }, leverage: { type: 'integer', minimum: 1, maximum: 10 },
       marginUsdc: { type: 'number', minimum: 1, maximum: 1000 }, sizePct: { type: 'number', minimum: 1, maximum: 100 }, note: { type: 'string', maxLength: 140 },
     }, required: ['market', 'side', 'leverage'], additionalProperties: false } },
 ] as const;

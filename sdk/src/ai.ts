@@ -5,12 +5,13 @@
  */
 import type { Address, Hex } from 'viem';
 import { KUMI_API } from './gas.ts';
+import type { MarketSym } from './markets.ts';
 
 export const askMessage = (address: string, expires: number) => `Kumi AI\nwallet: ${address.toLowerCase()}\nexpires: ${expires}`;
 
 export type AskPass = { address: Address; expires: number; signature: Hex };
 export type AiTool = { name: string; label: string };
-export type AiDraft = { market: 'AVAX' | 'BTC'; side: 'long' | 'short'; leverage: number; marginUsdc?: number; sizePct?: number; note?: string; command?: string };
+export type AiDraft = { market: MarketSym; side: 'long' | 'short'; leverage: number; marginUsdc?: number; sizePct?: number; note?: string; command?: string };
 export type AiAnswer = { id: string; chat: string; question: string; answer: string; tools: AiTool[]; draft?: AiDraft; at: number; model: string };
 export type AiError = { error: string; setup?: boolean; status: number };
 
